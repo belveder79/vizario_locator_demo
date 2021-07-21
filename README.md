@@ -20,6 +20,5 @@ Go to https://www.openstreetmap.org/export
 </MapData>
 ```
 
-https://user-images.githubusercontent.com/18437246/126501742-0698a5c0-112c-4ec6-8eb6-5971d818d342.mp4
 
 
