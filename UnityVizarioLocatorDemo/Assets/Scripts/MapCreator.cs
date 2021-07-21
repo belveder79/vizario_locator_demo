@@ -52,8 +52,8 @@ public class MapCreator : MonoBehaviour
     private Material frontPlane = null;
     private GameObject mapPlane = null;
 
-    public GameObject avatar = null;
-    public GameObject head = null;
+    public GameObject avatarVizario = null;
+    public GameObject avatarInternal = null;
     public bool handleOrientation = true;
     public bool useCallbacks = true;
 
@@ -132,7 +132,7 @@ public class MapCreator : MonoBehaviour
             Debug.Log("map setted up");
 
             //setAvatarPosition(6.362731, 8.517936, 0);
-            setAvatarPositionUTM(534805.0, 5211784.0,"33", 0);
+            setAvatarPositionUTM(534805.0, 5211784.0,"33", 0, 1);
             //double lat, lon;
             //int state;
             //PositionConverter.ParseNMEA("$GNGGA,135434.148,0001.377,N,00844.048,E,1,12,1.0,0.0,M,0.0,M,,*62", out lat, out lon, out state);
@@ -166,30 +166,8 @@ public class MapCreator : MonoBehaviour
     }
 
 
-    public void setAvatarPosition(double lat, double lon, int fix)
-    {
-        double x, y;
-        string z;
-        PositionConverter.LatLongtoUTM(lat, lon, out x, out y, out z);
-        //Debug.Log("z: " + z + " x: " + x + " y:" + y);
-
-        float x_ = 0;// (float)x - mapData.centerCoordX;
-        float y_ = 0;// (float)y - mapData.centerCoordY;
-
-        //Debug.Log("z: " + z + " x: " + x_ + " y:" + y_);
-
-        x_ = x_ * (planeLength / mapLength);
-        y_ = y_ * (planeHeight / mapHeight);
-
-        //Debug.Log("z: " + z + " x: " + x_ + " y:" + y_);
-        avatar.transform.localPosition = new Vector3(x_ * 10, 0.5f, y_ * 10);  //10 times bc size of plane
-
-       
-    }
-
-
     int lastGPSStat = 0;
-    public void setAvatarPositionUTM(double x, double y, String z, int fix)
+    public void setAvatarPositionUTM(double x, double y, String z, int fix, int avatarID)
     {
         //Debug.Log(" x: " + x + " y:" + y);
 
@@ -202,7 +180,9 @@ public class MapCreator : MonoBehaviour
         y_ = y_ * (planeHeight / mapHeight);
 
         //Debug.Log(" x: " + x_ + " y:" + y_);
-        avatar.transform.localPosition = new Vector3(x_ * 10, 0.5f, y_ * 10);  //10 times bc size of plane
-
+        if(avatarID == 1)
+            avatarVizario.transform.localPosition = new Vector3(x_ * 10, 0.5f, y_ * 10);  //10 times bc size of plane
+        else
+            avatarInternal.transform.localPosition = new Vector3(x_ * 10, 0.5f, y_ * 10);  //10 times bc size of plane
     }
 }
