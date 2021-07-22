@@ -15,7 +15,6 @@ public class LocalizationHandler : MonoBehaviour
 
 
 
-
     public bool useCallback = true;
     public GameObject IMUVisualization = null;
     public Text mqttConnectionText = null;
@@ -25,6 +24,18 @@ public class LocalizationHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        // todo check where to place imu calib load rescource and copy to persitctence ?
+
+        if (!System.IO.File.Exists(Application.persistentDataPath + "/imuCalib.xml"))
+        {
+            //xmlAsset = Resources.Load("Config.xml");
+            //xmlContent = xmlAsset.text;
+            //System.IO.File.WriteAllText(Application.persistentDataPath + "/Config.xml", xmlContent);
+        }
+
+
+
         gps = GameObject.Find("Runtime").GetComponent<VizarioGPS>();
 
         if (gps == null)
@@ -265,6 +276,7 @@ public class LocalizationHandler : MonoBehaviour
                 double x, y;
                 string z;
                 PositionConverter.LatLongtoUTM(_latitude, _longitude, out x, out y, out z);
+                Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
                 map.setAvatarPositionUTM(x, y, z, -1, 2);
 
                 yield return new WaitForSecondsRealtime(1);

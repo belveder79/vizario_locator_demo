@@ -29,8 +29,11 @@ public class LogData
 
 public class MapCreator : MonoBehaviour
 {
-    private string mapFile = "/map_tu.png";
-    private string mapXML = "/map_tu.xml";
+
+    public bool copyMapFromResources = true;
+
+    private string mapFile = "img_map_tu.png";
+    private string mapXML = "xml_map_tu.xml";
     public int mapScale = 300;
     private int sizeX = -1; 
     private int sizeY = -1;
@@ -63,16 +66,45 @@ public class MapCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-#if UNITY_ANDROID
-        m_Path = Application.persistentDataPath; // Application.streamingAssetsPath;//Application.dataPath;
-#else
-        string m_Path = Application.streamingAssetsPath + "/maps";//Application.dataPath;
+        m_Path = Path.Combine(Application.persistentDataPath, "maps");
+        Debug.Log(m_Path);
 
-#endif
+        //do on first run at least
+        if (copyMapFromResources)
+        {
+            TextAsset xmlAsset = (TextAsset) Resources.Load(Path.Combine("maps", System.IO.Path.GetFileNameWithoutExtension(mapXML)));
+
+
+            if (!Directory.Exists(m_Path))
+                Directory.CreateDirectory(m_Path);
+
+            string xmlFilePath = Path.Combine(m_Path, mapXML);
+            Debug.Log(xmlFilePath);
+            if (File.Exists(xmlFilePath))
+                File.Delete(xmlFilePath);
+
+            File.WriteAllText(xmlFilePath, xmlAsset.text);
+            Debug.Log("xml copied");
+
+            string imgFilePath = Path.Combine(m_Path, mapFile);
+            if (File.Exists(imgFilePath))
+                File.Delete(imgFilePath);
+
+            //if null pointer, make sure Texture type is 2D !
+            Texture2D texture =  Resources.Load(Path.Combine("maps", System.IO.Path.GetFileNameWithoutExtension(mapFile))) as Texture2D;
+
+            byte[] bytes = texture.EncodeToPNG();
+            System.IO.File.WriteAllBytes(imgFilePath, bytes);
+            Debug.Log("img copied");
+
+        }
+
+        
+
         //Output the Game data path to the console
         Debug.Log("dataPath : " + m_Path);
 
-        string filePath = m_Path + mapXML;
+        string filePath = Path.Combine(m_Path, mapXML);
         if (System.IO.File.Exists(filePath))
         {
             //System.IO.FileStream file = System.IO.StreamReader(filePath);
@@ -92,7 +124,7 @@ public class MapCreator : MonoBehaviour
             Debug.LogError("no file found : " + filePath);
         }
 
-        filePath = m_Path + mapFile;
+        filePath = Path.Combine(m_Path, mapFile);
 
         if (System.IO.File.Exists(filePath) && mapData != null)
         {
@@ -104,7 +136,7 @@ public class MapCreator : MonoBehaviour
             }
             if (frontPlane == null)
             {
-                frontPlane = new Material(Shader.Find("Standard (Specular setup)"));                
+                frontPlane = new Material(Shader.Find("Unlit/Texture"));                
             }
             var bytes = System.IO.File.ReadAllBytes(filePath);
             var tex = new Texture2D(1, 1);
