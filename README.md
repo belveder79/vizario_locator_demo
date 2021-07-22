@@ -1,25 +1,5 @@
 ﻿# vizario_locator_demo
 
-
-## setup map data
-
-Go to https://www.openstreetmap.org/export
-
--> manually select a different area
--> right side share -> Image set custom dimension and align to area selected before
--> now download png 
--> create xml with the 4 lat/lon values in Export window :
-
- ```
-<?xml version="1.0"?>
-<MapData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <left>15.45700</left>	
-  <right>15.45975</right>
-  <top>47.05894</top>	
-  <bottom>47.05782</bottom>
-</MapData>
-```
-
-https://user-images.githubusercontent.com/18437246/126503011-64fa0b4c-93ea-463e-96c7-ded6c97b46b3.mp4
+make sure Settings-Graphics: Unlit/Texture in always include Shader
 
 

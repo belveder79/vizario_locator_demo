@@ -21,6 +21,8 @@ public class LocalizationHandler : MonoBehaviour
     public Text chipConnectionText = null;
     public Text gpsFixText = null;
 
+    private bool mapCreated = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -145,7 +147,20 @@ public class LocalizationHandler : MonoBehaviour
 
     private void GPSCallback(double x, double y, string z, int fixState)
     {
-        Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + fixState);
+
+        //Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + fixState);
+
+        if (!mapCreated){
+
+            
+            gps.GetLatLonPoition(out var lat, out var lon, out int state);
+
+            map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
+            
+            mapCreated = true;
+            Debug.Log("set map coords.");
+        }
+
         map.setAvatarPositionUTM(x, y, z, fixState, 1);
         setGPSFixText(fixState);
     }
@@ -278,6 +293,16 @@ public class LocalizationHandler : MonoBehaviour
                 PositionConverter.LatLongtoUTM(_latitude, _longitude, out x, out y, out z);
                 Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
                 map.setAvatarPositionUTM(x, y, z, -1, 2);
+
+
+
+                //if (!mapCreated)
+                //{
+                //    map.CreateMap(_latitude - 0.001, _longitude - 0.002, _latitude + 0.001, _longitude + 0.002);
+
+                //    mapCreated = true;
+                //    Debug.Log("set map coords.");
+                //}
 
                 yield return new WaitForSecondsRealtime(1);
             }

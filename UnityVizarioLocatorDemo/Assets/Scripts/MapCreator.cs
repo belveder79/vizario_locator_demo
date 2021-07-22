@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.Networking;
 using Vizario;
 
 [Serializable]
@@ -61,11 +62,13 @@ public class MapCreator : MonoBehaviour
     public bool useCallbacks = true;
 
     string m_Path;
-
+    private bool map_created = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        return;
+
         m_Path = Path.Combine(Application.persistentDataPath, "maps");
         Debug.Log(m_Path);
 
@@ -184,6 +187,75 @@ public class MapCreator : MonoBehaviour
 
     }
 
+    public void CreateMap(double minlat, double minlon, double maxlat, double maxlon)
+    {
+        StartCoroutine(SetUpMap(minlat, minlon, maxlat, maxlon));
+    }
+
+
+    
+    IEnumerator SetUpMap(double minlat, double minlon, double maxlat, double maxlon)
+    {
+
+        string z;
+        PositionConverter.LatLongtoUTM(minlat, minlon, out leftBottom_x, out leftBottom_y, out z);
+        Debug.Log("x: " + leftBottom_x + " , y: " + leftBottom_y);
+        PositionConverter.LatLongtoUTM(maxlat, maxlon, out rightTop_x, out rightTop_y, out z);
+        center_x = leftBottom_x + (rightTop_x - leftBottom_x) / 2;
+        center_y = leftBottom_y + (rightTop_y - leftBottom_y) / 2;
+
+        string req = string.Format("https://render.openstreetmap.org/cgi-bin/export?bbox={0},{1},{2},{3}&scale=737&format=png",  minlon, minlat, maxlon, maxlat);
+        Debug.Log(req);
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(req);
+        www.SetRequestHeader("cookie", "_osm_totp_token=272110");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Debug.Log("got result");
+            Texture2D tex = ((DownloadHandlerTexture)www.downloadHandler).texture;
+
+            if (mapPlane == null)
+            {
+                mapPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                mapPlane.transform.parent = this.transform;
+                mapPlane.name = "Map Plane";
+            }
+            if (frontPlane == null)
+            {
+                frontPlane = new Material(Shader.Find("Unlit/Texture"));
+            }
+
+            sizeX = tex.width;
+            sizeY = tex.height;
+
+            Vector3 scale = new Vector3(sizeX / mapScale, 1, sizeY / mapScale);
+            Debug.Log(scale);
+            mapPlane.transform.localScale = scale;
+
+            // Image file exists - load bytes into texture
+
+            frontPlane.mainTexture = tex;
+
+            // Apply to Plane
+            MeshRenderer mr = mapPlane.GetComponent<MeshRenderer>();
+            mr.material = frontPlane;
+
+            mapLength = (float)(leftBottom_x - rightTop_x);
+            mapHeight = (float)(leftBottom_y - rightTop_y);
+            planeLength = sizeX / mapScale;
+            planeHeight = sizeY / mapScale;
+
+            Debug.Log("map setted up");
+            map_created = true;
+            //setAvatarPosition(6.362731, 8.517936, 0);
+            setAvatarPositionUTM(534805.0, 5211784.0, "33", 0, 1);
+        }
+    }
 
 
     private void OnDestroy()
@@ -202,6 +274,9 @@ public class MapCreator : MonoBehaviour
     public void setAvatarPositionUTM(double x, double y, String z, int fix, int avatarID)
     {
         //Debug.Log(" x: " + x + " y:" + y);
+
+        if (!map_created)
+            return;
 
         float x_ = (float) (x - center_x);
         float y_ = (float) (y - center_y);
