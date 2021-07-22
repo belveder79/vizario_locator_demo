@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,17 +24,31 @@ public class LocalizationHandler : MonoBehaviour
 
     private bool mapCreated = false;
 
+    public bool copyCalibFromResources = false;
+    public string calibFile = "";
+
     // Start is called before the first frame update
     void Start()
     {
 
         // todo check where to place imu calib load rescource and copy to persitctence ?
-
-        if (!System.IO.File.Exists(Application.persistentDataPath + "/imuCalib.xml"))
+        if (copyCalibFromResources)
         {
-            //xmlAsset = Resources.Load("Config.xml");
-            //xmlContent = xmlAsset.text;
-            //System.IO.File.WriteAllText(Application.persistentDataPath + "/Config.xml", xmlContent);
+            string m_Path = Application.persistentDataPath;
+            TextAsset calibAsset = (TextAsset)Resources.Load(Path.Combine("imu_calibrations", System.IO.Path.GetFileNameWithoutExtension(calibFile)));
+            Debug.Log(Path.Combine("imu_calibrations", System.IO.Path.GetFileNameWithoutExtension(calibFile)));
+
+            if (!Directory.Exists(m_Path))
+                Directory.CreateDirectory(m_Path);
+
+            string calibFilePath = Path.Combine(m_Path, calibFile);
+            Debug.Log(calibFilePath);
+            if (File.Exists(calibFilePath))
+                File.Delete(calibFilePath);
+
+            File.WriteAllText(calibFilePath, calibAsset.text);
+            Debug.Log("calib copied");
+
         }
 
 
