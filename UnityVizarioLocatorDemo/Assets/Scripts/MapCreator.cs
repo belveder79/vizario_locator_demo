@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -204,10 +205,42 @@ public class MapCreator : MonoBehaviour
         center_x = leftBottom_x + (rightTop_x - leftBottom_x) / 2;
         center_y = leftBottom_y + (rightTop_y - leftBottom_y) / 2;
 
+        string currentToken = "";
+        string req_for_token = "https://www.openstreetmap.org"; //random url?
+        UnityWebRequest www = UnityWebRequest.Get(req_for_token);
+        yield return www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+            Debug.Log("error in get token");
+        }
+        else
+        {
+            Debug.Log("POST successful!");
+            StringBuilder sb = new StringBuilder();
+            foreach (System.Collections.Generic.KeyValuePair<string, string> dict in www.GetResponseHeaders())
+            {
+                sb.Append(dict.Key).Append(": \t[").Append(dict.Value).Append("]\n");
+            }
+
+            // Print Headers
+            //Debug.Log(sb.ToString());
+            string tC = sb.ToString();
+            var cc = tC.IndexOf("_osm_totp_token=");
+            currentToken = tC.Substring(cc + "_osm_totp_token=".Length, 6);
+            //string num = tC.Trim(, 2);
+            Debug.Log(currentToken);
+        }
+
+        if(currentToken == "")
+        {
+            Debug.LogError("Failed to get token");
+        }
+
         string req = string.Format("https://render.openstreetmap.org/cgi-bin/export?bbox={0},{1},{2},{3}&scale=737&format=png",  minlon, minlat, maxlon, maxlat);
         Debug.Log(req);
-        UnityWebRequest www = UnityWebRequestTexture.GetTexture(req);
-        www.SetRequestHeader("cookie", "_osm_totp_token=272110");
+        www = UnityWebRequestTexture.GetTexture(req);
+        www.SetRequestHeader("cookie", "_osm_totp_token="+currentToken);
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError)

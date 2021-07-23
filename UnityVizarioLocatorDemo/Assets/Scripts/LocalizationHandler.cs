@@ -306,7 +306,7 @@ public class LocalizationHandler : MonoBehaviour
                 double x, y;
                 string z;
                 PositionConverter.LatLongtoUTM(_latitude, _longitude, out x, out y, out z);
-                Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
+                //Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
                 map.setAvatarPositionUTM(x, y, z, -1, 2);
 
 
