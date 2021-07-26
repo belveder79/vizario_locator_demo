@@ -27,6 +27,15 @@ public class LocalizationHandler : MonoBehaviour
     public bool copyCalibFromResources = false;
     public string calibFile = "";
 
+    //visualize object
+    public GameObject WorldOrigin = null;
+    public GameObject ObjToVisualize = null;
+
+    //IF 11 534753,313	5211701,173
+    public double ObjUtmX = 0;
+    public double ObjUtmY = 0;
+    public GameObject arCam = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +58,12 @@ public class LocalizationHandler : MonoBehaviour
             File.WriteAllText(calibFilePath, calibAsset.text);
             Debug.Log("calib copied");
 
+        }
+
+        if(WorldOrigin == null || ObjToVisualize == null)
+        {
+            Debug.LogError("Objects for visualization not linked");
+            return;
         }
 
 
@@ -219,6 +234,51 @@ public class LocalizationHandler : MonoBehaviour
                 //}
             }
         }
+    }
+
+    // setup origin for real world visualization (origin is init pose of AROrigin) 
+    public void SetWorldOrigin()
+    {
+
+        Quaternion camrot = arCam.transform.localRotation;
+        Vector3 camposition = arCam.transform.localPosition;
+        double x, y;
+        int fix;
+        string z;
+
+        bool res = gps.GetUTMPosition(out x, out y, out z, out fix);
+
+        if (!res)
+        {
+            return;
+        }
+
+        Quaternion q;
+        res = gps.GetGyroQuaternion(out q);
+
+        if (!res)
+            return;
+
+
+        //double x = 534755.313;
+        //double y = 5211704.173;
+        //Quaternion q = Quaternion.identity;
+
+        //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
+        WorldOrigin.transform.localPosition = camposition;
+
+        //correct so y = northing 
+        Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
+        Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+        //rotate to adjust northing (AR Camera = only local tracking = no real north)
+        float correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+        WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
+
+
+        //place Object to Visualize in World (y = z bc of unity)
+        ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+
     }
 
 

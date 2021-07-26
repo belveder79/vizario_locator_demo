@@ -43,6 +43,7 @@ public class MapCreator : MonoBehaviour
     double leftBottom_x = -1f, leftBottom_y = -1f;
     double rightTop_x =-1f, rightTop_y = -1f;
     double center_x = -1f, center_y = -1f;
+    private int mapObjY = 100;
 
 
     private Vector3 currentPosition = new Vector3(0, 0, 0);
@@ -269,6 +270,7 @@ public class MapCreator : MonoBehaviour
             Vector3 scale = new Vector3(sizeX / mapScale, 1, sizeY / mapScale);
             Debug.Log(scale);
             mapPlane.transform.localScale = scale;
+            mapPlane.transform.localPosition = new Vector3(0, mapObjY, 0);
 
             // Image file exists - load bytes into texture
 
@@ -321,8 +323,8 @@ public class MapCreator : MonoBehaviour
 
         //Debug.Log(" x: " + x_ + " y:" + y_);
         if(avatarID == 1)
-            avatarVizario.transform.localPosition = new Vector3(x_ * 10, 0.5f, y_ * 10);  //10 times bc size of plane
+            avatarVizario.transform.localPosition = new Vector3(x_ * 10, mapObjY + 0.5f, y_ * 10);  //10 times bc size of plane
         else
-            avatarInternal.transform.localPosition = new Vector3(x_ * 10, 0.5f, y_ * 10);  //10 times bc size of plane
+            avatarInternal.transform.localPosition = new Vector3(x_ * 10, mapObjY + 0.5f, y_ * 10);  //10 times bc size of plane
     }
 }
