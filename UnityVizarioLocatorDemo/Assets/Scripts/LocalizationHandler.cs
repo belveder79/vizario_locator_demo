@@ -109,7 +109,11 @@ public class LocalizationHandler : MonoBehaviour
         }
 
         StartCoroutine(LocationCoroutine());
-       
+
+        //var lat = 48.16224235117572;
+        //var lon = 16.349907735268857;
+        //map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
+
     }
 
     // Update is called once per frame
