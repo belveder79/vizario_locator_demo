@@ -1085,7 +1085,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 333655191}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1530,7 +1530,7 @@ MonoBehaviour:
   calibFile: VZ-579cf4030ae5ecf5bfc3ccba1b8154ad.imu2cam.txt
   WorldOrigin: {fileID: 1217562851}
   ObjToVisualize: {fileID: 439136244}
-  ObjToVisualizeVerify: {fileID: 0}
+  ObjToVisualizeVerify: {fileID: 333655191}
   ObjUtmX: 534753.3125
   ObjUtmY: 5211701.173
   arCam: {fileID: 2077127151}
@@ -1560,7 +1560,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413140300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 100, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
