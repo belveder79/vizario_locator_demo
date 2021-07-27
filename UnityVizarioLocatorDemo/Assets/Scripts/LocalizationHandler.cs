@@ -30,7 +30,6 @@ public class LocalizationHandler : MonoBehaviour
     //visualize object
     public GameObject WorldOrigin = null;
     public GameObject ObjToVisualize = null;
-    public GameObject ObjToVisualizeVerify = null;
 
     //IF 11 534753,313	5211701,173
     public double ObjUtmX = 0;
@@ -279,8 +278,6 @@ public class LocalizationHandler : MonoBehaviour
 
         //place Object to Visualize in World (y = z bc of unity)
         ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
-        ObjToVisualizeVerify.transform.localPosition = new Vector3((float)(x - ObjUtmX), 0.5f, (float)(y - ObjUtmY));
-
     }
 
 
