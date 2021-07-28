@@ -36,6 +36,10 @@ public class LocalizationHandler : MonoBehaviour
     public double ObjUtmY = 0;
     public GameObject arCam = null;
 
+    public PlaceOnPlane placePlane = null;
+
+    public GameObject prefabToPlace = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,7 +64,7 @@ public class LocalizationHandler : MonoBehaviour
 
         }
 
-        if(WorldOrigin == null || ObjToVisualize == null)
+        if(WorldOrigin == null || ObjToVisualize == null || placePlane == null)
         {
             Debug.LogError("Objects for visualization not linked");
             return;
@@ -240,6 +244,22 @@ public class LocalizationHandler : MonoBehaviour
         }
     }
 
+    //measure and add Object in scene
+    public void AddObject()
+    {
+
+        Vector3 PlanePose;
+        bool ret = placePlane.getRayHit(out PlanePose);
+
+        Debug.Log("ray hit: " + ret.ToString());
+        if(ret)
+        {
+            Instantiate(prefabToPlace, PlanePose, Quaternion.identity);
+        }
+        
+    }
+
+
     // setup origin for real world visualization (origin is init pose of AROrigin) 
     public void SetWorldOrigin()
     {
@@ -281,7 +301,16 @@ public class LocalizationHandler : MonoBehaviour
 
 
         //place Object to Visualize in World (y = z bc of unity)
-        ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        //ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        Vector3 relPos = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        Vector3 RayOrigin = WorldOrigin.transform.localPosition + relPos;
+        Vector3 PlanePos;
+        bool ret = placePlane.getPlanePos(RayOrigin, out PlanePos);
+        Debug.Log("ray hit: " + ret.ToString());
+
+        //not 0.5f, should be half height of object 
+        ObjToVisualize.transform.localPosition = relPos + new Vector3(0, PlanePos.y + 0.5f, 0); //if plane not hit, height will be 0
+      
     }
 
 
