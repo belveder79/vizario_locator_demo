@@ -17,7 +17,7 @@ public class ARMeshSwitcher : MonoBehaviour
     // [SerializeField]
     // private Material OcclusionMaterial = null;
 
-    private bool IsVisible { get; set; } = true;
+    private bool IsVisible { get; set; } = false;
 
     private ARMeshManager _meshManager;
     public ARPlaneManager _arpm = null;

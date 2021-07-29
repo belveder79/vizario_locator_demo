@@ -38,6 +38,9 @@ public class LocalizationHandler : MonoBehaviour
     public PlaceOnPlane placePlane = null;
 
     public GameObject prefabToPlace = null;
+
+
+
     private List<GameObject> placedObjcts = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -280,8 +283,12 @@ public class LocalizationHandler : MonoBehaviour
                 var relative_dis = origin - PlanePose.position;
                 placedObjcts.Add(newObj);
 
+                double m_x = x + relative_dis.x;
+                double m_y = y + relative_dis.z;
+
                 newObj.name = "Measurement " + placedObjcts.Count.ToString();
-                objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + (x + relative_dis.x) + "\ny: " + (y + relative_dis.z);
+                objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
+                // todo check if y should be - ? seems to be more precise when farer away. but could be random with wrong plane detection
 
                 newObj.transform.parent = WorldOrigin.transform;
 
