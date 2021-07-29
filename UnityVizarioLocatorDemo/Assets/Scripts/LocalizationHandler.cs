@@ -29,16 +29,16 @@ public class LocalizationHandler : MonoBehaviour
 
     //visualize object
     public GameObject WorldOrigin = null;
-    public GameObject ObjToVisualize = null;
-
+    //example how to add pre external obj with utm coords into scene
     //IF 11 534753,313	5211701,173
-    public double ObjUtmX = 0;
-    public double ObjUtmY = 0;
-    public GameObject arCam = null;
+    //public double ObjUtmX = 0;
+    //public double ObjUtmY = 0;
 
+    public GameObject arCam = null;
     public PlaceOnPlane placePlane = null;
 
     public GameObject prefabToPlace = null;
+    private List<GameObject> placedObjcts = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +64,7 @@ public class LocalizationHandler : MonoBehaviour
 
         }
 
-        if(WorldOrigin == null || ObjToVisualize == null || placePlane == null)
+        if(WorldOrigin == null || placePlane == null) // ObjToVisualize == null ||
         {
             Debug.LogError("Objects for visualization not linked");
             return;
@@ -117,6 +117,7 @@ public class LocalizationHandler : MonoBehaviour
         //var lat = 48.16224235117572;
         //var lon = 16.349907735268857;
         //map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
+
 
     }
 
@@ -219,27 +220,22 @@ public class LocalizationHandler : MonoBehaviour
             if (lastGPSStat == 0)
             {
                 gpsFixText.color = Color.red;
-                //if (arrow != null)
-                //{
-                //    Debug.Log("set red");
-                //    arrow.GetComponent<MeshRenderer>().material = red;
-                //}
+                gpsFixText.text = "No Fix";
             }
             else if (lastGPSStat < 2)
             {
                 gpsFixText.color = Color.yellow;
-                //if (arrow != null)
-                //{
-                //    arrow.GetComponent<MeshRenderer>().material = yellow;
-                //}
+                gpsFixText.text = "3D Fix";
+            }
+            else if(lastGPSStat == 5)
+            {
+                gpsFixText.color = Color.green;
+                gpsFixText.text = "RTK Float";
             }
             else
             {
                 gpsFixText.color = Color.green;
-                //if (arrow != null)
-                //{
-                //    arrow.GetComponent<MeshRenderer>().material = green;
-                //}
+                gpsFixText.text = "RTK Fixed";
             }
         }
     }
@@ -247,16 +243,51 @@ public class LocalizationHandler : MonoBehaviour
     //measure and add Object in scene
     public void AddObject()
     {
-
-        Vector3 PlanePose;
-        bool ret = placePlane.getRayHit(out PlanePose);
-
-        Debug.Log("ray hit: " + ret.ToString());
-        if(ret)
+        if (gps != null)
         {
-            Instantiate(prefabToPlace, PlanePose, Quaternion.identity);
+            Vector3 origin; Pose PlanePose;
+            bool ret = placePlane.getRayHit(out origin, out PlanePose);
+
+            if (!ret)
+            {
+                Debug.Log("ray did not hit anything");
+                return;
+            }
+
+            ////local testing
+            //var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+            //newObj.transform.localRotation = PlanePose.rotation;
+
+            double x, y;
+            string z;
+            int fix;
+
+            ret = gps.GetUTMPosition(out x, out y, out z, out fix);
+
+            if (!ret)
+            {
+                Debug.Log("no gps fix");
+                return;
+            }
+
+            Debug.Log("ray hit: " + ret.ToString());
+            if (ret)
+            {
+                var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                newObj.transform.localRotation = PlanePose.rotation;
+                Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
+
+                var relative_dis = origin - PlanePose.position;
+                placedObjcts.Add(newObj);
+
+                newObj.name = "Measurement " + placedObjcts.Count.ToString();
+                objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + (x + relative_dis.x) + "\ny: " + (y + relative_dis.z);
+
+                newObj.transform.parent = WorldOrigin.transform;
+
+                
+            }
         }
-        
     }
 
 
@@ -300,16 +331,16 @@ public class LocalizationHandler : MonoBehaviour
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
 
 
-        //place Object to Visualize in World (y = z bc of unity)
-        //ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
-        Vector3 relPos = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
-        Vector3 RayOrigin = WorldOrigin.transform.localPosition + relPos;
-        Vector3 PlanePos;
-        bool ret = placePlane.getPlanePos(RayOrigin, out PlanePos);
-        Debug.Log("ray hit: " + ret.ToString());
+        ////place Object to Visualize in World (y = z bc of unity)
+        ////ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        //Vector3 relPos = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        //Vector3 RayOrigin = WorldOrigin.transform.localPosition + relPos;
+        //Vector3 PlanePos;
+        //bool ret = placePlane.getPlanePos(RayOrigin, out PlanePos);
+        //Debug.Log("ray hit: " + ret.ToString());
 
-        //not 0.5f, should be half height of object 
-        ObjToVisualize.transform.localPosition = relPos + new Vector3(0, PlanePos.y + 0.5f, 0); //if plane not hit, height will be 0
+        ////not 0.5f, should be half height of object 
+        //ObjToVisualize.transform.localPosition = relPos + new Vector3(0, PlanePos.y + 0.5f, 0); //if plane not hit, height will be 0
       
     }
 

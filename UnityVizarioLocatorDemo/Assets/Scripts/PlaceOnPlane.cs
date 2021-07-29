@@ -30,10 +30,10 @@ public class PlaceOnPlane : MonoBehaviour
         {
             var hitPose = s_Hits[0].pose;
             var hitPosition = hitPose.position;
-
+            var hitRot = hitPose.rotation;
             
-            //todo nice fadenkreuz
             test.transform.localPosition = hitPosition;
+            test.transform.localRotation = hitRot * Quaternion.Euler(-90, 0, 0);
 
         }
         else
@@ -68,18 +68,15 @@ public class PlaceOnPlane : MonoBehaviour
     }
 
 
-    public bool getRayHit(out Vector3 pos)
+    public bool getRayHit(out Vector3 origin, out Pose pos)
     {
-        pos = new Vector3();
-        bool ret = m_RaycastManager.Raycast(new Ray(camera.transform.position, camera.transform.forward), s_Hits, TrackableType.All);
+        pos = new Pose();
+        origin = camera.transform.position;
+        bool ret = m_RaycastManager.Raycast(new Ray(origin, camera.transform.forward), s_Hits, TrackableType.All);
         if (ret)
         {
             var hitPose = s_Hits[0].pose;
-            var hitPosition = hitPose.position;
-
-
-            //todo measure distance !
-            pos = hitPosition;
+            pos = hitPose;
             return true;
         }
         else
