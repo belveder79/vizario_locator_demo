@@ -43,6 +43,9 @@ public class LocalizationHandler : MonoBehaviour
 
     private List<GameObject> placedObjcts = new List<GameObject>();
 
+    //debugging
+    //private string debugFile = "debug.txt";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -121,6 +124,12 @@ public class LocalizationHandler : MonoBehaviour
         //var lon = 16.349907735268857;
         //map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
 
+
+        //debugging
+        //if(!File.Exists(Path.Combine(Application.persistentDataPath, debugFile)))
+        //{
+        //    File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;camPos;camRot;\n");
+        //}
 
     }
 
@@ -205,6 +214,21 @@ public class LocalizationHandler : MonoBehaviour
 
         map.setAvatarPositionUTM(x, y, z, fixState, 1);
         setGPSFixText(fixState);
+
+        //debugging
+        //Quaternion camrot = arCam.transform.localRotation;
+        //Vector3 camposition = arCam.transform.localPosition;
+        //Quaternion q;
+        //bool ret = gps.GetGyroQuaternion(out q);
+
+        //if (!ret)
+        //{
+        //    Debug.Log("no gyro fix");
+        //    return;
+        //}
+
+        //File.AppendAllText(Path.Combine(Application.persistentDataPath, debugFile), x.ToString("F3") + ";" + y.ToString("F3") + ";"+ fixState + ";"  +
+        //                       q + ";" + camposition.ToString() + ";" + camrot.ToString() + "\n");
     }
 
     private void AltiCallback(float altitude, float temp)
@@ -248,8 +272,8 @@ public class LocalizationHandler : MonoBehaviour
     {
         if (gps != null)
         {
-            Vector3 origin; Pose PlanePose;
-            bool ret = placePlane.getRayHit(out origin, out PlanePose);
+            Vector3 origin; Pose PlanePose; Quaternion originRot;
+            bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
 
             if (!ret)
             {
@@ -283,6 +307,25 @@ public class LocalizationHandler : MonoBehaviour
                 var relative_dis = origin - PlanePose.position;
                 placedObjcts.Add(newObj);
 
+                //roate relative distance Vector, since the calculation is in ARFoundation coord sys, which is not north orientated
+                //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
+                Quaternion q;
+                ret = gps.GetGyroQuaternion(out q);
+
+                if (!ret)
+                {
+                    Debug.Log("no gyro fix");
+                    return;
+                }
+
+                //correct so y = northing 
+                Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
+                Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+                //rotate to adjust northing (AR Camera = only local tracking = no real north)
+                float correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+                relative_dis = Quaternion.Euler(0, correction, 0) * relative_dis; 
+
                 double m_x = x + relative_dis.x;
                 double m_y = y + relative_dis.z;
 
@@ -291,8 +334,6 @@ public class LocalizationHandler : MonoBehaviour
                 // todo check if y should be - ? seems to be more precise when farer away. but could be random with wrong plane detection
 
                 newObj.transform.parent = WorldOrigin.transform;
-
-                
             }
         }
     }

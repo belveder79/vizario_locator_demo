@@ -68,10 +68,11 @@ public class PlaceOnPlane : MonoBehaviour
     }
 
 
-    public bool getRayHit(out Vector3 origin, out Pose pos)
+    public bool getRayHit(out Vector3 origin, out Pose pos,out Quaternion originRot)
     {
         pos = new Pose();
         origin = camera.transform.position;
+        originRot = camera.transform.rotation;
         bool ret = m_RaycastManager.Raycast(new Ray(origin, camera.transform.forward), s_Hits, TrackableType.All);
         if (ret)
         {
