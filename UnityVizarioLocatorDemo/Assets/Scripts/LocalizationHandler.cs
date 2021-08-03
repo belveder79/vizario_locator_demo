@@ -128,7 +128,7 @@ public class LocalizationHandler : MonoBehaviour
         //debugging
         //if(!File.Exists(Path.Combine(Application.persistentDataPath, debugFile)))
         //{
-        //    File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;camPos;camRot;\n");
+        //    File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;gyro;camPos;camRot;\n");
         //}
 
     }
