@@ -76,8 +76,6 @@ public class LocalizationHandler : MonoBehaviour
             return;
         }
 
-
-
         gps = GameObject.Find("Runtime").GetComponent<VizarioGPS>();
 
         if (gps == null)
@@ -363,9 +361,7 @@ public class LocalizationHandler : MonoBehaviour
             return;
 
 
-        //double x = 534755.313;
-        //double y = 5211704.173;
-        //Quaternion q = Quaternion.identity;
+        //todo use another GameObject, so all child components will be automatically be transformed to the new Origin by Unity
 
         //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
         WorldOrigin.transform.localPosition = camposition;

@@ -56,9 +56,6 @@ public class PlaceOnPlane : MonoBehaviour
             var hitPose = s_Hits[0].pose;
             hitPosition = hitPose.position;
 
-            //watch out, will be placed in the middle of the plane
-            //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            //cube.transform.localPosition = position;
             return true;
         }
         
