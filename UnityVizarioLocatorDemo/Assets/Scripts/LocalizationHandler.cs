@@ -47,6 +47,7 @@ public class LocalizationHandler : MonoBehaviour
 
     //debugging
     //private string debugFile = "debug.txt";
+    public Text infoText = null;
 
     // Start is called before the first frame update
     void Start()
@@ -329,6 +330,22 @@ public class LocalizationHandler : MonoBehaviour
                 {
                     correction = northingHandler.calculateCorrection();
                     correction = correction * (-1);  //todo change caluclations to no need of negation
+
+                    //debugging
+                    Quaternion q;
+                    ret = gps.GetGyroQuaternion(out q);
+
+                    if (!ret)
+                        return;
+
+                    //correct so y = northing 
+                    Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
+                    Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+                    //rotate to adjust northing (AR Camera = only local tracking = no real north)
+                    float correction2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+
+                    infoText.text += correction + " vs. " + correction2 + "\n";
                 }
                 else
                 {
@@ -365,6 +382,15 @@ public class LocalizationHandler : MonoBehaviour
         }
     }
 
+    public void ClearPlacedObjects()
+    {
+        foreach(var obj in placedObjcts)
+        {
+            Destroy(obj);
+        }
+        placedObjcts.Clear();
+    }
+
 
     // setup origin for real world visualization (origin is init pose of AROrigin) 
     public void SetWorldOrigin()
@@ -388,6 +414,26 @@ public class LocalizationHandler : MonoBehaviour
         {
             correction = northingHandler.calculateCorrection();
             correction = correction * (-1);  //todo change caluclations to no need of negation
+
+            //debugging
+            Quaternion q;
+            res = gps.GetGyroQuaternion(out q);
+
+            if (!res)
+                return;
+
+            //todo use another GameObject, so all child components will be automatically be transformed to the new Origin by Unity
+
+            //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
+            WorldOrigin.transform.localPosition = camposition;
+
+            //correct so y = northing 
+            Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
+            Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+            //rotate to adjust northing (AR Camera = only local tracking = no real north)
+            float correction2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+            infoText.text += correction + " vs. " + correction2 + "\n";
         }
         else
         {

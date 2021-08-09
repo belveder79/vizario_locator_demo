@@ -18,6 +18,7 @@ public class GUI : MonoBehaviour
 
     public GameObject btnAdd = null;
     public GameObject guiMenu = null;
+    public GameObject btnClear = null;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class GUI : MonoBehaviour
         //here you can register for responses of the chip to check if settings where correctly set.
         gps.setResponseCallback(responseCallback);
 
-        if(infoTxt == null || txtAlti == null || txtGyro == null || btnAdd == null || guiMenu == null)
+        if(infoTxt == null || txtAlti == null || txtGyro == null || btnAdd == null || guiMenu == null || btnClear == null)
         {
             Debug.LogError("GUI Elements not linked!");
             return;
@@ -59,6 +60,7 @@ public class GUI : MonoBehaviour
     public void ToggleValueChanged(Toggle change)
     {
         btnAdd.SetActive(change.isOn);
+        btnClear.SetActive(change.isOn);
         guiMenu.SetActive(!change.isOn);
     }
 
