@@ -292,7 +292,7 @@ public class LocalizationHandler : MonoBehaviour
         {
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
-
+            
             if (!ret)
             {
                 Debug.Log("ray did not hit anything");
@@ -300,8 +300,16 @@ public class LocalizationHandler : MonoBehaviour
             }
 
             ////local testing
-            //var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
-            //newObj.transform.localRotation = PlanePose.rotation;
+            Debug.Log("rot hit = " + PlanePose.rotation.eulerAngles.ToString() + " - " + originRot.eulerAngles.ToString());
+            var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+
+            if (Mathf.Abs(PlanePose.rotation.eulerAngles.x - 5) <= 5)
+                newObj.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y, 0);
+            else
+                newObj.transform.localRotation = PlanePose.rotation;
+
+            placedObjcts.Add(newObj);
+            return;
 
             double x, y;
             string z;
@@ -318,7 +326,7 @@ public class LocalizationHandler : MonoBehaviour
             Debug.Log("ray hit: " + ret.ToString());
             if (ret)
             {
-                var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                //var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
                 newObj.transform.localRotation = PlanePose.rotation;
                 Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
 
