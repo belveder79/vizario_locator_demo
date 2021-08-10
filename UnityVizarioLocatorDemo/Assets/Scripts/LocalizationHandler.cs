@@ -300,16 +300,10 @@ public class LocalizationHandler : MonoBehaviour
             }
 
             ////local testing
-            Debug.Log("rot hit = " + PlanePose.rotation.eulerAngles.ToString() + " - " + originRot.eulerAngles.ToString());
-            var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
-
-            if (Mathf.Abs(PlanePose.rotation.eulerAngles.x - 5) <= 5)
-                newObj.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y, 0);
-            else
-                newObj.transform.localRotation = PlanePose.rotation;
-
-            placedObjcts.Add(newObj);
-            return;
+            //Debug.Log("rot hit = " + PlanePose.rotation.eulerAngles.ToString() + " - " + originRot.eulerAngles.ToString());
+            //var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+            //placedObjcts.Add(newObj);
+            //return;
 
             double x, y;
             string z;
@@ -326,8 +320,12 @@ public class LocalizationHandler : MonoBehaviour
             Debug.Log("ray hit: " + ret.ToString());
             if (ret)
             {
-                //var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
-                newObj.transform.localRotation = PlanePose.rotation;
+                var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                if (Mathf.Abs(PlanePose.rotation.eulerAngles.x - 5) <= 5)
+                    newObj.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y, 0);
+                else
+                    newObj.transform.localRotation = PlanePose.rotation;
+
                 Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
 
                 var relative_dis = origin - PlanePose.position;
