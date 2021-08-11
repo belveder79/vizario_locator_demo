@@ -46,7 +46,7 @@ public class LocalizationHandler : MonoBehaviour
     private List<GameObject> placedObjcts = new List<GameObject>();
 
     //debugging
-    //private string debugFile = "debug.txt";
+    private string debugFile = "debug.txt";
     public Text infoText = null;
 
     // Start is called before the first frame update
@@ -135,10 +135,10 @@ public class LocalizationHandler : MonoBehaviour
 
 
         //debugging
-        //if(!File.Exists(Path.Combine(Application.persistentDataPath, debugFile)))
-        //{
-        //    File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;gyro;camPos;camRot;\n");
-        //}
+        if(!File.Exists(Path.Combine(Application.persistentDataPath, debugFile)))
+        {
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;gyro;camPos;camRot;\n");
+        }
 
     }
 
@@ -328,8 +328,13 @@ public class LocalizationHandler : MonoBehaviour
 
                 Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
 
-                var relative_dis = origin - PlanePose.position;
+                var relative_dis = PlanePose.position - origin; //vec from origin to plane
                 placedObjcts.Add(newObj);
+
+
+                //debug
+                int corr_type = 0;
+                float corr2 = 0;
 
                 float correction = 0;
                 if (useGPSNorthing && (northingHandler.correctionsCount() > 1000))
@@ -349,12 +354,15 @@ public class LocalizationHandler : MonoBehaviour
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
                     //rotate to adjust northing (AR Camera = only local tracking = no real north)
-                    float correction2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+                    corr2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
 
-                    infoText.text += correction + " vs. " + correction2 + "\n";
+                    infoText.text += correction + " vs. " + corr2 + "\n";
                 }
                 else
                 {
+                    //debug
+                    corr_type = 1;
+
                     //roate relative distance Vector, since the calculation is in ARFoundation coord sys, which is not north orientated
                     //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
                     Quaternion q;
@@ -384,6 +392,9 @@ public class LocalizationHandler : MonoBehaviour
                 objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
 
                 newObj.transform.parent = WorldOrigin.transform;
+
+                File.AppendAllText(Path.Combine(Application.persistentDataPath, debugFile), x.ToString("F3") + ";" + y.ToString("F3") + ";" + relative_dis.x + ";" +
+                               relative_dis.y + ";" + fix + ";" + origin.ToString() + ";" + PlanePose.position + ";" + correction + ";" + corr_type + ";" + corr2 + "\n");
             }
         }
     }
