@@ -133,7 +133,7 @@ public class LocalizationHandler : MonoBehaviour
 
         var lat = 47.05804737682002;
         var lon = 15.457645961705419;
-        map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
+        //map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
 
 
         //debugging
@@ -548,7 +548,7 @@ public class LocalizationHandler : MonoBehaviour
 #endif
 
         // Start service before querying location
-        UnityEngine.Input.location.Start(50f, 50f);
+        UnityEngine.Input.location.Start(1f, 0.1f);
         
 
         // Wait until service initializes
@@ -597,6 +597,8 @@ public class LocalizationHandler : MonoBehaviour
 
             while (runLocalGPS)
             {
+                
+
                 var _latitude = UnityEngine.Input.location.lastData.latitude;
                 var _longitude = UnityEngine.Input.location.lastData.longitude;
 
