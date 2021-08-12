@@ -500,15 +500,19 @@ public class LocalizationHandler : MonoBehaviour
         Gyroscope gyro = UnityEngine.Input.gyro;
         gyro.enabled = true;
 
+        Compass comp = UnityEngine.Input.compass;
+        comp.enabled = true;
 
-        Quaternion r = new Quaternion(0, 0, 1, 0);
+
+        float north = comp.trueHeading;
+        Quaternion r = Quaternion.Euler(0, north, 0);
 
         while (runLocalGPS)
         {
 
             Quaternion q = gyro.attitude;
-            IMUVisualizationDevice.transform.localRotation = q; // Quaternion.Euler(q.eulerAngles.x, q.eulerAngles.z, q.eulerAngles.y);
-            //Debug.Log("gyro: " + gyro.attitude.ToString());
+            IMUVisualizationDevice.transform.localRotation = q * r; 
+            //Debug.Log("gyro: " + comp.trueHeading.ToString());
 
             yield return new WaitForSecondsRealtime(0.1f);
         }
