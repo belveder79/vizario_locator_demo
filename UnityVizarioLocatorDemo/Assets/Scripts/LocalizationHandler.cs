@@ -131,9 +131,9 @@ public class LocalizationHandler : MonoBehaviour
         StartCoroutine(LocationCoroutine());
         StartCoroutine(GyroCoroutine());
 
-        //var lat = 48.16224235117572;
-        //var lon = 16.349907735268857;
-        //map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
+        var lat = 47.05804737682002;
+        var lon = 15.457645961705419;
+        map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
 
 
         //debugging
@@ -501,12 +501,13 @@ public class LocalizationHandler : MonoBehaviour
         gyro.enabled = true;
 
 
-        //Quaternion r = new Quaternion(0, 0, 1, 0);
+        Quaternion r = new Quaternion(0, 0, 1, 0);
 
         while (runLocalGPS)
         {
 
-            IMUVisualizationDevice.transform.localRotation = gyro.attitude;
+            Quaternion q = gyro.attitude;
+            IMUVisualizationDevice.transform.localRotation = q; // Quaternion.Euler(q.eulerAngles.x, q.eulerAngles.z, q.eulerAngles.y);
             //Debug.Log("gyro: " + gyro.attitude.ToString());
 
             yield return new WaitForSecondsRealtime(0.1f);
@@ -532,14 +533,14 @@ public class LocalizationHandler : MonoBehaviour
         // First, check if user has location service enabled
         if (!UnityEngine.Input.location.isEnabledByUser) {
             // TODO Failure
-            Debug.LogFormat("Android and Location not enabled");
+            Debug.Log("Android and Location not enabled");
             yield break;
         }
 
 #elif UNITY_IOS
         if (!UnityEngine.Input.location.isEnabledByUser) {
             // TODO Failure
-            Debug.LogFormat("IOS and Location not enabled");
+            Debug.Log("IOS and Location not enabled");
             yield break;
         }
 
@@ -547,7 +548,7 @@ public class LocalizationHandler : MonoBehaviour
 #endif
 
         // Start service before querying location
-        UnityEngine.Input.location.Start(500f, 500f);
+        UnityEngine.Input.location.Start(50f, 50f);
         
 
         // Wait until service initializes
@@ -572,7 +573,7 @@ public class LocalizationHandler : MonoBehaviour
         if (maxWait < 1)
         {
             // TODO Failure
-            Debug.LogFormat("Timed out");
+            Debug.Log("Timed out");
             yield break;
         }
 
@@ -580,14 +581,14 @@ public class LocalizationHandler : MonoBehaviour
         if (UnityEngine.Input.location.status != LocationServiceStatus.Running)
         {
             // TODO Failure
-            Debug.LogFormat("Unable to determine device location. Failed with status {0}", UnityEngine.Input.location.status);
+            Debug.Log("Unable to determine device location. Failed with status " + UnityEngine.Input.location.status);
             yield break;
         }
         else
         {
-            Debug.LogFormat("Location service live. status {0}", UnityEngine.Input.location.status);
+            Debug.Log("Location service live. status " + UnityEngine.Input.location.status);
             // Access granted and location value could be retrieved
-            Debug.LogFormat("Location: "
+            Debug.Log("Location: "
                 + UnityEngine.Input.location.lastData.latitude + " "
                 + UnityEngine.Input.location.lastData.longitude + " "
                 + UnityEngine.Input.location.lastData.altitude + " "
@@ -602,7 +603,7 @@ public class LocalizationHandler : MonoBehaviour
                 double x, y;
                 string z;
                 PositionConverter.LatLongtoUTM(_latitude, _longitude, out x, out y, out z);
-                //Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
+                Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
                 map.setAvatarPositionUTM(x, y, z, -1, 2);
 
                 yield return new WaitForSecondsRealtime(0.5f);

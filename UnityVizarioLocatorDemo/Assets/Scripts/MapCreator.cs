@@ -142,7 +142,7 @@ public class MapCreator : MonoBehaviour
             Debug.Log("map setted up");
             map_created = true;
             //setAvatarPosition(6.362731, 8.517936, 0);
-            setAvatarPositionUTM(534805.0, 5211784.0, "33", 0, 1);
+            //setAvatarPositionUTM(534805.0, 5211784.0, "33", 0, 1);
         }
     }
 
@@ -177,8 +177,8 @@ public class MapCreator : MonoBehaviour
 
         //Debug.Log(" x: " + x_ + " y:" + y_);
         if(avatarID == 1)
-            avatarVizario.transform.localPosition = new Vector3(x_ * 10, mapObjY + 0.5f, y_ * 10);  //10 times bc size of plane
+            avatarVizario.transform.localPosition = new Vector3(x_ * 10, mapObjY + 1f, y_ * 10);  //10 times bc size of plane
         else
-            avatarInternal.transform.localPosition = new Vector3(x_ * 10, mapObjY + 0.5f, y_ * 10);  //10 times bc size of plane
+            avatarInternal.transform.localPosition = new Vector3(x_ * 10, mapObjY + 1f, y_ * 10);  //10 times bc size of plane
     }
 }
