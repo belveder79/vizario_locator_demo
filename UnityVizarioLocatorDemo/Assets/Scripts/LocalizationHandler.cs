@@ -506,7 +506,7 @@ public class LocalizationHandler : MonoBehaviour
 
         float north = comp.trueHeading;
         Quaternion r = Quaternion.Euler(0, north, 0);
-
+        Debug.Log("north = " + north);
         while (runLocalGPS)
         {
 
@@ -609,7 +609,7 @@ public class LocalizationHandler : MonoBehaviour
                 double x, y;
                 string z;
                 PositionConverter.LatLongtoUTM(_latitude, _longitude, out x, out y, out z);
-                Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
+                //Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
                 map.setAvatarPositionUTM(x, y, z, -1, 2);
 
                 yield return new WaitForSecondsRealtime(0.5f);
