@@ -36,10 +36,6 @@ public class PlaceOnPlane : MonoBehaviour
             test.transform.localRotation = hitRot * Quaternion.Euler(-90, 0, 0);
 
         }
-        else
-        {
-            Debug.Log("no hit");
-        }
     }
 
 

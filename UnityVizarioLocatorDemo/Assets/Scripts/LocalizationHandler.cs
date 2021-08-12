@@ -20,6 +20,7 @@ public class LocalizationHandler : MonoBehaviour
     public bool useCallback = true;
     public bool useGPSNorthing = true;
     public GameObject IMUVisualization = null;
+    public GameObject IMUVisualizationDevice = null;
     public Text mqttConnectionText = null;
     public Text chipConnectionText = null;
     public Text gpsFixText = null;
@@ -128,6 +129,7 @@ public class LocalizationHandler : MonoBehaviour
         }
 
         StartCoroutine(LocationCoroutine());
+        StartCoroutine(GyroCoroutine());
 
         //var lat = 48.16224235117572;
         //var lon = 16.349907735268857;
@@ -276,12 +278,12 @@ public class LocalizationHandler : MonoBehaviour
             }
             else if(lastGPSStat == 5)
             {
-                gpsFixText.color = Color.green;
+                gpsFixText.color = new Color(255, 127, 51); //orange
                 gpsFixText.text = "RTK Float";
             }
             else
             {
-                gpsFixText.color = Color.green;
+                gpsFixText.color = Color.green;  //todo different color
                 gpsFixText.text = "RTK Fixed";
             }
         }
@@ -492,6 +494,26 @@ public class LocalizationHandler : MonoBehaviour
     }
 
 
+    IEnumerator GyroCoroutine()
+    {
+
+        Gyroscope gyro = UnityEngine.Input.gyro;
+        gyro.enabled = true;
+
+
+        //Quaternion r = new Quaternion(0, 0, 1, 0);
+
+        while (runLocalGPS)
+        {
+
+            IMUVisualizationDevice.transform.localRotation = gyro.attitude;
+            //Debug.Log("gyro: " + gyro.attitude.ToString());
+
+            yield return new WaitForSecondsRealtime(0.1f);
+        }
+    }
+
+
     // ------------------------------ local GPS
     IEnumerator LocationCoroutine()
     {
@@ -520,9 +542,13 @@ public class LocalizationHandler : MonoBehaviour
             Debug.LogFormat("IOS and Location not enabled");
             yield break;
         }
+
+
 #endif
+
         // Start service before querying location
         UnityEngine.Input.location.Start(500f, 500f);
+        
 
         // Wait until service initializes
         int maxWait = 15;
@@ -579,17 +605,7 @@ public class LocalizationHandler : MonoBehaviour
                 //Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + -1);
                 map.setAvatarPositionUTM(x, y, z, -1, 2);
 
-
-
-                //if (!mapCreated)
-                //{
-                //    map.CreateMap(_latitude - 0.001, _longitude - 0.002, _latitude + 0.001, _longitude + 0.002);
-
-                //    mapCreated = true;
-                //    Debug.Log("set map coords.");
-                //}
-
-                yield return new WaitForSecondsRealtime(1);
+                yield return new WaitForSecondsRealtime(0.5f);
             }
         }
 
