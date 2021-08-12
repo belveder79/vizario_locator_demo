@@ -25,7 +25,7 @@ public class PlaceOnPlane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool ret = m_RaycastManager.Raycast(new Ray(camera.transform.position, camera.transform.forward), s_Hits, TrackableType.All);
+        bool ret = m_RaycastManager.Raycast(new Ray(camera.transform.position, camera.transform.forward), s_Hits, TrackableType.PlaneWithinPolygon);
         if (ret)
         {
             var hitPose = s_Hits[0].pose;
@@ -70,7 +70,7 @@ public class PlaceOnPlane : MonoBehaviour
         pos = new Pose();
         origin = camera.transform.position;
         originRot = camera.transform.rotation;
-        bool ret = m_RaycastManager.Raycast(new Ray(origin, camera.transform.forward), s_Hits, TrackableType.All);
+        bool ret = m_RaycastManager.Raycast(new Ray(origin, camera.transform.forward), s_Hits, TrackableType.PlaneWithinPolygon);
         if (ret)
         {
             var hitPose = s_Hits[0].pose;

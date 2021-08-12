@@ -139,6 +139,8 @@ public class LocalizationHandler : MonoBehaviour
         {
             File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;gyro;camPos;camRot;\n");
         }
+        else
+            File.AppendAllText(Path.Combine(Application.persistentDataPath, debugFile), "-------------------------------------\n");
 
     }
 
@@ -337,7 +339,7 @@ public class LocalizationHandler : MonoBehaviour
                 float corr2 = 0;
 
                 float correction = 0;
-                if (useGPSNorthing && (northingHandler.correctionsCount() > 1000))
+                if (useGPSNorthing && (northingHandler.correctionsCount() > 500))  //GPS Northing is quite new, so we do not know the sweetspots of params atm
                 {
                     correction = northingHandler.calculateCorrection();
                     correction = correction * (-1);  //todo change caluclations to no need of negation
@@ -383,7 +385,7 @@ public class LocalizationHandler : MonoBehaviour
                 }
 
                 //todo validation with iPad lidar
-                relative_dis = Quaternion.Euler(0, correction, 0) * relative_dis; 
+                relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
 
                 double m_x = x + relative_dis.x;
                 double m_y = y + relative_dis.z;
@@ -419,18 +421,19 @@ public class LocalizationHandler : MonoBehaviour
         int fix;
         string z;
 
-        bool res = gps.GetUTMPosition(out x, out y, out z, out fix);
-
-        if (!res)
-        {
-            return;
-        }
-
+        bool res;
         float correction = 0;
-        if (useGPSNorthing && (northingHandler.correctionsCount() > 1000))
+        if (useGPSNorthing && (northingHandler.correctionsCount() > 500))
         {
+            res = gps.GetUTMPosition(out x, out y, out z, out fix);
+
+            if (!res)
+            {
+                return;
+            }
+
             correction = northingHandler.calculateCorrection();
-            correction = correction * (-1);  //todo change caluclations to no need of negation
+            correction = correction * (-1);  //todo here -1 because in unity space left handed?
 
             //debugging
             Quaternion q;
