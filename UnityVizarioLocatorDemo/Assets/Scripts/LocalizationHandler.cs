@@ -119,6 +119,7 @@ public class LocalizationHandler : MonoBehaviour
             chipConnectionText.color = Color.red;
         }
 
+        //Add callbacks for sensor values
         if (useCallback)
         {
             gps.SetAltiCallback(AltiCallback);
@@ -189,16 +190,12 @@ public class LocalizationHandler : MonoBehaviour
     {
         if (IMUVisualization != null)
         {
-            //Debug.Log(quaternion.ToString());
             IMUVisualization.transform.localRotation = quaternion;
         }
     }
 
     private void GPSCallback(double x, double y, string z, int fixState)
     {
-
-        //Debug.Log("x: " + x + ", y: " + y + ", z: " + z + ", fix: " + fixState);
-
         if (!mapCreated){
 
             
@@ -286,7 +283,6 @@ public class LocalizationHandler : MonoBehaviour
                 return;
             }
 
-            Debug.Log("ray hit: " + ret.ToString());
             if (ret)
             {
                 var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
@@ -339,7 +335,6 @@ public class LocalizationHandler : MonoBehaviour
                     correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
                 }
 
-                //todo validation with iPad lidar
                 relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
 
                 double m_x = x + relative_dis.x;
@@ -426,6 +421,17 @@ public class LocalizationHandler : MonoBehaviour
         }
 
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
+
+        ////place Object to Visualize in World (y = z bc of unity)
+        ////ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        //Vector3 relPos = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
+        //Vector3 RayOrigin = WorldOrigin.transform.localPosition + relPos;
+        //Vector3 PlanePos;
+        //bool ret = placePlane.getPlanePos(RayOrigin, out PlanePos);
+        //Debug.Log("ray hit: " + ret.ToString());
+
+        ////not 0.5f, should be half height of object 
+        //ObjToVisualize.transform.localPosition = relPos + new Vector3(0, PlanePos.y + 0.5f, 0); //if plane not hit, height will be 0
     }
 
 
