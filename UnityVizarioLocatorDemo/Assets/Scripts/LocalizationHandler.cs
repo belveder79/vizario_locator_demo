@@ -233,7 +233,7 @@ public class LocalizationHandler : MonoBehaviour
         if (lastGPSStat != state)
         {
             lastGPSStat = state;
-            gpsFixText.text = " " + lastGPSStat;
+            gpsFixText.text = " no Fix";
             if (lastGPSStat == 0)
             {
                 gpsFixText.color = Color.red;
