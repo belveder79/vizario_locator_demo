@@ -20,6 +20,7 @@ public class LocalizationHandler : MonoBehaviour
     public bool useCallback = true;
     public bool useGPSNorthing = true;
     public GameObject IMUVisualization = null;
+    public GameObject DeviceNorthFix = null;
     public GameObject IMUVisualizationDevice = null;
     public Text mqttConnectionText = null;
     public Text chipConnectionText = null;
@@ -503,16 +504,23 @@ public class LocalizationHandler : MonoBehaviour
         Compass comp = UnityEngine.Input.compass;
         comp.enabled = true;
 
+        yield return new WaitForSecondsRealtime(0.1f);
 
-        float north = comp.trueHeading;
-        Quaternion r = Quaternion.Euler(0, north, 0);
-        Debug.Log("north = " + north);
+        float north = 0;
+        
         while (runLocalGPS)
         {
 
+            if(north == 0)
+            {
+                //on startup Gyro "North" = 0
+                north = comp.trueHeading;
+                DeviceNorthFix.transform.localRotation = Quaternion.Euler(0, 0, -north + 90); //+90 fix bc something not nicely used but works
+                Debug.Log("north = " + north);
+            }
             Quaternion q = gyro.attitude;
-            IMUVisualizationDevice.transform.localRotation = q * r; 
-            //Debug.Log("gyro: " + comp.trueHeading.ToString());
+            IMUVisualizationDevice.transform.localRotation = q; 
+            Debug.Log("rt_north: " + comp.trueHeading.ToString());
 
             yield return new WaitForSecondsRealtime(0.1f);
         }
