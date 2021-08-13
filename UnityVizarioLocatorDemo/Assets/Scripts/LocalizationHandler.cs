@@ -47,9 +47,6 @@ public class LocalizationHandler : MonoBehaviour
 
     private List<GameObject> placedObjcts = new List<GameObject>();
 
-    //debugging
-    private string debugFile = "debug.txt";
-    public Text infoText = null;
 
     // Start is called before the first frame update
     void Start()
@@ -131,19 +128,6 @@ public class LocalizationHandler : MonoBehaviour
 
         StartCoroutine(LocationCoroutine());
         StartCoroutine(GyroCoroutine());
-
-        var lat = 47.05804737682002;
-        var lon = 15.457645961705419;
-        //map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
-
-
-        //debugging
-        if(!File.Exists(Path.Combine(Application.persistentDataPath, debugFile)))
-        {
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, debugFile), "utm_x;utm_y;gpsFix;gyro;camPos;camRot;\n");
-        }
-        else
-            File.AppendAllText(Path.Combine(Application.persistentDataPath, debugFile), "-------------------------------------\n");
 
     }
 
@@ -238,20 +222,6 @@ public class LocalizationHandler : MonoBehaviour
             northingHandler.PushPosition(p);
         }
 
-        //debugging
-        //Quaternion camrot = arCam.transform.localRotation;
-        //Vector3 camposition = arCam.transform.localPosition;
-        //Quaternion q;
-        //bool ret = gps.GetGyroQuaternion(out q);
-
-        //if (!ret)
-        //{
-        //    Debug.Log("no gyro fix");
-        //    return;
-        //}
-
-        //File.AppendAllText(Path.Combine(Application.persistentDataPath, debugFile), x.ToString("F3") + ";" + y.ToString("F3") + ";"+ fixState + ";"  +
-        //                       q + ";" + camposition.ToString() + ";" + camrot.ToString() + "\n");
     }
 
     private void AltiCallback(float altitude, float temp)
@@ -304,12 +274,6 @@ public class LocalizationHandler : MonoBehaviour
                 return;
             }
 
-            ////local testing
-            //Debug.Log("rot hit = " + PlanePose.rotation.eulerAngles.ToString() + " - " + originRot.eulerAngles.ToString());
-            //var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
-            //placedObjcts.Add(newObj);
-            //return;
-
             double x, y;
             string z;
             int fix;
@@ -336,16 +300,11 @@ public class LocalizationHandler : MonoBehaviour
                 var relative_dis = PlanePose.position - origin; //vec from origin to plane
                 placedObjcts.Add(newObj);
 
-
-                //debug
-                int corr_type = 0;
-                float corr2 = 0;
-
                 float correction = 0;
                 if (useGPSNorthing && (northingHandler.correctionsCount() > 500))  //GPS Northing is quite new, so we do not know the sweetspots of params atm
                 {
                     correction = northingHandler.calculateCorrection();
-                    correction = correction * (-1);  //todo change caluclations to no need of negation
+                    correction = correction * (-1);  
 
                     //debugging
                     Quaternion q;
@@ -358,16 +317,9 @@ public class LocalizationHandler : MonoBehaviour
                     Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
-                    //rotate to adjust northing (AR Camera = only local tracking = no real north)
-                    corr2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
-
-                    infoText.text += correction + " vs. " + corr2 + "\n";
                 }
                 else
                 {
-                    //debug
-                    corr_type = 1;
-
                     //roate relative distance Vector, since the calculation is in ARFoundation coord sys, which is not north orientated
                     //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
                     Quaternion q;
@@ -397,9 +349,6 @@ public class LocalizationHandler : MonoBehaviour
                 objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
 
                 newObj.transform.parent = WorldOrigin.transform;
-
-                File.AppendAllText(Path.Combine(Application.persistentDataPath, debugFile), x.ToString("F3") + ";" + y.ToString("F3") + ";" + relative_dis.x + ";" +
-                               relative_dis.y + ";" + fix + ";" + origin.ToString() + ";" + PlanePose.position + ";" + correction + ";" + corr_type + ";" + corr2 + "\n");
             }
         }
     }
@@ -456,7 +405,6 @@ public class LocalizationHandler : MonoBehaviour
 
             //rotate to adjust northing (AR Camera = only local tracking = no real north)
             float correction2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
-            infoText.text += correction + " vs. " + correction2 + "\n";
         }
         else
         {
@@ -465,8 +413,6 @@ public class LocalizationHandler : MonoBehaviour
 
             if (!res)
                 return;
-
-            //todo use another GameObject, so all child components will be automatically be transformed to the new Origin by Unity
 
             //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
             WorldOrigin.transform.localPosition = camposition;
@@ -480,18 +426,6 @@ public class LocalizationHandler : MonoBehaviour
         }
 
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
-
-        ////place Object to Visualize in World (y = z bc of unity)
-        ////ObjToVisualize.transform.localPosition = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
-        //Vector3 relPos = new Vector3((float)(ObjUtmX - x), 0.5f, (float)(ObjUtmY - y));
-        //Vector3 RayOrigin = WorldOrigin.transform.localPosition + relPos;
-        //Vector3 PlanePos;
-        //bool ret = placePlane.getPlanePos(RayOrigin, out PlanePos);
-        //Debug.Log("ray hit: " + ret.ToString());
-
-        ////not 0.5f, should be half height of object 
-        //ObjToVisualize.transform.localPosition = relPos + new Vector3(0, PlanePos.y + 0.5f, 0); //if plane not hit, height will be 0
-      
     }
 
 

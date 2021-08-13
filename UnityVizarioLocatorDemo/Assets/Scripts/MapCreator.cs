@@ -78,12 +78,9 @@ public class MapCreator : MonoBehaviour
                 sb.Append(dict.Key).Append(": \t[").Append(dict.Value).Append("]\n");
             }
 
-            // Print Headers
-            //Debug.Log(sb.ToString());
             string tC = sb.ToString();
             var cc = tC.IndexOf("_osm_totp_token=");
             currentToken = tC.Substring(cc + "_osm_totp_token=".Length, 6);
-            //string num = tC.Trim(, 2);
             Debug.Log(currentToken);
         }
 
@@ -141,8 +138,6 @@ public class MapCreator : MonoBehaviour
 
             Debug.Log("map setted up");
             map_created = true;
-            //setAvatarPosition(6.362731, 8.517936, 0);
-            //setAvatarPositionUTM(534805.0, 5211784.0, "33", 0, 1);
         }
     }
 
@@ -162,20 +157,15 @@ public class MapCreator : MonoBehaviour
     int lastGPSStat = 0;
     public void setAvatarPositionUTM(double x, double y, String z, int fix, int avatarID)
     {
-        //Debug.Log(" x: " + x + " y:" + y);
-
         if (!map_created)
             return;
 
         float x_ = (float) (x - center_x);
         float y_ = (float) (y - center_y);
 
-        //Debug.Log(" x: " + x_ + " y:" + y_);
-
         x_ = x_ * (planeLength / mapLength);
         y_ = y_ * (planeHeight / mapHeight);
 
-        //Debug.Log(" x: " + x_ + " y:" + y_);
         if(avatarID == 1)
             avatarVizario.transform.localPosition = new Vector3(x_ * 10, mapObjY + 1f, y_ * 10);  //10 times bc size of plane
         else
