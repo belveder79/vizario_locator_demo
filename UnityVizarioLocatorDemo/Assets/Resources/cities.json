@@ -1,0 +1,1400 @@
+{
+   "Kabul": [
+      {
+         "Country": "Afghanistan",
+         "Latitude": "34.28N",
+         "Longitude": "69.11E"
+      }
+   ],
+   "Tirane": [
+      {
+         "Country": "Albania",
+         "Latitude": "41.18N",
+         "Longitude": "19.49E"
+      }
+   ],
+   "Algiers": [
+      {
+         "Country": "Algeria",
+         "Latitude": "36.42N",
+         "Longitude": "03.08E"
+      }
+   ],
+   "Pago Pago": [
+      {
+         "Country": "American Samoa",
+         "Latitude": "14.16S",
+         "Longitude": "170.43W"
+      }
+   ],
+   "Andorra la Vella": [
+      {
+         "Country": "Andorra",
+         "Latitude": "42.31N",
+         "Longitude": "01.32E"
+      }
+   ],
+   "Luanda": [
+      {
+         "Country": "Angola",
+         "Latitude": "08.50S",
+         "Longitude": "13.15E"
+      }
+   ],
+   "West Indies": [
+      {
+         "Country": "Antigua and Barbuda",
+         "Latitude": "17.20N",
+         "Longitude": "61.48W"
+      }
+   ],
+   "Buenos Aires": [
+      {
+         "Country": "Argentina",
+         "Latitude": "36.30S",
+         "Longitude": "60.00W"
+      }
+   ],
+   "Yerevan": [
+      {
+         "Country": "Armenia",
+         "Latitude": "40.10N",
+         "Longitude": "44.31E"
+      }
+   ],
+   "Oranjestad": [
+      {
+         "Country": "Aruba",
+         "Latitude": "12.32N",
+         "Longitude": "70.02W"
+      }
+   ],
+   "Canberra": [
+      {
+         "Country": "Australia",
+         "Latitude": "35.15S",
+         "Longitude": "149.08E"
+      }
+   ],
+   "Vienna": [
+      {
+         "Country": "Austria",
+         "Latitude": "48.12N",
+         "Longitude": "16.22E"
+      }
+   ],
+   "Baku": [
+      {
+         "Country": "Azerbaijan",
+         "Latitude": "40.29N",
+         "Longitude": "49.56E"
+      }
+   ],
+   "Nassau": [
+      {
+         "Country": "Bahamas",
+         "Latitude": "25.05N",
+         "Longitude": "77.20W"
+      }
+   ],
+   "Manama": [
+      {
+         "Country": "Bahrain",
+         "Latitude": "26.10N",
+         "Longitude": "50.30E"
+      }
+   ],
+   "Dhaka": [
+      {
+         "Country": "Bangladesh",
+         "Latitude": "23.43N",
+         "Longitude": "90.26E"
+      }
+   ],
+   "Bridgetown": [
+      {
+         "Country": "Barbados",
+         "Latitude": "13.05N",
+         "Longitude": "59.30W"
+      }
+   ],
+   "Minsk": [
+      {
+         "Country": "Belarus",
+         "Latitude": "53.52N",
+         "Longitude": "27.30E"
+      }
+   ],
+   "Brussels": [
+      {
+         "Country": "Belgium",
+         "Latitude": "50.51N",
+         "Longitude": "04.21E"
+      }
+   ],
+   "Belmopan": [
+      {
+         "Country": "Belize",
+         "Latitude": "17.18N",
+         "Longitude": "88.30W"
+      }
+   ],
+   "Porto Novo": [
+      {
+         "Country": "Benin",
+         "Latitude": "06.23N",
+         "Longitude": "02.42E"
+      }
+   ],
+   "Thimphu": [
+      {
+         "Country": "Bhutan",
+         "Latitude": "27.31N",
+         "Longitude": "89.45E"
+      }
+   ],
+   "La Paz": [
+      {
+         "Country": "Bolivia",
+         "Latitude": "16.20S",
+         "Longitude": "68.10W"
+      }
+   ],
+   "Sarajevo": [
+      {
+         "Country": "Bosnia and Herzegovina",
+         "Latitude": "43.52N",
+         "Longitude": "18.26E"
+      }
+   ],
+   "Gaborone": [
+      {
+         "Country": "Botswana",
+         "Latitude": "24.45S",
+         "Longitude": "25.57E"
+      }
+   ],
+   "Brasilia": [
+      {
+         "Country": "Brazil",
+         "Latitude": "15.47S",
+         "Longitude": "47.55W"
+      }
+   ],
+   "Road Town": [
+      {
+         "Country": "British Virgin Islands",
+         "Latitude": "18.27N",
+         "Longitude": "64.37W"
+      }
+   ],
+   "Bandar Seri Begawan": [
+      {
+         "Country": "Brunei Darussalam",
+         "Latitude": "04.52N",
+         "Longitude": "115.00E"
+      }
+   ],
+   "Sofia": [
+      {
+         "Country": "Bulgaria",
+         "Latitude": "42.45N",
+         "Longitude": "23.20E"
+      }
+   ],
+   "Ouagadougou": [
+      {
+         "Country": "Burkina Faso",
+         "Latitude": "12.15N",
+         "Longitude": "01.30W"
+      }
+   ],
+   "Bujumbura": [
+      {
+         "Country": "Burundi",
+         "Latitude": "03.16S",
+         "Longitude": "29.18E"
+      }
+   ],
+   "Phnom Penh": [
+      {
+         "Country": "Cambodia",
+         "Latitude": "11.33N",
+         "Longitude": "104.55E"
+      }
+   ],
+   "Yaounde": [
+      {
+         "Country": "Cameroon",
+         "Latitude": "03.50N",
+         "Longitude": "11.35E"
+      }
+   ],
+   "Ottawa": [
+      {
+         "Country": "Canada",
+         "Latitude": "45.27N",
+         "Longitude": "75.42W"
+      }
+   ],
+   "Praia": [
+      {
+         "Country": "Cape Verde",
+         "Latitude": "15.02N",
+         "Longitude": "23.34W"
+      }
+   ],
+   "George Town": [
+      {
+         "Country": "Cayman Islands",
+         "Latitude": "19.20N",
+         "Longitude": "81.24W"
+      }
+   ],
+   "Bangui": [
+      {
+         "Country": "Central African Republic",
+         "Latitude": "04.23N",
+         "Longitude": "18.35E"
+      }
+   ],
+   "N'Djamena": [
+      {
+         "Country": "Chad",
+         "Latitude": "12.10N",
+         "Longitude": "14.59E"
+      }
+   ],
+   "Santiago": [
+      {
+         "Country": "Chile",
+         "Latitude": "33.24S",
+         "Longitude": "70.40W"
+      }
+   ],
+   "Beijing": [
+      {
+         "Country": "China",
+         "Latitude": "39.55N",
+         "Longitude": "116.20E"
+      }
+   ],
+   "Bogota": [
+      {
+         "Country": "Colombia",
+         "Latitude": "04.34N",
+         "Longitude": "74.00W"
+      }
+   ],
+   "Moroni": [
+      {
+         "Country": "Comros",
+         "Latitude": "11.40S",
+         "Longitude": "43.16E"
+      }
+   ],
+   "Brazzaville": [
+      {
+         "Country": "Congo",
+         "Latitude": "04.09S",
+         "Longitude": "15.12E"
+      }
+   ],
+   "San Jose": [
+      {
+         "Country": "Costa Rica",
+         "Latitude": "09.55N",
+         "Longitude": "84.02W"
+      }
+   ],
+   "Yamoussoukro": [
+      {
+         "Country": "Cote d'Ivoire",
+         "Latitude": "06.49N",
+         "Longitude": "05.17W"
+      }
+   ],
+   "Zagreb": [
+      {
+         "Country": "Croatia",
+         "Latitude": "45.50N",
+         "Longitude": "15.58E"
+      }
+   ],
+   "Havana": [
+      {
+         "Country": "Cuba",
+         "Latitude": "23.08N",
+         "Longitude": "82.22W"
+      }
+   ],
+   "Nicosia": [
+      {
+         "Country": "Cyprus",
+         "Latitude": "35.10N",
+         "Longitude": "33.25E"
+      }
+   ],
+   "Prague": [
+      {
+         "Country": "Czech Republic",
+         "Latitude": "50.05N",
+         "Longitude": "14.22E"
+      }
+   ],
+   "Kinshasa": [
+      {
+         "Country": "Democratic Republic of the Congo",
+         "Latitude": "04.20S",
+         "Longitude": "15.15E"
+      }
+   ],
+   "Copenhagen": [
+      {
+         "Country": "Denmark",
+         "Latitude": "55.41N",
+         "Longitude": "12.34E"
+      }
+   ],
+   "Djibouti": [
+      {
+         "Country": "Djibouti",
+         "Latitude": "11.08N",
+         "Longitude": "42.20E"
+      }
+   ],
+   "Roseau": [
+      {
+         "Country": "Dominica",
+         "Latitude": "15.20N",
+         "Longitude": "61.24W"
+      }
+   ],
+   "Santo Domingo": [
+      {
+         "Country": "Dominica Republic",
+         "Latitude": "18.30N",
+         "Longitude": "69.59W"
+      }
+   ],
+   "Dili": [
+      {
+         "Country": "East Timor",
+         "Latitude": "08.29S",
+         "Longitude": "125.34E"
+      }
+   ],
+   "Quito": [
+      {
+         "Country": "Ecuador",
+         "Latitude": "00.15S",
+         "Longitude": "78.35W"
+      }
+   ],
+   "Cairo": [
+      {
+         "Country": "Egypt",
+         "Latitude": "30.01N",
+         "Longitude": "31.14E"
+      }
+   ],
+   "San Salvador": [
+      {
+         "Country": "El Salvador",
+         "Latitude": "13.40N",
+         "Longitude": "89.10W"
+      }
+   ],
+   "Malabo": [
+      {
+         "Country": "Equatorial Guinea",
+         "Latitude": "03.45N",
+         "Longitude": "08.50E"
+      }
+   ],
+   "Asmara": [
+      {
+         "Country": "Eritrea",
+         "Latitude": "15.19N",
+         "Longitude": "38.55E"
+      }
+   ],
+   "Tallinn": [
+      {
+         "Country": "Estonia",
+         "Latitude": "59.22N",
+         "Longitude": "24.48E"
+      }
+   ],
+   "Addis Ababa": [
+      {
+         "Country": "Ethiopia",
+         "Latitude": "09.02N",
+         "Longitude": "38.42E"
+      }
+   ],
+   "Stanley": [
+      {
+         "Country": "Falkland Islands (Malvinas)",
+         "Latitude": "51.40S",
+         "Longitude": "59.51W"
+      }
+   ],
+   "Torshavn": [
+      {
+         "Country": "Faroe Islands",
+         "Latitude": "62.05N",
+         "Longitude": "06.56W"
+      }
+   ],
+   "Suva": [
+      {
+         "Country": "Fiji",
+         "Latitude": "18.06S",
+         "Longitude": "178.30E"
+      }
+   ],
+   "Helsinki": [
+      {
+         "Country": "Finland",
+         "Latitude": "60.15N",
+         "Longitude": "25.03E"
+      }
+   ],
+   "Paris": [
+      {
+         "Country": "France",
+         "Latitude": "48.50N",
+         "Longitude": "02.20E"
+      }
+   ],
+   "Cayenne": [
+      {
+         "Country": "French Guiana",
+         "Latitude": "05.05N",
+         "Longitude": "52.18W"
+      }
+   ],
+   "Papeete": [
+      {
+         "Country": "French Polynesia",
+         "Latitude": "17.32S",
+         "Longitude": "149.34W"
+      }
+   ],
+   "Libreville": [
+      {
+         "Country": "Gabon",
+         "Latitude": "00.25N",
+         "Longitude": "09.26E"
+      }
+   ],
+   "Banjul": [
+      {
+         "Country": "Gambia",
+         "Latitude": "13.28N",
+         "Longitude": "16.40W"
+      }
+   ],
+   "T'bilisi": [
+      {
+         "Country": "Georgia",
+         "Latitude": "41.43N",
+         "Longitude": "44.50E"
+      }
+   ],
+   "Berlin": [
+      {
+         "Country": "Germany",
+         "Latitude": "52.30N",
+         "Longitude": "13.25E"
+      }
+   ],
+   "Accra": [
+      {
+         "Country": "Ghana",
+         "Latitude": "05.35N",
+         "Longitude": "00.06W"
+      }
+   ],
+   "Athens": [
+      {
+         "Country": "Greece",
+         "Latitude": "37.58N",
+         "Longitude": "23.46E"
+      }
+   ],
+   "Nuuk": [
+      {
+         "Country": "Greenland",
+         "Latitude": "64.10N",
+         "Longitude": "51.35W"
+      }
+   ],
+   "Basse-Terre": [
+      {
+         "Country": "Guadeloupe",
+         "Latitude": "16.00N",
+         "Longitude": "61.44W"
+      }
+   ],
+   "Guatemala": [
+      {
+         "Country": "Guatemala",
+         "Latitude": "14.40N",
+         "Longitude": "90.22W"
+      }
+   ],
+   "St. Peter Port": [
+      {
+         "Country": "Guernsey",
+         "Latitude": "49.26N",
+         "Longitude": "02.33W"
+      }
+   ],
+   "Conakry": [
+      {
+         "Country": "Guinea",
+         "Latitude": "09.29N",
+         "Longitude": "13.49W"
+      }
+   ],
+   "Bissau": [
+      {
+         "Country": "Guinea-Bissau",
+         "Latitude": "11.45N",
+         "Longitude": "15.45W"
+      }
+   ],
+   "Georgetown": [
+      {
+         "Country": "Guyana",
+         "Latitude": "06.50N",
+         "Longitude": "58.12W"
+      }
+   ],
+   "Port-au-Prince": [
+      {
+         "Country": "Haiti",
+         "Latitude": "18.40N",
+         "Longitude": "72.20W"
+      }
+   ],
+   "": [
+      {
+         "Country": "Heard Island and McDonald Islands",
+         "Latitude": "53.00S",
+         "Longitude": "74.00E"
+      }
+   ],
+   "Tegucigalpa": [
+      {
+         "Country": "Honduras",
+         "Latitude": "14.05N",
+         "Longitude": "87.14W"
+      }
+   ],
+   "Budapest": [
+      {
+         "Country": "Hungary",
+         "Latitude": "47.29N",
+         "Longitude": "19.05E"
+      }
+   ],
+   "Reykjavik": [
+      {
+         "Country": "Iceland",
+         "Latitude": "64.10N",
+         "Longitude": "21.57W"
+      }
+   ],
+   "New Delhi": [
+      {
+         "Country": "India",
+         "Latitude": "28.37N",
+         "Longitude": "77.13E"
+      }
+   ],
+   "Jakarta": [
+      {
+         "Country": "Indonesia",
+         "Latitude": "06.09S",
+         "Longitude": "106.49E"
+      }
+   ],
+   "Tehran": [
+      {
+         "Country": "Iran (Islamic Republic of)",
+         "Latitude": "35.44N",
+         "Longitude": "51.30E"
+      }
+   ],
+   "Baghdad": [
+      {
+         "Country": "Iraq",
+         "Latitude": "33.20N",
+         "Longitude": "44.30E"
+      }
+   ],
+   "Dublin": [
+      {
+         "Country": "Ireland",
+         "Latitude": "53.21N",
+         "Longitude": "06.15W"
+      }
+   ],
+   "Jerusalem": [
+      {
+         "Country": "Israel",
+         "Latitude": "31.71N",
+         "Longitude": "35.10W"
+      }
+   ],
+   "Rome": [
+      {
+         "Country": "Italy",
+         "Latitude": "41.54N",
+         "Longitude": "12.29E"
+      }
+   ],
+   "Kingston": [
+      {
+         "Country": "Jamaica",
+         "Latitude": "18.00N",
+         "Longitude": "76.50W"
+      },
+      {
+         "Country": "Norfolk Island",
+         "Latitude": "45.20S",
+         "Longitude": "168.43E"
+      }
+   ],
+   "Amman": [
+      {
+         "Country": "Jordan",
+         "Latitude": "31.57N",
+         "Longitude": "35.52E"
+      }
+   ],
+   "Astana": [
+      {
+         "Country": "Kazakhstan",
+         "Latitude": "51.10N",
+         "Longitude": "71.30E"
+      }
+   ],
+   "Nairobi": [
+      {
+         "Country": "Kenya",
+         "Latitude": "01.17S",
+         "Longitude": "36.48E"
+      }
+   ],
+   "Tarawa": [
+      {
+         "Country": "Kiribati",
+         "Latitude": "01.30N",
+         "Longitude": "173.00E"
+      }
+   ],
+   "Kuwait": [
+      {
+         "Country": "Kuwait",
+         "Latitude": "29.30N",
+         "Longitude": "48.00E"
+      }
+   ],
+   "Bishkek": [
+      {
+         "Country": "Kyrgyzstan",
+         "Latitude": "42.54N",
+         "Longitude": "74.46E"
+      }
+   ],
+   "Vientiane": [
+      {
+         "Country": "Lao People's Democratic Republic",
+         "Latitude": "17.58N",
+         "Longitude": "102.36E"
+      }
+   ],
+   "Riga": [
+      {
+         "Country": "Latvia",
+         "Latitude": "56.53N",
+         "Longitude": "24.08E"
+      }
+   ],
+   "Beirut": [
+      {
+         "Country": "Lebanon",
+         "Latitude": "33.53N",
+         "Longitude": "35.31E"
+      }
+   ],
+   "Maseru": [
+      {
+         "Country": "Lesotho",
+         "Latitude": "29.18S",
+         "Longitude": "27.30E"
+      }
+   ],
+   "Monrovia": [
+      {
+         "Country": "Liberia",
+         "Latitude": "06.18N",
+         "Longitude": "10.47W"
+      }
+   ],
+   "Tripoli": [
+      {
+         "Country": "Libyan Arab Jamahiriya",
+         "Latitude": "32.49N",
+         "Longitude": "13.07E"
+      }
+   ],
+   "Vaduz": [
+      {
+         "Country": "Liechtenstein",
+         "Latitude": "47.08N",
+         "Longitude": "09.31E"
+      }
+   ],
+   "Vilnius": [
+      {
+         "Country": "Lithuania",
+         "Latitude": "54.38N",
+         "Longitude": "25.19E"
+      }
+   ],
+   "Luxembourg": [
+      {
+         "Country": "Luxembourg",
+         "Latitude": "49.37N",
+         "Longitude": "06.09E"
+      }
+   ],
+   "Macau": [
+      {
+         "Country": "Macao, China",
+         "Latitude": "22.12N",
+         "Longitude": "113.33E"
+      }
+   ],
+   "Antananarivo": [
+      {
+         "Country": "Madagascar",
+         "Latitude": "18.55S",
+         "Longitude": "47.31E"
+      }
+   ],
+   "Skopje": [
+      {
+         "Country": "Macedonia (Former Yugoslav Republic)",
+         "Latitude": "42.01N",
+         "Longitude": "21.26E"
+      }
+   ],
+   "Lilongwe": [
+      {
+         "Country": "Malawi",
+         "Latitude": "14.00S",
+         "Longitude": "33.48E"
+      }
+   ],
+   "Kuala Lumpur": [
+      {
+         "Country": "Malaysia",
+         "Latitude": "03.09N",
+         "Longitude": "101.41E"
+      }
+   ],
+   "Male": [
+      {
+         "Country": "Maldives",
+         "Latitude": "04.00N",
+         "Longitude": "73.28E"
+      }
+   ],
+   "Bamako": [
+      {
+         "Country": "Mali",
+         "Latitude": "12.34N",
+         "Longitude": "07.55W"
+      }
+   ],
+   "Valletta": [
+      {
+         "Country": "Malta",
+         "Latitude": "35.54N",
+         "Longitude": "14.31E"
+      }
+   ],
+   "Fort-de-France": [
+      {
+         "Country": "Martinique",
+         "Latitude": "14.36N",
+         "Longitude": "61.02W"
+      }
+   ],
+   "Nouakchott": [
+      {
+         "Country": "Mauritania",
+         "Latitude": "20.10S",
+         "Longitude": "57.30E"
+      }
+   ],
+   "Mamoudzou": [
+      {
+         "Country": "Mayotte",
+         "Latitude": "12.48S",
+         "Longitude": "45.14E"
+      }
+   ],
+   "Mexico": [
+      {
+         "Country": "Mexico",
+         "Latitude": "19.20N",
+         "Longitude": "99.10W"
+      }
+   ],
+   "Palikir": [
+      {
+         "Country": "Micronesia (Federated States of)",
+         "Latitude": "06.55N",
+         "Longitude": "158.09E"
+      }
+   ],
+   "Chisinau": [
+      {
+         "Country": "Moldova, Republic of",
+         "Latitude": "47.02N",
+         "Longitude": "28.50E"
+      }
+   ],
+   "Maputo": [
+      {
+         "Country": "Mozambique",
+         "Latitude": "25.58S",
+         "Longitude": "32.32E"
+      }
+   ],
+   "Yangon": [
+      {
+         "Country": "Myanmar",
+         "Latitude": "16.45N",
+         "Longitude": "96.20E"
+      }
+   ],
+   "Windhoek": [
+      {
+         "Country": "Namibia",
+         "Latitude": "22.35S",
+         "Longitude": "17.04E"
+      }
+   ],
+   "Kathmandu": [
+      {
+         "Country": "Nepal",
+         "Latitude": "27.45N",
+         "Longitude": "85.20E"
+      }
+   ],
+   "Amsterdam": [
+      {
+         "Country": "Netherlands",
+         "Latitude": "52.23N",
+         "Longitude": "04.54E"
+      }
+   ],
+   "Willemstad": [
+      {
+         "Country": "Netherlands Antilles",
+         "Latitude": "12.05N",
+         "Longitude": "69.00W"
+      }
+   ],
+   "Noumea": [
+      {
+         "Country": "New Caledonia",
+         "Latitude": "22.17S",
+         "Longitude": "166.30E"
+      }
+   ],
+   "Wellington": [
+      {
+         "Country": "New Zealand",
+         "Latitude": "41.19S",
+         "Longitude": "174.46E"
+      }
+   ],
+   "Managua": [
+      {
+         "Country": "Nicaragua",
+         "Latitude": "12.06N",
+         "Longitude": "86.20W"
+      }
+   ],
+   "Niamey": [
+      {
+         "Country": "Niger",
+         "Latitude": "13.27N",
+         "Longitude": "02.06E"
+      }
+   ],
+   "Abuja": [
+      {
+         "Country": "Nigeria",
+         "Latitude": "09.05N",
+         "Longitude": "07.32E"
+      }
+   ],
+   "Pyongyang": [
+      {
+         "Country": "North Korea",
+         "Latitude": "39.09N",
+         "Longitude": "125.30E"
+      }
+   ],
+   "Saipan": [
+      {
+         "Country": "Northern Mariana Islands",
+         "Latitude": "15.12N",
+         "Longitude": "145.45E"
+      }
+   ],
+   "Oslo": [
+      {
+         "Country": "Norway",
+         "Latitude": "59.55N",
+         "Longitude": "10.45E"
+      }
+   ],
+   "Masqat": [
+      {
+         "Country": "Oman",
+         "Latitude": "23.37N",
+         "Longitude": "58.36E"
+      }
+   ],
+   "Islamabad": [
+      {
+         "Country": "Pakistan",
+         "Latitude": "33.40N",
+         "Longitude": "73.10E"
+      }
+   ],
+   "Koror": [
+      {
+         "Country": "Palau",
+         "Latitude": "07.20N",
+         "Longitude": "134.28E"
+      }
+   ],
+   "Panama": [
+      {
+         "Country": "Panama",
+         "Latitude": "09.00N",
+         "Longitude": "79.25W"
+      }
+   ],
+   "Port Moresby": [
+      {
+         "Country": "Papua New Guinea",
+         "Latitude": "09.24S",
+         "Longitude": "147.08E"
+      }
+   ],
+   "Asuncion": [
+      {
+         "Country": "Paraguay",
+         "Latitude": "25.10S",
+         "Longitude": "57.30W"
+      }
+   ],
+   "Lima": [
+      {
+         "Country": "Peru",
+         "Latitude": "12.00S",
+         "Longitude": "77.00W"
+      }
+   ],
+   "Manila": [
+      {
+         "Country": "Philippines",
+         "Latitude": "14.40N",
+         "Longitude": "121.03E"
+      }
+   ],
+   "Warsaw": [
+      {
+         "Country": "Poland",
+         "Latitude": "52.13N",
+         "Longitude": "21.00E"
+      }
+   ],
+   "Lisbon": [
+      {
+         "Country": "Portugal",
+         "Latitude": "38.42N",
+         "Longitude": "09.10W"
+      }
+   ],
+   "San Juan": [
+      {
+         "Country": "Puerto Rico",
+         "Latitude": "18.28N",
+         "Longitude": "66.07W"
+      }
+   ],
+   "Doha": [
+      {
+         "Country": "Qatar",
+         "Latitude": "25.15N",
+         "Longitude": "51.35E"
+      }
+   ],
+   "Seoul": [
+      {
+         "Country": "Republic of Korea",
+         "Latitude": "37.31N",
+         "Longitude": "126.58E"
+      }
+   ],
+   "Bucuresti": [
+      {
+         "Country": "Romania",
+         "Latitude": "44.27N",
+         "Longitude": "26.10E"
+      }
+   ],
+   "Moskva": [
+      {
+         "Country": "Russian Federation",
+         "Latitude": "55.45N",
+         "Longitude": "37.35E"
+      }
+   ],
+   "Kigali": [
+      {
+         "Country": "Rawanda",
+         "Latitude": "01.59S",
+         "Longitude": "30.04E"
+      }
+   ],
+   "Basseterre": [
+      {
+         "Country": "Saint Kitts and Nevis",
+         "Latitude": "17.17N",
+         "Longitude": "62.43W"
+      }
+   ],
+   "Castries": [
+      {
+         "Country": "Saint Lucia",
+         "Latitude": "14.02N",
+         "Longitude": "60.58W"
+      }
+   ],
+   "Saint-Pierre": [
+      {
+         "Country": "Saint Pierre and Miquelon",
+         "Latitude": "46.46N",
+         "Longitude": "56.12W"
+      }
+   ],
+   "Kingstown": [
+      {
+         "Country": "Saint Vincent and the Greenadines",
+         "Latitude": "13.10N",
+         "Longitude": "61.10W"
+      }
+   ],
+   "Apia": [
+      {
+         "Country": "Samoa",
+         "Latitude": "13.50S",
+         "Longitude": "171.50W"
+      }
+   ],
+   "San Marino": [
+      {
+         "Country": "San Marino",
+         "Latitude": "43.55N",
+         "Longitude": "12.30E"
+      }
+   ],
+   "Sao Tome": [
+      {
+         "Country": "Sao Tome and Principe",
+         "Latitude": "00.10N",
+         "Longitude": "06.39E"
+      }
+   ],
+   "Riyadh": [
+      {
+         "Country": "Saudi Arabia",
+         "Latitude": "24.41N",
+         "Longitude": "46.42E"
+      }
+   ],
+   "Dakar": [
+      {
+         "Country": "Senegal",
+         "Latitude": "14.34N",
+         "Longitude": "17.29W"
+      }
+   ],
+   "Freetown": [
+      {
+         "Country": "Sierra Leone",
+         "Latitude": "08.30N",
+         "Longitude": "13.17W"
+      }
+   ],
+   "Bratislava": [
+      {
+         "Country": "Slovakia",
+         "Latitude": "48.10N",
+         "Longitude": "17.07E"
+      }
+   ],
+   "Ljubljana": [
+      {
+         "Country": "Slovenia",
+         "Latitude": "46.04N",
+         "Longitude": "14.33E"
+      }
+   ],
+   "Honiara": [
+      {
+         "Country": "Solomon Islands",
+         "Latitude": "09.27S",
+         "Longitude": "159.57E"
+      }
+   ],
+   "Mogadishu": [
+      {
+         "Country": "Somalia",
+         "Latitude": "02.02N",
+         "Longitude": "45.25E"
+      }
+   ],
+   "Pretoria": [
+      {
+         "Country": "South Africa",
+         "Latitude": "25.44S",
+         "Longitude": "28.12E"
+      }
+   ],
+   "Madrid": [
+      {
+         "Country": "Spain",
+         "Latitude": "40.25N",
+         "Longitude": "03.45W"
+      }
+   ],
+   "Khartoum": [
+      {
+         "Country": "Sudan",
+         "Latitude": "15.31N",
+         "Longitude": "32.35E"
+      }
+   ],
+   "Paramaribo": [
+      {
+         "Country": "Suriname",
+         "Latitude": "05.50N",
+         "Longitude": "55.10W"
+      }
+   ],
+   "Mbabane": [
+      {
+         "Country": "Swaziland",
+         "Latitude": "26.18S",
+         "Longitude": "31.06E"
+      }
+   ],
+   "Stockholm": [
+      {
+         "Country": "Sweden",
+         "Latitude": "59.20N",
+         "Longitude": "18.03E"
+      }
+   ],
+   "Bern": [
+      {
+         "Country": "Switzerland",
+         "Latitude": "46.57N",
+         "Longitude": "07.28E"
+      }
+   ],
+   "Damascus": [
+      {
+         "Country": "Syrian Arab Republic",
+         "Latitude": "33.30N",
+         "Longitude": "36.18E"
+      }
+   ],
+   "Dushanbe": [
+      {
+         "Country": "Tajikistan",
+         "Latitude": "38.33N",
+         "Longitude": "68.48E"
+      }
+   ],
+   "Bangkok": [
+      {
+         "Country": "Thailand",
+         "Latitude": "13.45N",
+         "Longitude": "100.35E"
+      }
+   ],
+   "Lome": [
+      {
+         "Country": "Togo",
+         "Latitude": "06.09N",
+         "Longitude": "01.20E"
+      }
+   ],
+   "Nuku'alofa": [
+      {
+         "Country": "Tonga",
+         "Latitude": "21.10S",
+         "Longitude": "174.00W"
+      }
+   ],
+   "Tunis": [
+      {
+         "Country": "Tunisia",
+         "Latitude": "36.50N",
+         "Longitude": "10.11E"
+      }
+   ],
+   "Ankara": [
+      {
+         "Country": "Turkey",
+         "Latitude": "39.57N",
+         "Longitude": "32.54E"
+      }
+   ],
+   "Ashgabat": [
+      {
+         "Country": "Turkmenistan",
+         "Latitude": "38.00N",
+         "Longitude": "57.50E"
+      }
+   ],
+   "Funafuti": [
+      {
+         "Country": "Tuvalu",
+         "Latitude": "08.31S",
+         "Longitude": "179.13E"
+      }
+   ],
+   "Kampala": [
+      {
+         "Country": "Uganda",
+         "Latitude": "00.20N",
+         "Longitude": "32.30E"
+      }
+   ],
+   "Kiev (Russia)": [
+      {
+         "Country": "Ukraine",
+         "Latitude": "50.30N",
+         "Longitude": "30.28E"
+      }
+   ],
+   "Abu Dhabi": [
+      {
+         "Country": "United Arab Emirates",
+         "Latitude": "24.28N",
+         "Longitude": "54.22E"
+      }
+   ],
+   "London": [
+      {
+         "Country": "United Kingdom of Great Britain and Northern Ireland",
+         "Latitude": "51.36N",
+         "Longitude": "00.05W"
+      }
+   ],
+   "Dodoma": [
+      {
+         "Country": "United Republic of Tanzania",
+         "Latitude": "06.08S",
+         "Longitude": "35.45E"
+      }
+   ],
+   "Washington DC": [
+      {
+         "Country": "United States of America",
+         "Latitude": "39.91N",
+         "Longitude": "77.02W"
+      }
+   ],
+   "Charlotte Amalie": [
+      {
+         "Country": "United States of Virgin Islands",
+         "Latitude": "18.21N",
+         "Longitude": "64.56W"
+      }
+   ],
+   "Montevideo": [
+      {
+         "Country": "Uruguay",
+         "Latitude": "34.50S",
+         "Longitude": "56.11W"
+      }
+   ],
+   "Tashkent": [
+      {
+         "Country": "Uzbekistan",
+         "Latitude": "41.20N",
+         "Longitude": "69.10E"
+      }
+   ],
+   "Port-Vila": [
+      {
+         "Country": "Vanuatu",
+         "Latitude": "17.45S",
+         "Longitude": "168.18E"
+      }
+   ],
+   "Caracas": [
+      {
+         "Country": "Venezuela",
+         "Latitude": "10.30N",
+         "Longitude": "66.55W"
+      }
+   ],
+   "Hanoi": [
+      {
+         "Country": "Viet Nam",
+         "Latitude": "21.05N",
+         "Longitude": "105.55E"
+      }
+   ],
+   "Belgrade": [
+      {
+         "Country": "Yugoslavia",
+         "Latitude": "44.50N",
+         "Longitude": "20.37E"
+      }
+   ],
+   "Lusaka": [
+      {
+         "Country": "Zambia",
+         "Latitude": "15.28S",
+         "Longitude": "28.16E"
+      }
+   ],
+   "Harare": [
+      {
+         "Country": "Zimbabwe",
+         "Latitude": "17.43S",
+         "Longitude": "31.02E"
+      }
+   ]
+}
