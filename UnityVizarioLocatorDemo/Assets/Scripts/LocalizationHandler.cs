@@ -35,6 +35,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private GameObject listViewPanel = null;
     private GameObject buttonPanel = null;
+    private GameObject textPanel = null;
 
     public Text textPrefap = null;
 
@@ -116,9 +117,11 @@ public class LocalizationHandler : MonoBehaviour
 
         listViewPanel = GameObject.Find("listPanel");
         buttonPanel = GameObject.Find("buttonPanel");
+        textPanel = GameObject.Find("TextPanel");
 
-        
-        if (listViewPanel == null || buttonPanel == null)
+
+
+        if (listViewPanel == null || buttonPanel == null || textPanel == null)
         {
             Debug.LogError("MeasuremetnsPanel not found");
         }
@@ -126,6 +129,7 @@ public class LocalizationHandler : MonoBehaviour
         {
             listViewPanel.SetActive(false);
             buttonPanel.SetActive(false);
+            textPanel.SetActive(false);
         }
 
 
@@ -490,6 +494,7 @@ public class LocalizationHandler : MonoBehaviour
         RectTransform parent = listViewPanel.GetComponent<RectTransform>();
         listViewPanel.SetActive(listEnabled);
         buttonPanel.SetActive(listEnabled);
+        textPanel.SetActive(listEnabled);
 
         if (!listEnabled)
         {
@@ -530,6 +535,7 @@ public class LocalizationHandler : MonoBehaviour
     public void CalculateDistance()
     {
         List<Measurement> toMeasure = new List<Measurement>();
+        Text txt = textPanel.GetComponentInChildren<Text>();
 
         foreach (var m in placedObjcts)
         {
@@ -538,6 +544,7 @@ public class LocalizationHandler : MonoBehaviour
                 if(toMeasure.Count == 2)
                 {
                     //todo set text to many
+                    txt.text = "too many selections.";
                     return;
                 }
 
@@ -545,8 +552,16 @@ public class LocalizationHandler : MonoBehaviour
             }
         }
 
+        if (toMeasure.Count != 2)
+        {
+            //todo set text to many
+            txt.text = "too view selections.";
+            return;
+        }
+
         float distance = Vector2.Distance(toMeasure[0].AsVector2(), toMeasure[1].AsVector2());
         Debug.Log(distance);
+        txt.text = toMeasure[0].ID().ToString() + " to " + toMeasure[1].ID().ToString() + " = " + distance.ToString("F3") + "m";
     }
 
     public void selectItem(int id)
