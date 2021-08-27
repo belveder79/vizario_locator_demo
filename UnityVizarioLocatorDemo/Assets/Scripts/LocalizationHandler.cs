@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class LocalizationHandler : MonoBehaviour
 {
@@ -31,6 +33,11 @@ public class LocalizationHandler : MonoBehaviour
     public bool copyCalibFromResources = false;
     public string calibFile = "";
 
+    private GameObject listViewPanel = null;
+    private GameObject buttonPanel = null;
+
+    public Text textPrefap = null;
+
     //visualize object
     public GameObject WorldOrigin = null;
     //example how to add pre external obj with utm coords into scene
@@ -45,7 +52,7 @@ public class LocalizationHandler : MonoBehaviour
 
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
-    private List<GameObject> placedObjcts = new List<GameObject>();
+    private List<Measurement> placedObjcts = new List<Measurement>();
 
 
     // Start is called before the first frame update
@@ -72,7 +79,7 @@ public class LocalizationHandler : MonoBehaviour
 
         }
 
-        if(WorldOrigin == null || placePlane == null) // ObjToVisualize == null ||
+        if (WorldOrigin == null || placePlane == null) // ObjToVisualize == null ||
         {
             Debug.LogError("Objects for visualization not linked");
             return;
@@ -102,10 +109,31 @@ public class LocalizationHandler : MonoBehaviour
             return;
         }
 
+        if (textPrefap == null)
+        {
+            Debug.LogError("textPrefap not linked.");
+        }
+
+        listViewPanel = GameObject.Find("listPanel");
+        buttonPanel = GameObject.Find("buttonPanel");
+
+        
+        if (listViewPanel == null || buttonPanel == null)
+        {
+            Debug.LogError("MeasuremetnsPanel not found");
+        }
+        else
+        {
+            listViewPanel.SetActive(false);
+            buttonPanel.SetActive(false);
+        }
+
+
+
         if (gpsFixText == null || mqttConnectionText == null || chipConnectionText == null)
         {
             Debug.LogError("some text fields no set!");
-            
+
         }
         else
         {
@@ -130,6 +158,13 @@ public class LocalizationHandler : MonoBehaviour
         StartCoroutine(LocationCoroutine());
         StartCoroutine(GyroCoroutine());
 
+
+
+        //debug
+
+        placedObjcts.Add(new Measurement(1, null, 1234, 5678));
+        placedObjcts.Add(new Measurement(3, null, 2234, 7678));
+        placedObjcts.Add(new Measurement(2, null, 3234, 8678));
     }
 
     // Update is called once per frame
@@ -145,13 +180,13 @@ public class LocalizationHandler : MonoBehaviour
             {
                 mqttConnectionText.text = "Connected";
                 mqttConnectionText.color = Color.green;
-            }              
+            }
             else
             {
                 mqttConnectionText.text = "Disconnedted";
                 mqttConnectionText.color = Color.red;
             }
-                
+
         }
 
         if (lastChipStat != gps.IsChipConnected())
@@ -167,7 +202,7 @@ public class LocalizationHandler : MonoBehaviour
                 chipConnectionText.text = "Disconnedted";
                 chipConnectionText.color = Color.red;
             }
-               
+
         }
 
         if (!useCallback && gps != null)
@@ -196,13 +231,13 @@ public class LocalizationHandler : MonoBehaviour
 
     private void GPSCallback(double x, double y, string z, int fixState)
     {
-        if (!mapCreated){
+        if (!mapCreated) {
 
-            
+
             gps.GetLatLonPoition(out var lat, out var lon, out int state);
 
             map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
-            
+
             mapCreated = true;
             Debug.Log("set map coords.");
         }
@@ -211,7 +246,7 @@ public class LocalizationHandler : MonoBehaviour
         setGPSFixText(fixState);
 
         //only use with RTK fixed positions!
-        if(useGPSNorthing && fixState == 4)
+        if (useGPSNorthing && fixState == 4)
         {
             float ts = (int)(System.DateTime.UtcNow - epochStart).TotalMilliseconds;
             Vector3 camposition = arCam.transform.localPosition;
@@ -244,7 +279,7 @@ public class LocalizationHandler : MonoBehaviour
                 gpsFixText.color = Color.yellow;
                 gpsFixText.text = "3D Fix";
             }
-            else if(lastGPSStat == 5)
+            else if (lastGPSStat == 5)
             {
                 gpsFixText.color = new Color(255, 127, 51); //orange
                 gpsFixText.text = "RTK Float";
@@ -257,6 +292,8 @@ public class LocalizationHandler : MonoBehaviour
         }
     }
 
+
+    private int measurementCounter = 0;
     //measure and add Object in scene
     public void AddObject()
     {
@@ -264,7 +301,7 @@ public class LocalizationHandler : MonoBehaviour
         {
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
-            
+
             if (!ret)
             {
                 Debug.Log("ray did not hit anything");
@@ -294,13 +331,13 @@ public class LocalizationHandler : MonoBehaviour
                 Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
 
                 var relative_dis = PlanePose.position - origin; //vec from origin to plane
-                placedObjcts.Add(newObj);
+               
 
                 float correction = 0;
                 if (useGPSNorthing && (northingHandler.correctionsCount() > 500))  //GPS Northing is quite new, so we do not know the sweetspots of params atm
                 {
                     correction = northingHandler.calculateCorrection();
-                    correction = correction * (-1);  
+                    correction = correction * (-1);
 
                     //debugging
                     Quaternion q;
@@ -344,13 +381,16 @@ public class LocalizationHandler : MonoBehaviour
                 objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
 
                 newObj.transform.parent = WorldOrigin.transform;
+
+                
+                placedObjcts.Add(new Measurement(++measurementCounter, newObj, m_x, m_y));
             }
         }
     }
 
     public void ClearPlacedObjects()
     {
-        foreach(var obj in placedObjcts)
+        foreach (var obj in placedObjcts)
         {
             Destroy(obj);
         }
@@ -435,6 +475,94 @@ public class LocalizationHandler : MonoBehaviour
     }
 
 
+
+    public void showListView()
+    {
+
+        if (listViewPanel == null || buttonPanel == null)
+        {
+            Debug.LogError("Object is null");
+            return;
+        }
+
+        bool listEnabled = !listViewPanel.active;
+
+        RectTransform parent = listViewPanel.GetComponent<RectTransform>();
+        listViewPanel.SetActive(listEnabled);
+        buttonPanel.SetActive(listEnabled);
+
+        if (!listEnabled)
+        {
+            foreach (Transform child in parent)
+            {
+                Destroy(child.gameObject);
+            }
+            return;
+        }
+     
+        
+        for (int index = 0; index < placedObjcts.Count; ++index)
+        {
+            Text t = Instantiate(textPrefap);
+            t.transform.parent = parent;
+
+            placedObjcts[index].SetText(t);
+            placedObjcts[index].SetListText();
+        }     
+    }
+
+    public void DeleteSelected()
+    {
+        foreach (var m in placedObjcts)
+        {
+            if (m.IsSelected()) {
+                m.Destroy();
+            }
+        }
+
+        placedObjcts.RemoveAll(item => item.IsSelected() == true);
+
+        showListView();
+        showListView();
+
+    }
+
+    public void CalculateDistance()
+    {
+        List<Measurement> toMeasure = new List<Measurement>();
+
+        foreach (var m in placedObjcts)
+        {
+            if (m.IsSelected())
+            {
+                if(toMeasure.Count == 2)
+                {
+                    //todo set text to many
+                    return;
+                }
+
+                toMeasure.Add(m);
+            }
+        }
+
+        float distance = Vector2.Distance(toMeasure[0].AsVector2(), toMeasure[1].AsVector2());
+        Debug.Log(distance);
+    }
+
+    public void selectItem(int id)
+    {
+        foreach(var obj in placedObjcts)
+        {
+            if(obj.ID() == id)
+            {
+                obj.Select();
+                obj.SetListText();
+                return;
+            }
+        }
+    }
+
+
     IEnumerator GyroCoroutine()
     {
 
@@ -460,7 +588,7 @@ public class LocalizationHandler : MonoBehaviour
             }
             Quaternion q = gyro.attitude;
             IMUVisualizationDevice.transform.localRotation = q; 
-            Debug.Log("rt_north: " + comp.trueHeading.ToString());
+            //Debug.Log("rt_north: " + comp.trueHeading.ToString());
 
             yield return new WaitForSecondsRealtime(0.1f);
         }
