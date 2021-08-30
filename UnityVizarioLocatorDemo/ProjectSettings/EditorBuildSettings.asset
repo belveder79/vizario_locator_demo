@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/VizarioLocatorDemoScene.unity
     guid: e0a41cae66e2d464f837e961b6b14a1d
+  - enabled: 1
+    path: Assets/Scenes/SignPostExample.unity
+    guid: e89fa6395cd410c41b71133a780fa6a6
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 6aab310e880fb504a8749b68604aec1f,
       type: 2}

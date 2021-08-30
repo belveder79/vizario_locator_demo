@@ -50,6 +50,7 @@ public class LocalizationHandler : MonoBehaviour
     public PlaceOnPlane placePlane = null;
 
     public GameObject prefabToPlace = null;
+    public GameObject prefabToPlace2 = null;
 
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
@@ -709,5 +710,108 @@ public class LocalizationHandler : MonoBehaviour
 
         // Stop service if there is no need to query location updates continuously
         UnityEngine.Input.location.Stop();
+    }
+
+    // ==================================== SignPost Example specific
+    public void AddSignPost()
+    {
+        if (gps != null)
+        {
+            Vector3 origin; Pose PlanePose; Quaternion originRot;
+            bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
+
+            if (!ret)
+            {
+                Debug.Log("ray did not hit anything");
+                return;
+            }
+
+            double x, y;
+            string z;
+            int fix;
+
+            ret = gps.GetUTMPosition(out x, out y, out z, out fix);
+
+            //debug
+            ret = true;
+            x = 100;
+            y = 100;
+
+            if (!ret)
+            {
+                Debug.Log("no gps fix");
+                return;
+            }
+
+            if (ret)
+            {
+                var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                if (Mathf.Abs(PlanePose.rotation.eulerAngles.x - 5) <= 5)
+                    newObj.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y, 0);
+                else
+                    newObj.transform.localRotation = PlanePose.rotation;
+
+                Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
+
+                var relative_dis = PlanePose.position - origin; //vec from origin to plane
+
+
+                float correction = 0;
+                if (useGPSNorthing && (northingHandler.correctionsCount() > 500))  //GPS Northing is quite new, so we do not know the sweetspots of params atm
+                {
+                    correction = northingHandler.calculateCorrection();
+                    correction = correction * (-1);
+
+                    //debugging
+                    Quaternion q;
+                    ret = gps.GetGyroQuaternion(out q);
+
+                    if (!ret)
+                        return;
+
+                    //correct so y = northing 
+                    Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
+                    Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+                }
+                else
+                {
+                    //roate relative distance Vector, since the calculation is in ARFoundation coord sys, which is not north orientated
+                    //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
+                    Quaternion q;
+                    ret = gps.GetGyroQuaternion(out q);
+
+                    //debug
+                    ret = true;
+                    q = Quaternion.identity;
+
+                    if (!ret)
+                    {
+                        Debug.Log("no gyro fix");
+                        return;
+                    }
+
+                    //correct so y = northing 
+                    Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
+                    Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+                    //rotate to adjust northing (AR Camera = only local tracking = no real north)
+                    correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+                }
+
+                relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
+
+                double m_x = x + relative_dis.x;
+                double m_y = y + relative_dis.z;
+
+                newObj.name = "Measurement " + placedObjcts.Count.ToString();
+                //objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
+
+                newObj.transform.parent = WorldOrigin.transform;
+
+
+                placedObjcts.Add(new Measurement(++measurementCounter, newObj, m_x, m_y));
+            }
+        }
     }
 }
