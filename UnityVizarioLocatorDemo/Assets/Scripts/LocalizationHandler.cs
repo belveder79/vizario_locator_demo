@@ -17,8 +17,6 @@ public class LocalizationHandler : MonoBehaviour
     private bool lastChipStat = false;
     private bool runLocalGPS = true;
 
-
-
     public bool useCallback = true;
     public bool useGPSNorthing = true;
     public GameObject IMUVisualization = null;
@@ -746,10 +744,18 @@ public class LocalizationHandler : MonoBehaviour
             if (ret)
             {
                 var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                var newObj2 = Instantiate(prefabToPlace, PlanePose.position - new Vector3(0.1f,0,0.1f), Quaternion.identity);
+
                 if (Mathf.Abs(PlanePose.rotation.eulerAngles.x - 5) <= 5)
+                {
                     newObj.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y, 0);
+                    newObj2.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y - 180, 0);
+                }
                 else
+                {
                     newObj.transform.localRotation = PlanePose.rotation;
+                    newObj2.transform.localRotation = PlanePose.rotation;
+                }
 
                 Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
 
