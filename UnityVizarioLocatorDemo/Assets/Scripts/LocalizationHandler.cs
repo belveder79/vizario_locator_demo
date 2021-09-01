@@ -763,14 +763,14 @@ public class LocalizationHandler : MonoBehaviour
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
 
-            //if (!ret)
-            //{
-            //    Debug.Log("ray did not hit anything");
-            //    return;
-            //}
+            if (!ret)
+            {
+                Debug.Log("ray did not hit anything");
+                return;
+            }
 
 
-            PlanePose.position = new Vector3(1, 0, 1);
+            //PlanePose.position = new Vector3(1, 0, 1);
 
             double lat, lon;
             int fix;
@@ -866,7 +866,7 @@ public class LocalizationHandler : MonoBehaviour
                     Quaternion rot = Quaternion.Euler(0, angle, 0);
                     newObj.transform.localRotation = rot;
 
-                    float signHeight = 0.95f;
+                    float signHeight = 0.92f;
 
                     for (int i = 0; i < 10; i++)
                     {
@@ -881,10 +881,10 @@ public class LocalizationHandler : MonoBehaviour
                             break;                            
                         }
                         
-                        signHeight -= 0.08f;
+                        signHeight -= 0.15f;
                     }
 
-                    Vector3 p = new Vector3(-6.9f, signHeight, 0);
+                    Vector3 p = new Vector3(-15.0f, signHeight, 0);
                     newObj.transform.localPosition = rot * p;
 
                    
