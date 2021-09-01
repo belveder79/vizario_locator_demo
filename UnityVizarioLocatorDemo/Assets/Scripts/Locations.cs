@@ -71,7 +71,7 @@ public class Locations : MonoBehaviour
             int r;
             do
             {
-                r = Random.Range(0, amount);
+                r = Random.Range(0, locations.Count);
                 
             } while (usedRands.Contains(r));
 

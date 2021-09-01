@@ -842,8 +842,8 @@ public class LocalizationHandler : MonoBehaviour
                 
 
                 GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                post.transform.localScale = new Vector3(0.01f, 1, 0.01f);
-                post.transform.localPosition = PlanePose.position;
+                post.transform.localScale = new Vector3(0.01f, 0.5f, 0.01f);
+                post.transform.localPosition = PlanePose.position + new Vector3(0,0.5f,0);
 
                 List<Locations.Location> signs = locations.getRandomLocations(5);
 
@@ -875,11 +875,13 @@ public class LocalizationHandler : MonoBehaviour
                             signAngles[i, 0] = angle;
                             break;
                         }
-                        else if(signAngles[i, 1] != -1 && ((signAngles[i, 0] - 90) > angle || (signAngles[i, 0] + 90) > angle))
-                        {
+                        else if ((signAngles[i, 1] == -1) && (Mathf.Abs(Mathf.DeltaAngle(angle, signAngles[i, 0])) > 90f))
+                        {                           
                             signAngles[i, 1] = angle;
+                            break;                            
                         }
-                        signHeight -= 0.05f;
+                        
+                        signHeight -= 0.08f;
                     }
 
                     Vector3 p = new Vector3(-6.9f, signHeight, 0);
