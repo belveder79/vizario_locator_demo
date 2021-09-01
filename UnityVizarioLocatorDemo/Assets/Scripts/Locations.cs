@@ -58,11 +58,29 @@ public class Locations : MonoBehaviour
         
     }
 
-    public List<Locations> getRandomLocations(int amount)
+    public List<Location> getRandomLocations(int amount)
     {
 
-        List<Locations> return_list = new List<Locations>();
-        //todo
+        if (amount >= locations.Count)
+            return locations;
+
+        List<int> usedRands = new List<int>();
+        List<Location> return_list = new List<Location>();
+        for (int i = 0; i < amount; i++)
+        {
+            int r;
+            do
+            {
+                r = Random.Range(0, amount);
+                
+            } while (usedRands.Contains(r));
+
+            usedRands.Add(r);
+            return_list.Add(locations[r]);
+
+        }
+
+        
         return return_list;
     }
 }

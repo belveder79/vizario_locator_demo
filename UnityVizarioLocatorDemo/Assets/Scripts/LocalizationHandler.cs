@@ -12,6 +12,7 @@ public class LocalizationHandler : MonoBehaviour
     private VizarioGPS gps = null;
     private MapCreator map = null;
     private NorthingHandler northingHandler = null;
+    private Locations locations = null;
 
     private bool lastMqttStat = false;
     private bool lastChipStat = false;
@@ -48,7 +49,6 @@ public class LocalizationHandler : MonoBehaviour
     public PlaceOnPlane placePlane = null;
 
     public GameObject prefabToPlace = null;
-    public GameObject prefabToPlace2 = null;
 
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
@@ -106,6 +106,14 @@ public class LocalizationHandler : MonoBehaviour
         if (northingHandler == null)
         {
             Debug.LogError("NorthingHandler not in MapComponent!");
+            return;
+        }
+
+        locations = GameObject.Find("MapComponent").GetComponent<Locations>();
+
+        if (locations == null)
+        {
+            Debug.LogError("Locations not in MapComponent!");
             return;
         }
 
@@ -711,6 +719,43 @@ public class LocalizationHandler : MonoBehaviour
     }
 
     // ==================================== SignPost Example specific
+
+
+    private float angleFromCoordinates(float lat1, float lon1, float lat2, float lon2) {
+
+        //todo need in rad ?
+
+        float dLon = (lon2 - lon1);
+
+        float y = Mathf.Sin(dLon) * Mathf.Cos(lat2);
+        float x = Mathf.Cos(lat1) * Mathf.Sin(lat2) - Mathf.Sin(lat1) * Mathf.Cos(lat2) * Mathf.Cos(dLon);
+
+        float brng = Mathf.Atan2(y, x);
+
+        brng = brng * 180/Mathf.PI;
+        brng = (brng + 360) % 360;
+        brng = 360 - brng;  // count degrees clockwise - remove to make counter-clockwise
+
+        if(brng < 0)
+            Debug.LogError("should not be negative" );
+
+        return brng;
+    }
+
+    private float distanceFromCoordinates(float lat1, float lon1, float lat2, float lon2)
+    {
+        // approximate radius of earth in km
+        float R = 6373.0f;
+
+        float dlon = lon2 - lon1;
+        float dlat = lat2 - lat1;
+
+        float a = Mathf.Pow(Mathf.Sin(dlat / 2), 2) + Mathf.Cos(lat1) * Mathf.Cos(lat2) * Mathf.Pow(Mathf.Sin(dlon / 2), 2);
+        float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1 - a));
+
+        return R * c;
+    }
+
     public void AddSignPost()
     {
         if (gps != null)
@@ -718,22 +763,24 @@ public class LocalizationHandler : MonoBehaviour
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
 
-            if (!ret)
-            {
-                Debug.Log("ray did not hit anything");
-                return;
-            }
+            //if (!ret)
+            //{
+            //    Debug.Log("ray did not hit anything");
+            //    return;
+            //}
 
-            double x, y;
-            string z;
+
+            PlanePose.position = new Vector3(1, 0, 1);
+
+            double lat, lon;
             int fix;
 
-            ret = gps.GetUTMPosition(out x, out y, out z, out fix);
+            ret = gps.GetLatLonPoition(out lat, out lon, out fix);
 
             //debug
             ret = true;
-            x = 100;
-            y = 100;
+            lat = 47.05797695771782f;
+            lon = 15.45748363236058f;
 
             if (!ret)
             {
@@ -743,24 +790,8 @@ public class LocalizationHandler : MonoBehaviour
 
             if (ret)
             {
-                var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
-                var newObj2 = Instantiate(prefabToPlace, PlanePose.position - new Vector3(0.1f,0,0.1f), Quaternion.identity);
-
-                if (Mathf.Abs(PlanePose.rotation.eulerAngles.x - 5) <= 5)
-                {
-                    newObj.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y, 0);
-                    newObj2.transform.localRotation = Quaternion.Euler(0, originRot.eulerAngles.y - 180, 0);
-                }
-                else
-                {
-                    newObj.transform.localRotation = PlanePose.rotation;
-                    newObj2.transform.localRotation = PlanePose.rotation;
-                }
-
-                Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
-
+               
                 var relative_dis = PlanePose.position - origin; //vec from origin to plane
-
 
                 float correction = 0;
                 if (useGPSNorthing && (northingHandler.correctionsCount() > 500))  //GPS Northing is quite new, so we do not know the sweetspots of params atm
@@ -807,16 +838,60 @@ public class LocalizationHandler : MonoBehaviour
 
                 relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
 
-                double m_x = x + relative_dis.x;
-                double m_y = y + relative_dis.z;
 
-                newObj.name = "Measurement " + placedObjcts.Count.ToString();
-                //objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
+                
 
-                newObj.transform.parent = WorldOrigin.transform;
+                GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                post.transform.localScale = new Vector3(0.01f, 1, 0.01f);
+                post.transform.localPosition = PlanePose.position;
+
+                List<Locations.Location> signs = locations.getRandomLocations(5);
+
+                //float signHeight = 0.95f;
+
+                float[,] signAngles = new float[10, 2];
+                for (int i = 0; i < 10; i++) { signAngles[i, 0] = -1; signAngles[i, 1] = -1; }
 
 
-                placedObjcts.Add(new Measurement(++measurementCounter, newObj, m_x, m_y));
+                foreach (var loc in signs) {
+
+
+                    float angle = angleFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
+                    float distance = distanceFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
+
+                    var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+
+                    newObj.transform.parent = post.transform;
+
+                    Quaternion rot = Quaternion.Euler(0, angle, 0);
+                    newObj.transform.localRotation = rot;
+
+                    float signHeight = 0.95f;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if(signAngles[i,0] == -1)
+                        {
+                            signAngles[i, 0] = angle;
+                            break;
+                        }
+                        else if(signAngles[i, 1] != -1 && ((signAngles[i, 0] - 90) > angle || (signAngles[i, 0] + 90) > angle))
+                        {
+                            signAngles[i, 1] = angle;
+                        }
+                        signHeight -= 0.05f;
+                    }
+
+                    Vector3 p = new Vector3(-6.9f, signHeight, 0);
+                    newObj.transform.localPosition = rot * p;
+
+                   
+
+                    Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
+                    objTxt.text = loc.Name + " " + distance.ToString("F2") + " km";
+                    
+                }
+                placedObjcts.Add(new Measurement(++measurementCounter, post, 11, 11));
             }
         }
     }
