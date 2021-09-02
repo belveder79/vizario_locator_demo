@@ -43,7 +43,7 @@ public class Locations : MonoBehaviour
             f = innerJ["Longitude"].ToString().Substring(0, innerJ["Longitude"].ToString().Length - 1);
             float lon;
             float.TryParse(f, out lon);
-            lon = innerJ["Longitude"].ToString()[innerJ["Longitude"].ToString().Length - 1] == 'E' ? lon * (-1) : lon;
+            lon = innerJ["Longitude"].ToString()[innerJ["Longitude"].ToString().Length - 1] == 'W' ? lon * (-1) : lon;
             l.Longitude = lon;
 
             locations.Add(l);
@@ -66,6 +66,9 @@ public class Locations : MonoBehaviour
 
         List<int> usedRands = new List<int>();
         List<Location> return_list = new List<Location>();
+
+        //debug
+        return_list.Add(locations[11]);
         for (int i = 0; i < amount; i++)
         {
             int r;

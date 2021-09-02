@@ -403,7 +403,8 @@ public class LocalizationHandler : MonoBehaviour
     {
         foreach (var obj in placedObjcts)
         {
-            Destroy(obj);
+            obj.Destroy();
+            //Destroy(obj);
         }
         placedObjcts.Clear();
     }
@@ -744,6 +745,12 @@ public class LocalizationHandler : MonoBehaviour
 
     private float distanceFromCoordinates(float lat1, float lon1, float lat2, float lon2)
     {
+
+        lat1 = lat1 * Mathf.PI / 180;
+        lon1 = lon1 * Mathf.PI / 180;
+        lat2 = lat2 * Mathf.PI / 180;
+        lon2 = lon2 * Mathf.PI / 180;
+
         // approximate radius of earth in km
         float R = 6373.0f;
 
@@ -763,14 +770,14 @@ public class LocalizationHandler : MonoBehaviour
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
 
-            if (!ret)
-            {
-                Debug.Log("ray did not hit anything");
-                return;
-            }
+            //if (!ret)
+            //{
+            //    Debug.Log("ray did not hit anything");
+            //    return;
+            //}
 
 
-            //PlanePose.position = new Vector3(1, 0, 1);
+            PlanePose.position = new Vector3(1, 0, 1);
 
             double lat, lon;
             int fix;
@@ -847,19 +854,33 @@ public class LocalizationHandler : MonoBehaviour
 
                 List<Locations.Location> signs = locations.getRandomLocations(5);
 
+
                 //float signHeight = 0.95f;
 
                 float[,] signAngles = new float[10, 2];
                 for (int i = 0; i < 10; i++) { signAngles[i, 0] = -1; signAngles[i, 1] = -1; }
 
+                var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                newObj.transform.parent = post.transform;
+                Vector3 p = new Vector3(-15.0f, 0.92f, 0);
+                newObj.transform.localPosition = p;                
+                Text[] objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
+                objTxt[0].text = " North ";
+                objTxt[1].text = " North ";
+                signAngles[0, 0] = 0;
 
                 foreach (var loc in signs) {
 
 
-                    float angle = angleFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
-                    float distance = distanceFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
 
-                    var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
+                    float angle = angleFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
+
+
+                    Debug.Log(lat + ", " + lon + " - " + loc.Latitude + ", " + loc.Longitude + " -> " + angle);
+                    float distance = distanceFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
+                    Debug.Log(distance);
+
+                    newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
 
                     newObj.transform.parent = post.transform;
 
@@ -884,15 +905,17 @@ public class LocalizationHandler : MonoBehaviour
                         signHeight -= 0.15f;
                     }
 
-                    Vector3 p = new Vector3(-15.0f, signHeight, 0);
+                    p = new Vector3(-15.0f, signHeight, 0);
                     newObj.transform.localPosition = rot * p;
 
                    
 
-                    Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
-                    objTxt.text = loc.Name + " " + distance.ToString("F2") + " km";
-                    
+                    objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
+                    objTxt[0].text = loc.Name + " " + distance.ToString("F2") + " km";
+                    objTxt[1].text = loc.Name + " " + distance.ToString("F2") + " km";
+
                 }
+
                 placedObjcts.Add(new Measurement(++measurementCounter, post, 11, 11));
             }
         }
