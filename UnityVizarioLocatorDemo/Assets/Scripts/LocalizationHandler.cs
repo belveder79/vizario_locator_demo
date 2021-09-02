@@ -770,24 +770,24 @@ public class LocalizationHandler : MonoBehaviour
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
 
-            //if (!ret)
-            //{
-            //    Debug.Log("ray did not hit anything");
-            //    return;
-            //}
+            if (!ret)
+            {
+                Debug.Log("ray did not hit anything");
+                return;
+            }
 
 
-            PlanePose.position = new Vector3(1, 0, 1);
+            //PlanePose.position = new Vector3(1, 0, 1);
 
             double lat, lon;
             int fix;
 
             ret = gps.GetLatLonPoition(out lat, out lon, out fix);
 
-            //debug
-            ret = true;
-            lat = 47.05797695771782f;
-            lon = 15.45748363236058f;
+            ////debug
+            //ret = true;
+            //lat = 47.05797695771782f;
+            //lon = 15.45748363236058f;
 
             if (!ret)
             {
@@ -826,8 +826,8 @@ public class LocalizationHandler : MonoBehaviour
                     ret = gps.GetGyroQuaternion(out q);
 
                     //debug
-                    ret = true;
-                    q = Quaternion.identity;
+                    //ret = true;
+                    //q = Quaternion.AngleAxis(-120, Vector3.up);
 
                     if (!ret)
                     {
@@ -845,12 +845,13 @@ public class LocalizationHandler : MonoBehaviour
 
                 relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
 
-
+                
                 
 
                 GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                 post.transform.localScale = new Vector3(0.01f, 0.5f, 0.01f);
                 post.transform.localPosition = PlanePose.position + new Vector3(0,0.5f,0);
+                post.transform.localRotation = Quaternion.AngleAxis(-correction, Vector3.up);
 
                 List<Locations.Location> signs = locations.getRandomLocations(5);
 
@@ -862,17 +863,19 @@ public class LocalizationHandler : MonoBehaviour
 
                 var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
                 newObj.transform.parent = post.transform;
+
                 Vector3 p = new Vector3(-15.0f, 0.92f, 0);
-                newObj.transform.localPosition = p;                
+                Quaternion rot = Quaternion.Euler(0, 0, 0);
+
+                newObj.transform.localPosition = rot * p;
+                newObj.transform.localRotation = rot;
+
                 Text[] objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
                 objTxt[0].text = " North ";
                 objTxt[1].text = " North ";
                 signAngles[0, 0] = 0;
 
                 foreach (var loc in signs) {
-
-
-
                     float angle = angleFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
 
 
@@ -884,7 +887,7 @@ public class LocalizationHandler : MonoBehaviour
 
                     newObj.transform.parent = post.transform;
 
-                    Quaternion rot = Quaternion.Euler(0, angle, 0);
+                    rot = Quaternion.Euler(0, angle, 0);
                     newObj.transform.localRotation = rot;
 
                     float signHeight = 0.92f;

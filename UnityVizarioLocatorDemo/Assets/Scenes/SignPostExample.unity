@@ -8559,7 +8559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClientID: ClientID
-  MqttHostIP: 
+  MqttHostIP: 192.168.43.1
   imuToCameraCalibrationFile: 
 --- !u!4 &1653583284
 Transform:
