@@ -784,7 +784,7 @@ public class LocalizationHandler : MonoBehaviour
 
             ret = gps.GetLatLonPoition(out lat, out lon, out fix);
 
-            ////debug
+            //debug
             //ret = true;
             //lat = 47.05797695771782f;
             //lon = 15.45748363236058f;
@@ -835,8 +835,10 @@ public class LocalizationHandler : MonoBehaviour
                         return;
                     }
 
+                    Quaternion camrot = arCam.transform.localRotation;
+
                     //correct so y = northing 
-                    Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
+                    Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
                     //rotate to adjust northing (AR Camera = only local tracking = no real north)
@@ -851,7 +853,7 @@ public class LocalizationHandler : MonoBehaviour
                 GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                 post.transform.localScale = new Vector3(0.01f, 0.5f, 0.01f);
                 post.transform.localPosition = PlanePose.position + new Vector3(0,0.5f,0);
-                post.transform.localRotation = Quaternion.AngleAxis(-correction, Vector3.up);
+                post.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
 
                 List<Locations.Location> signs = locations.getRandomLocations(5);
 
@@ -864,15 +866,16 @@ public class LocalizationHandler : MonoBehaviour
                 var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
                 newObj.transform.parent = post.transform;
 
-                Vector3 p = new Vector3(-15.0f, 0.92f, 0);
+
+                Vector3 p = new Vector3(0f, 0.92f, 15.0f);
                 Quaternion rot = Quaternion.Euler(0, 0, 0);
 
                 newObj.transform.localPosition = rot * p;
                 newObj.transform.localRotation = rot;
 
                 Text[] objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
-                objTxt[0].text = " North ";
-                objTxt[1].text = " North ";
+                objTxt[0].text = " North " + correction;
+                objTxt[1].text = " North " + correction;
                 signAngles[0, 0] = 0;
 
                 foreach (var loc in signs) {
@@ -908,7 +911,7 @@ public class LocalizationHandler : MonoBehaviour
                         signHeight -= 0.15f;
                     }
 
-                    p = new Vector3(-15.0f, signHeight, 0);
+                    p = new Vector3(0f, signHeight, 15.0f);
                     newObj.transform.localPosition = rot * p;
 
                    
