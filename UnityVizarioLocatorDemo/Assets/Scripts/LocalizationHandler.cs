@@ -113,8 +113,8 @@ public class LocalizationHandler : MonoBehaviour
 
         if (locations == null)
         {
-            Debug.LogError("Locations not in MapComponent!");
-            return;
+            Debug.LogError("Locations not in MapComponent, only important in Sign post!");
+
         }
 
         if (textPrefap == null)
@@ -125,8 +125,6 @@ public class LocalizationHandler : MonoBehaviour
         listViewPanel = GameObject.Find("listPanel");
         buttonPanel = GameObject.Find("buttonPanel");
         textPanel = GameObject.Find("TextPanel");
-
-
 
         if (listViewPanel == null || buttonPanel == null || textPanel == null)
         {
@@ -173,9 +171,9 @@ public class LocalizationHandler : MonoBehaviour
 
         //debug
 
-        placedObjcts.Add(new Measurement(1, null, 1234, 5678));
-        placedObjcts.Add(new Measurement(3, null, 2234, 7678));
-        placedObjcts.Add(new Measurement(2, null, 3234, 8678));
+        //placedObjcts.Add(new Measurement(1, null, 1234, 5678));
+        //placedObjcts.Add(new Measurement(3, null, 2234, 7678));
+        //placedObjcts.Add(new Measurement(2, null, 3234, 8678));
     }
 
     // Update is called once per frame
@@ -342,7 +340,7 @@ public class LocalizationHandler : MonoBehaviour
                 Text objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
 
                 var relative_dis = PlanePose.position - origin; //vec from origin to plane
-               
+
 
                 float correction = 0;
                 if (useGPSNorthing && (northingHandler.correctionsCount() > 500))  //GPS Northing is quite new, so we do not know the sweetspots of params atm
@@ -357,7 +355,7 @@ public class LocalizationHandler : MonoBehaviour
                     if (!ret)
                         return;
 
-                    //correct so y = northing 
+                    //correct so y = northing
                     Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
@@ -375,7 +373,7 @@ public class LocalizationHandler : MonoBehaviour
                         return;
                     }
 
-                    //correct so y = northing 
+                    //correct so y = northing
                     Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
@@ -393,7 +391,7 @@ public class LocalizationHandler : MonoBehaviour
 
                 newObj.transform.parent = WorldOrigin.transform;
 
-                
+
                 placedObjcts.Add(new Measurement(++measurementCounter, newObj, m_x, m_y));
             }
         }
@@ -410,7 +408,7 @@ public class LocalizationHandler : MonoBehaviour
     }
 
 
-    // setup origin for real world visualization (origin is init pose of AROrigin) 
+    // setup origin for real world visualization (origin is init pose of AROrigin)
     public void SetWorldOrigin()
     {
 
@@ -446,7 +444,7 @@ public class LocalizationHandler : MonoBehaviour
             //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
             WorldOrigin.transform.localPosition = camposition;
 
-            //correct so y = northing 
+            //correct so y = northing
             Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
             Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
@@ -464,7 +462,7 @@ public class LocalizationHandler : MonoBehaviour
             //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
             WorldOrigin.transform.localPosition = camposition;
 
-            //correct so y = northing 
+            //correct so y = northing
             Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
             Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
@@ -482,7 +480,7 @@ public class LocalizationHandler : MonoBehaviour
         //bool ret = placePlane.getPlanePos(RayOrigin, out PlanePos);
         //Debug.Log("ray hit: " + ret.ToString());
 
-        ////not 0.5f, should be half height of object 
+        ////not 0.5f, should be half height of object
         //ObjToVisualize.transform.localPosition = relPos + new Vector3(0, PlanePos.y + 0.5f, 0); //if plane not hit, height will be 0
     }
 
@@ -512,8 +510,8 @@ public class LocalizationHandler : MonoBehaviour
             }
             return;
         }
-     
-        
+
+
         for (int index = 0; index < placedObjcts.Count; ++index)
         {
             Text t = Instantiate(textPrefap);
@@ -521,7 +519,7 @@ public class LocalizationHandler : MonoBehaviour
 
             placedObjcts[index].SetText(t);
             placedObjcts[index].SetListText();
-        }     
+        }
     }
 
     public void DeleteSelected()
@@ -598,7 +596,7 @@ public class LocalizationHandler : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.1f);
 
         float north = 0;
-        
+
         while (runLocalGPS)
         {
 
@@ -610,7 +608,7 @@ public class LocalizationHandler : MonoBehaviour
                 Debug.Log("north = " + north);
             }
             Quaternion q = gyro.attitude;
-            IMUVisualizationDevice.transform.localRotation = q; 
+            IMUVisualizationDevice.transform.localRotation = q;
             //Debug.Log("rt_north: " + comp.trueHeading.ToString());
 
             yield return new WaitForSecondsRealtime(0.1f);
@@ -652,7 +650,7 @@ public class LocalizationHandler : MonoBehaviour
 
         // Start service before querying location
         UnityEngine.Input.location.Start(1f, 0.1f);
-        
+
 
         // Wait until service initializes
         int maxWait = 15;
@@ -700,7 +698,7 @@ public class LocalizationHandler : MonoBehaviour
 
             while (runLocalGPS)
             {
-                
+
 
                 var _latitude = UnityEngine.Input.location.lastData.latitude;
                 var _longitude = UnityEngine.Input.location.lastData.longitude;
@@ -797,7 +795,7 @@ public class LocalizationHandler : MonoBehaviour
 
             if (ret)
             {
-               
+
                 var relative_dis = PlanePose.position - origin; //vec from origin to plane
 
                 float correction = 0;
@@ -813,7 +811,7 @@ public class LocalizationHandler : MonoBehaviour
                     if (!ret)
                         return;
 
-                    //correct so y = northing 
+                    //correct so y = northing
                     Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * originRot;
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
@@ -837,7 +835,7 @@ public class LocalizationHandler : MonoBehaviour
 
                     Quaternion camrot = arCam.transform.localRotation;
 
-                    //correct so y = northing 
+                    //correct so y = northing
                     Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
                     Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
 
@@ -847,8 +845,8 @@ public class LocalizationHandler : MonoBehaviour
 
                 relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
 
-                
-                
+
+
 
                 GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                 post.transform.localScale = new Vector3(0.01f, 0.5f, 0.01f);
@@ -903,18 +901,18 @@ public class LocalizationHandler : MonoBehaviour
                             break;
                         }
                         else if ((signAngles[i, 1] == -1) && (Mathf.Abs(Mathf.DeltaAngle(angle, signAngles[i, 0])) > 90f))
-                        {                           
+                        {
                             signAngles[i, 1] = angle;
-                            break;                            
+                            break;
                         }
-                        
+
                         signHeight -= 0.15f;
                     }
 
                     p = new Vector3(0f, signHeight, 15.0f);
                     newObj.transform.localPosition = rot * p;
 
-                   
+
 
                     objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
                     objTxt[0].text = loc.Name + " " + distance.ToString("F2") + " km";
