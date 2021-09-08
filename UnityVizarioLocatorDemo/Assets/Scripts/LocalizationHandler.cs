@@ -422,25 +422,6 @@ public class LocalizationHandler : MonoBehaviour
 
             correction = northingHandler.calculateCorrection();
             correction = correction * (-1);  //todo here -1 because in unity space left handed?
-
-            //debugging
-            Quaternion q;
-            res = gps.GetGyroQuaternion(out q);
-
-            if (!res)
-                return;
-
-            //todo use another GameObject, so all child components will be automatically be transformed to the new Origin by Unity
-
-            //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
-            WorldOrigin.transform.localPosition = camposition;
-
-            //correct so y = northing
-            Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
-            Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
-
-            //rotate to adjust northing (AR Camera = only local tracking = no real north)
-            float correction2 = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
         }
         else
         {
@@ -476,10 +457,8 @@ public class LocalizationHandler : MonoBehaviour
     }
 
 
-
     public void showListView()
     {
-
         if (listViewPanel == null || buttonPanel == null)
         {
             Debug.LogError("Object is null");
