@@ -33,6 +33,8 @@ public class LocalizationHandler : MonoBehaviour
     private GameObject listViewPanel = null;
     private GameObject buttonPanel = null;
     private GameObject textPanel = null;
+    private GameObject leftSpacingPanel = null;
+    private GameObject topSpacingPanel = null;
 
     public Text textPrefap = null;
 
@@ -122,6 +124,8 @@ public class LocalizationHandler : MonoBehaviour
         listViewPanel = GameObject.Find("listPanel");
         buttonPanel = GameObject.Find("buttonPanel");
         textPanel = GameObject.Find("TextPanel");
+        leftSpacingPanel = GameObject.Find("LeftSpacing");
+        topSpacingPanel = GameObject.Find("TopSpacing");
 
         if (listViewPanel == null || buttonPanel == null || textPanel == null)
         {
@@ -488,6 +492,22 @@ public class LocalizationHandler : MonoBehaviour
         listViewPanel.SetActive(listEnabled);
         buttonPanel.SetActive(listEnabled);
         textPanel.SetActive(listEnabled);
+
+        if (leftSpacingPanel != null && topSpacingPanel != null)
+        {
+            LayoutElement layoutLeft = leftSpacingPanel.GetComponent<LayoutElement>();
+            LayoutElement layoutTop = topSpacingPanel.GetComponent<LayoutElement>();
+            if (listEnabled)
+            {
+                layoutLeft.flexibleWidth = 81;
+                layoutTop.flexibleHeight = 27;
+            }
+            else
+            {
+                layoutLeft.flexibleWidth = 75;
+                layoutTop.flexibleHeight = 26;
+            }
+        }
 
         if (!listEnabled)
         {
