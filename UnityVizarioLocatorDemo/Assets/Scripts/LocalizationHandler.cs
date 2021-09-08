@@ -49,6 +49,7 @@ public class LocalizationHandler : MonoBehaviour
     public PlaceOnPlane placePlane = null;
 
     public GameObject prefabToPlace = null;
+    public Material postMaterial = null;
 
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
 
@@ -845,18 +846,18 @@ public class LocalizationHandler : MonoBehaviour
 
                 relative_dis = Quaternion.Euler(0, -correction, 0) * relative_dis;   //minus for compass correction for sure
 
-
-
-
                 GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                post.transform.localScale = new Vector3(0.01f, 0.5f, 0.01f);
-                post.transform.localPosition = PlanePose.position + new Vector3(0,0.5f,0);
+                post.transform.localScale = new Vector3(0.01f, 0.75f, 0.01f);
+                post.transform.localPosition = PlanePose.position + new Vector3(0,0.75f,0);
                 post.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
 
+                if(postMaterial != null)
+                {
+                    MeshRenderer mr = post.GetComponent<MeshRenderer>();
+                    mr.material = postMaterial;
+                }
+
                 List<Locations.Location> signs = locations.getRandomLocations(5);
-
-
-                //float signHeight = 0.95f;
 
                 float[,] signAngles = new float[10, 2];
                 for (int i = 0; i < 10; i++) { signAngles[i, 0] = -1; signAngles[i, 1] = -1; }
@@ -864,34 +865,27 @@ public class LocalizationHandler : MonoBehaviour
                 var newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
                 newObj.transform.parent = post.transform;
 
-
-                Vector3 p = new Vector3(0f, 0.92f, 15.0f);
+                Vector3 p = new Vector3(0f, 0.95f, 15.0f);
                 Quaternion rot = Quaternion.Euler(0, 0, 0);
-
                 newObj.transform.localPosition = rot * p;
                 newObj.transform.localRotation = rot;
 
                 Text[] objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
-                objTxt[0].text = " North " + correction;
-                objTxt[1].text = " North " + correction;
+                objTxt[0].text = " North";
+                objTxt[1].text = " North";
                 signAngles[0, 0] = 0;
 
                 foreach (var loc in signs) {
                     float angle = angleFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
-
-
-                    Debug.Log(lat + ", " + lon + " - " + loc.Latitude + ", " + loc.Longitude + " -> " + angle);
                     float distance = distanceFromCoordinates((float)lat, (float)lon, loc.Latitude, loc.Longitude);
-                    Debug.Log(distance);
 
                     newObj = Instantiate(prefabToPlace, PlanePose.position, Quaternion.identity);
-
                     newObj.transform.parent = post.transform;
 
                     rot = Quaternion.Euler(0, angle, 0);
                     newObj.transform.localRotation = rot;
 
-                    float signHeight = 0.92f;
+                    float signHeight = 0.95f;
 
                     for (int i = 0; i < 10; i++)
                     {
@@ -906,18 +900,15 @@ public class LocalizationHandler : MonoBehaviour
                             break;
                         }
 
-                        signHeight -= 0.15f;
+                        signHeight -= 0.1f;
                     }
 
                     p = new Vector3(0f, signHeight, 15.0f);
                     newObj.transform.localPosition = rot * p;
 
-
-
                     objTxt = newObj.GetComponentInChildren<Canvas>().GetComponentsInChildren<Text>();
                     objTxt[0].text = loc.Name + " " + distance.ToString("F2") + " km";
                     objTxt[1].text = loc.Name + " " + distance.ToString("F2") + " km";
-
                 }
 
                 placedObjcts.Add(new Measurement(++measurementCounter, post, 11, 11));
