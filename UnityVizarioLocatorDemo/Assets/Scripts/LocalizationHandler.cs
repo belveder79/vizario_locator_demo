@@ -20,7 +20,7 @@ public class LocalizationHandler : MonoBehaviour
     public bool useCallback = true;
     public bool useGPSNorthing = true;
     public GameObject IMUVisualization = null;
-    
+
     public Text mqttConnectionText = null;
     public Text chipConnectionText = null;
     public Text gpsFixText = null;
@@ -218,7 +218,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private void OnDestroy()
     {
-        
+
     }
 
     private void GyroCallback(Quaternion quaternion)
@@ -286,7 +286,7 @@ public class LocalizationHandler : MonoBehaviour
             }
             else
             {
-                gpsFixText.color = Color.green; 
+                gpsFixText.color = Color.green;
                 gpsFixText.text = "RTK Fixed";
             }
         }
@@ -381,7 +381,6 @@ public class LocalizationHandler : MonoBehaviour
                 objTxt.text = "Measurement " + placedObjcts.Count.ToString() + "\nx: " + m_x.ToString("F3") + " m \ny: " + m_y.ToString("F3") + " m";
 
                 newObj.transform.parent = WorldOrigin.transform;
-
 
                 placedObjcts.Add(new Measurement(++measurementCounter, newObj, m_x, m_y));
             }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1377,6 +1377,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &231439937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2361,7 +2362,7 @@ MonoBehaviour:
   gpsFixText: {fileID: 1880840937}
   copyCalibFromResources: 0
   calibFile: 
-  textPrefap: {fileID: 2691681460834657230, guid: 4b09df4b14173234fa3f0c58471e0243,
+  textPrefap: {fileID: 2691681460834657230, guid: eee5afe4d54114bd18fc474dfbdfe1d0,
     type: 3}
   WorldOrigin: {fileID: 1217562851}
   arCam: {fileID: 2077127151}
@@ -2384,8 +2385,8 @@ MonoBehaviour:
   mapScale: 300
   avatarVizario: {fileID: 515486052}
   avatarInternal: {fileID: 1241060553}
-  DeviceNorthFix: {fileID: 0}
-  IMUVisualizationDevice: {fileID: 0}
+  DeviceNorthFix: {fileID: 1250474170}
+  IMUVisualizationDevice: {fileID: 1167969702}
   handleOrientation: 1
   useCallbacks: 1
 --- !u!4 &413140303
@@ -2759,6 +2760,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!1 &499444370
 GameObject:
   m_ObjectHideFlags: 0
@@ -3891,6 +3893,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &691443707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4555,6 +4558,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!224 &757901462
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7824,6 +7828,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &1620597846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7891,7 +7896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClientID: ClientID
-  MqttHostIP: 
+  MqttHostIP: 192.168.43.1
   imuToCameraCalibrationFile: 
 --- !u!4 &1653583284
 Transform:
@@ -10037,6 +10042,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &2082250755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10208,6 +10214,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &2085093744
 MonoBehaviour:
   m_ObjectHideFlags: 0
