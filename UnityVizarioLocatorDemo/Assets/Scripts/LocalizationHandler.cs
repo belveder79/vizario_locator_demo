@@ -286,7 +286,7 @@ public class LocalizationHandler : MonoBehaviour
             }
             else
             {
-                gpsFixText.color = Color.green;  //todo different color
+                gpsFixText.color = Color.green; 
                 gpsFixText.text = "RTK Fixed";
             }
         }
@@ -295,7 +295,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private int measurementCounter = 0;
     //measure and add Object in scene
-    public void AddObject()
+    public void TakeMeasurement()
     {
         if (gps != null)
         {
