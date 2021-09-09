@@ -1,8 +1,5 @@
 ﻿# vizario_locator_demo
 
-
-
-
 ## Setup
 
 Important:
@@ -10,6 +7,16 @@ Important:
 - IMU Calib, will be loaded from Application.persistentDataPath; In Localization handler there is the possibilitie to enable copiing a calib file from Resources to persitsenDataPath
 - ARFoundation V3.1.3
 - make sure Settings-Graphics: Unlit/Texture in always include Shader
+
+
+## Demo Scenes
+
+### VizarioLocatorDemo
+
+Take real world measurements (utm) in an AR environment combining ARFoundation Tracking and Vizario Location Service.
+
+![Screenshot of VizarioLocatorDemo Scene](img/take_measurement.PNG?raw=true "VizarioLocatorDemo.scene")
+
 
 ## Demo Description
 
@@ -22,7 +29,7 @@ Important:
 
 - MapCreator.cs : Spawning an OpenStreetMap to show current position. Here an comparison from device GPS vs our GPS is shown.
 - GUI.cs : Configurations of the chip can also be done via Unity, here are some examples. However, using the VizarioCalibrationApp is recommended.
-- NorthingHandler.cs : Functionallitie to calculate northing fix of ArFoundation Pose using GPS RTK fixed mesaurements in UTM space (due to UTM y = north orientated). 
+- NorthingHandler.cs : Functionallitie to calculate northing fix of ArFoundation Pose using GPS RTK fixed mesaurements in UTM space (due to UTM y = north orientated).
 
 ## VizarioGPS Library Functionallity
 
