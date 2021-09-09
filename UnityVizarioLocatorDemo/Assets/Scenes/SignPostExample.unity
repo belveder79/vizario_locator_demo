@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.43850392, g: 0.48659807, b: 0.5668714, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1094,7 +1094,7 @@ MonoBehaviour:
   WorldOrigin: {fileID: 1217562851}
   arCam: {fileID: 2077127151}
   placePlane: {fileID: 1067155053}
-  prefabToPlace: {fileID: 1269846787208468026, guid: 61276f91ca271ef42abe90ecb2551dd6,
+  prefabToPlace: {fileID: 1269846787208468026, guid: 3ce1c1d61083146af8369469e870de70,
     type: 3}
   postMaterial: {fileID: 2100000, guid: 4df45debcf51ac048aab047487b8c7bd, type: 2}
 --- !u!114 &413140302
@@ -1156,7 +1156,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 413140300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3acdff4e47a3c2541a2b13896e665b9a, type: 3}
+  m_Script: {fileID: 11500000, guid: ad410dee64e03486aabaf8d5f9e94291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &426014577
@@ -3208,7 +3208,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e3469e6cdbabdc449be145826e78fe68, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ead814167bde46aead0b0b926756915, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
