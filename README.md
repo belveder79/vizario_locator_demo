@@ -3,7 +3,7 @@
 ## Setup
 
 Important:
-- Check MqttHostIP (Runtime - Vizario GPS): 127.0.0.1 when App on device running broker (otherwise change IP)
+- Check MqttHostIP (Runtime - Vizario GPS): 127.0.0.1 when App on device running broker (otherwise change IP, android hotspot would be 192.168.43.1)
 - IMU Calib, will be loaded from Application.persistentDataPath; In Localization handler there is the possibilitie to enable copiing a calib file from Resources to persitsenDataPath
 - ARFoundation V3.1.3
 - make sure Settings-Graphics: Unlit/Texture in always include Shader
@@ -17,6 +17,10 @@ Take real world measurements (utm) in an AR environment combining ARFoundation T
 
 ![Screenshot of VizarioLocatorDemo Scene](img/take_measurement.PNG?raw=true "VizarioLocatorDemo.scene")
 
+### SignPostExample
+Place a AR SignPost into real world making use of ARFoundation and Vizario Location Service.
+
+![Screenshot of SignPostExample Scene](img/place_sign.PNG?raw=true "SignPostExample.scene")
 
 ## Demo Description
 
@@ -30,6 +34,7 @@ Take real world measurements (utm) in an AR environment combining ARFoundation T
 - MapCreator.cs : Spawning an OpenStreetMap to show current position. Here an comparison from device GPS vs our GPS is shown.
 - GUI.cs : Configurations of the chip can also be done via Unity, here are some examples. However, using the VizarioCalibrationApp is recommended.
 - NorthingHandler.cs : Functionallitie to calculate northing fix of ArFoundation Pose using GPS RTK fixed mesaurements in UTM space (due to UTM y = north orientated).
+- Locations.cs: Handling the json file with Locations for the SignPostExample
 
 ## VizarioGPS Library Functionallity
 
