@@ -67,8 +67,6 @@ public class Locations : MonoBehaviour
         List<int> usedRands = new List<int>();
         List<Location> return_list = new List<Location>();
 
-        //debug
-        //return_list.Add(locations[11]);
         for (int i = 0; i < amount; i++)
         {
             int r;
