@@ -199,7 +199,7 @@ public class MapCreator : MonoBehaviour
                 //on startup Gyro "North" = 0
                 north = comp.trueHeading;
                 DeviceNorthFix.transform.localRotation = Quaternion.Euler(0, 0, -north + 90); //+90 fix bc something not nicely used but works
-                Debug.Log("north = " + north);
+                //Debug.Log("north = " + north);
             }
             Quaternion q = gyro.attitude;
             IMUVisualizationDevice.transform.localRotation = q;

@@ -1081,7 +1081,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655a39e9e95cb6e4da203ef3c477caae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCallback: 1
   useGPSNorthing: 1
   IMUVisualization: {fileID: 1506383691}
   mqttConnectionText: {fileID: 1109392196}
@@ -3720,12 +3719,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1653583282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c44f38a371341d4b8e81f6f42be144f, type: 3}
+  m_Script: {fileID: 11500000, guid: 79682b3d2d7249541a95ee49657925e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ClientID: ClientID
   MqttHostIP: 192.168.43.1
-  imuToCameraCalibrationFile: 
+  MqttHostPort: -1
+  CalibrationFile: 
+  loadCalibFromStreamingAssets: 0
 --- !u!4 &1653583284
 Transform:
   m_ObjectHideFlags: 0
