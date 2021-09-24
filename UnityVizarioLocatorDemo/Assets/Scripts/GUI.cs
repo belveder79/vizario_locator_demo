@@ -11,7 +11,7 @@ public class GUI : MonoBehaviour
     public Camera CamMap2 = null;
 
 
-    private VizarioCapsLoc gps = null;
+    private VizarioCapsLocManager gps = null;
 
     public Text infoTxt = null;
     public InputField txtGyro = null;
@@ -24,7 +24,7 @@ public class GUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gps = GameObject.Find("Runtime").GetComponent<VizarioCapsLocBehaviour>().getCapsLocInstance();
+        gps = GameObject.Find("CapLocRuntime").GetComponent<VizarioCapsLocManager>();
 
         if (gps == null)
         {
@@ -96,7 +96,8 @@ public class GUI : MonoBehaviour
                 return;
             }
 
-            gps.Adv_GyroUpdateRate(value);
+            //gps.Adv_GyroUpdateRate(value);
+            gps.AdvancedCommands.GyroUpdateRate(value);
             infoTxt.text = "set update rate to " + value;
         }
     }
@@ -119,7 +120,7 @@ public class GUI : MonoBehaviour
                 return;
             }
 
-            gps.Adv_AltiUpdateRate(value);
+            gps.AdvancedCommands.AltiUpdateRate(value);
             infoTxt.text = "set Alti update rate to " + value;
         }
     }
@@ -133,7 +134,7 @@ public class GUI : MonoBehaviour
         if(gps != null)
         {
             GyroState = !GyroState;
-            gps.Adv_GyroPower(GyroState);
+            gps.AdvancedCommands.GyroPower(GyroState);
             infoTxt.text = "set Gyro Power to " + GyroState;
         }
     }
@@ -144,7 +145,7 @@ public class GUI : MonoBehaviour
         if (gps != null)
         {
             AltiState = !AltiState;
-            gps.Adv_AltiPower(AltiState);
+            gps.AdvancedCommands.AltiPower(AltiState);
             infoTxt.text = "set Gyro Power to " + AltiState;
         }
     }
@@ -155,7 +156,7 @@ public class GUI : MonoBehaviour
         if (gps != null)
         {
             GPSState = !GPSState;
-            gps.Adv_GPSPower(GPSState);
+            gps.AdvancedCommands.GPSPower(GPSState);
             infoTxt.text = "set Gyro Power to " + GPSState;
         }
     }
@@ -165,7 +166,7 @@ public class GUI : MonoBehaviour
         if (gps != null)
         {
             //save current configuration on chip
-            gps.Adv_SaveConfig();
+            gps.AdvancedCommands.SaveConfig();
             infoTxt.text = "save Config";
         }
     }
@@ -179,7 +180,7 @@ public class GUI : MonoBehaviour
             // 0 = "hard"
             // 1 = "wifi"
             // 2 = "factory"
-            gps.Adv_ResetConfig(0);
+            gps.AdvancedCommands.ResetConfig(0);
         }
     }
 
@@ -198,7 +199,7 @@ public class GUI : MonoBehaviour
             infoTxt.text = "meaningless values atm. (todo)";
 
             //SetNTRIP(bool enable, String server, int port, String stream, String username, String password)
-            gps.Adv_SetNTRIP(enable, server, port, stream, username, password);
+            gps.AdvancedCommands.SetNTRIP(enable, server, port, stream, username, password);
         }
     }
 }

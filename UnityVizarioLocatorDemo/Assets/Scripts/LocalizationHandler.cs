@@ -10,7 +10,7 @@ using Vizario;
 public class LocalizationHandler : MonoBehaviour
 {
 
-    private VizarioCapsLoc capsLoc = null;
+    private VizarioCapsLocManager capsLoc = null;
     private MapCreator map = null;
     private NorthingHandler northingHandler = null;
     private Locations locations = null;
@@ -84,7 +84,7 @@ public class LocalizationHandler : MonoBehaviour
             return;
         }
 
-        capsLoc = GameObject.Find("Runtime").GetComponent<VizarioCapsLocBehaviour>().getCapsLocInstance();
+        capsLoc = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
         if (capsLoc == null)
         {
@@ -162,7 +162,7 @@ public class LocalizationHandler : MonoBehaviour
     void Update()
     {
         if (capsLoc == null)
-            capsLoc = GameObject.Find("Runtime").GetComponent<VizarioCapsLocBehaviour>().getCapsLocInstance();
+            capsLoc = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
         if (lastMqttStat != capsLoc.IsMqttConnected())
         {
