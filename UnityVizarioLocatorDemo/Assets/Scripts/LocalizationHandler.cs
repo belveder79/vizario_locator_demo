@@ -88,7 +88,7 @@ public class LocalizationHandler : MonoBehaviour
 
         if (capsLoc == null)
         {
-            Debug.LogError("VizarioGPSBehaviour not in Runtime!");          
+            Debug.LogError("VizarioCapsLocManager not in CapsLocRuntime!");          
         }
 
         map = GameObject.Find("MapComponent").GetComponent<MapCreator>();
@@ -198,12 +198,12 @@ public class LocalizationHandler : MonoBehaviour
 
         if (capsLoc != null)
         {
-            Quaternion q;
-
-            if (capsLoc.GetGyroQuaternion(out q))
-            {
-                HandleGyroUpdate(q);
-            }
+            //this would be one option, the other one is using CapsLocBehaviour directly on the GameObject as you can see in the scene
+            //Quaternion q;
+            //if (capsLoc.GetGyroQuaternion(out q))
+            //{
+            //    HandleGyroUpdate(q);
+            //}
 
             double x, y;
             int fix;

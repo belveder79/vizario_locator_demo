@@ -24,7 +24,7 @@ public class GUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gps = GameObject.Find("CapLocRuntime").GetComponent<VizarioCapsLocManager>();
+        gps = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
         if (gps == null)
         {
