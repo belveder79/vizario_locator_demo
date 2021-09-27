@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.99999946, b: 0.99999946, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1377,6 +1377,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &231439937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2360,7 +2361,7 @@ MonoBehaviour:
   gpsFixText: {fileID: 1880840937}
   copyCalibFromResources: 0
   calibFile: 
-  textPrefap: {fileID: 2691681460834657230, guid: 4b09df4b14173234fa3f0c58471e0243,
+  textPrefap: {fileID: 2691681460834657230, guid: acc92d5396515459c813cb41707a03fc,
     type: 3}
   WorldOrigin: {fileID: 1217562851}
   arCam: {fileID: 2077127151}
@@ -2758,6 +2759,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!1 &499444370
 GameObject:
   m_ObjectHideFlags: 0
@@ -3890,6 +3892,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &691443707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4554,6 +4557,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!224 &757901462
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7840,6 +7844,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &1620597846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10055,6 +10060,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &2082250755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10226,6 +10232,7 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
+  m_ShouldActivateOnSelect: 1
 --- !u!114 &2085093744
 MonoBehaviour:
   m_ObjectHideFlags: 0

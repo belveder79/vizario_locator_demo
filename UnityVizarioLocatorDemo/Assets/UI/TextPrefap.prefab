@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3868503092419496488}
   - component: {fileID: 8981581028644955008}
   - component: {fileID: 2691681460834657230}
-  - component: {fileID: 1167638082}
+  - component: {fileID: 6535255503744779884}
   m_Layer: 5
   m_Name: TextPrefap
   m_TagString: Untagged
@@ -79,7 +79,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
---- !u!114 &1167638082
+--- !u!114 &6535255503744779884
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,6 +88,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3708273462179223663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 414a8665ee4e74b0384d2e60df193f76, type: 3}
+  m_Script: {fileID: 11500000, guid: 31b4b1a93bb264986af020dbdc3e219e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
