@@ -11,6 +11,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         localizationHandler = GameObject.Find("MapComponent").GetComponent<LocalizationHandler>();
+        Debug.Log("new Item spawned");
     }
 
     public void OnPointerClick(PointerEventData eventData)
