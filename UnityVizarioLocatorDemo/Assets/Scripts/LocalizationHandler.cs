@@ -27,9 +27,6 @@ public class LocalizationHandler : MonoBehaviour
 
     private bool mapCreated = false;
 
-    public bool copyCalibFromResources = false;
-    public string calibFile = "";
-
     private GameObject listViewPanel = null;
     private GameObject buttonPanel = null;
     private GameObject textPanel = null;
@@ -58,25 +55,10 @@ public class LocalizationHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // todo check where to place imu calib load rescource and copy to persitctence ?
-        if (copyCalibFromResources)
-        {
-            string m_Path = Application.persistentDataPath;
-            TextAsset calibAsset = (TextAsset)Resources.Load(Path.Combine("imu_calibrations", System.IO.Path.GetFileNameWithoutExtension(calibFile)));
-            Debug.Log(Path.Combine("imu_calibrations", System.IO.Path.GetFileNameWithoutExtension(calibFile)));
+        //VizarioCapsLocInternal capsloc1 = VizarioCapsLocInternal.GetInstance();
+        //if (capsloc1 != null)
+        //    Debug.Log("here");
 
-            if (!Directory.Exists(m_Path))
-                Directory.CreateDirectory(m_Path);
-
-            string calibFilePath = Path.Combine(m_Path, calibFile);
-            Debug.Log(calibFilePath);
-            if (File.Exists(calibFilePath))
-                File.Delete(calibFilePath);
-
-            File.WriteAllText(calibFilePath, calibAsset.text);
-            Debug.Log("calib copied");
-
-        }
 
         if (WorldOrigin == null || placePlane == null) // ObjToVisualize == null ||
         {
