@@ -88,7 +88,7 @@ public class LocalizationHandler : MonoBehaviour
 
         if (capsLoc == null)
         {
-            Debug.LogError("VizarioCapsLocManager not in CapsLocRuntime!");          
+            Debug.LogError("VizarioGPSBehaviour not in CapsLocRuntime!");          
         }
 
         map = GameObject.Find("MapComponent").GetComponent<MapCreator>();
