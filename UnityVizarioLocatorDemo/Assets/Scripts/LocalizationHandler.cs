@@ -5,11 +5,12 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Vizario;
 
 public class LocalizationHandler : MonoBehaviour
 {
 
-    private VizarioGPS gps = null;
+    private VizarioCapsLocManager capsLoc = null;
     private MapCreator map = null;
     private NorthingHandler northingHandler = null;
     private Locations locations = null;
@@ -17,7 +18,6 @@ public class LocalizationHandler : MonoBehaviour
     private bool lastMqttStat = false;
     private bool lastChipStat = false;
 
-    public bool useCallback = true;
     public bool useGPSNorthing = true;
     public GameObject IMUVisualization = null;
 
@@ -26,9 +26,6 @@ public class LocalizationHandler : MonoBehaviour
     public Text gpsFixText = null;
 
     private bool mapCreated = false;
-
-    public bool copyCalibFromResources = false;
-    public string calibFile = "";
 
     private GameObject listViewPanel = null;
     private GameObject buttonPanel = null;
@@ -58,25 +55,10 @@ public class LocalizationHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // todo check where to place imu calib load rescource and copy to persitctence ?
-        if (copyCalibFromResources)
-        {
-            string m_Path = Application.persistentDataPath;
-            TextAsset calibAsset = (TextAsset)Resources.Load(Path.Combine("imu_calibrations", System.IO.Path.GetFileNameWithoutExtension(calibFile)));
-            Debug.Log(Path.Combine("imu_calibrations", System.IO.Path.GetFileNameWithoutExtension(calibFile)));
+        //VizarioCapsLocInternal capsloc1 = VizarioCapsLocInternal.GetInstance();
+        //if (capsloc1 != null)
+        //    Debug.Log("here");
 
-            if (!Directory.Exists(m_Path))
-                Directory.CreateDirectory(m_Path);
-
-            string calibFilePath = Path.Combine(m_Path, calibFile);
-            Debug.Log(calibFilePath);
-            if (File.Exists(calibFilePath))
-                File.Delete(calibFilePath);
-
-            File.WriteAllText(calibFilePath, calibAsset.text);
-            Debug.Log("calib copied");
-
-        }
 
         if (WorldOrigin == null || placePlane == null) // ObjToVisualize == null ||
         {
@@ -84,12 +66,11 @@ public class LocalizationHandler : MonoBehaviour
             return;
         }
 
-        gps = GameObject.Find("Runtime").GetComponent<VizarioGPS>();
+        capsLoc = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
-        if (gps == null)
+        if (capsLoc == null)
         {
-            Debug.LogError("VizarioGPSBehaviour not in Runtime!");
-            return;
+            Debug.LogError("VizarioGPSBehaviour not in CapsLocRuntime!");          
         }
 
         map = GameObject.Find("MapComponent").GetComponent<MapCreator>();
@@ -157,25 +138,17 @@ public class LocalizationHandler : MonoBehaviour
             chipConnectionText.color = Color.red;
         }
 
-        //Add callbacks for sensor values
-        if (useCallback)
-        {
-            gps.SetAltiCallback(AltiCallback);
-            gps.SetGPSCallback(GPSCallback);
-            gps.SetGyroCallback(GyroCallback);
-        }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gps == null)
-            gps = GameObject.Find("Runtime").GetComponent<VizarioGPS>();
+        if (capsLoc == null)
+            capsLoc = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
-        if (lastMqttStat != gps.IsMqttConnected())
+        if (lastMqttStat != capsLoc.IsMqttConnected())
         {
-            lastMqttStat = gps.IsMqttConnected();
+            lastMqttStat = capsLoc.IsMqttConnected();
             if (lastMqttStat)
             {
                 mqttConnectionText.text = "Connected";
@@ -189,9 +162,9 @@ public class LocalizationHandler : MonoBehaviour
 
         }
 
-        if (lastChipStat != gps.IsChipConnected())
+        if (lastChipStat != capsLoc.IsChipConnected())
         {
-            lastChipStat = gps.IsChipConnected();
+            lastChipStat = capsLoc.IsChipConnected();
             if (lastChipStat)
             {
                 chipConnectionText.text = "Connected";
@@ -205,14 +178,30 @@ public class LocalizationHandler : MonoBehaviour
 
         }
 
-        if (!useCallback && gps != null)
+        if (capsLoc != null)
         {
-            Quaternion q;
+            //this would be one option, the other one is using CapsLocBehaviour directly on the GameObject as you can see in the scene
+            //Quaternion q;
+            //if (capsLoc.GetGyroQuaternion(out q))
+            //{
+            //    HandleGyroUpdate(q);
+            //}
 
-            if (gps.GetGyroQuaternion(out q))
+            double x, y;
+            int fix;
+            string z;
+
+            if(capsLoc.GetUTMPosition(out x, out y, out z, out fix))
             {
-                IMUVisualization.transform.localRotation = q;
+                HandleGPSUpdate(x, y, z, fix);
             }
+
+            //no need to call this every Update, also not needed for this example 
+            //float alt, temp;
+            //if(capsLoc.GetAltimeterValues(out alt, out temp))
+            //{
+            //    HandleAlitUpdate(alt, temp);
+            //}
         }
     }
 
@@ -221,7 +210,7 @@ public class LocalizationHandler : MonoBehaviour
 
     }
 
-    private void GyroCallback(Quaternion quaternion)
+    private void HandleGyroUpdate(Quaternion quaternion)
     {
         if (IMUVisualization != null)
         {
@@ -229,12 +218,12 @@ public class LocalizationHandler : MonoBehaviour
         }
     }
 
-    private void GPSCallback(double x, double y, string z, int fixState)
+    private void HandleGPSUpdate(double x, double y, string z, int fixState)
     {
         if (!mapCreated) {
 
 
-            gps.GetLatLonPoition(out var lat, out var lon, out int state);
+            capsLoc.GetLatLonPoition(out var lat, out var lon, out int state);
 
             map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
 
@@ -256,7 +245,7 @@ public class LocalizationHandler : MonoBehaviour
 
     }
 
-    private void AltiCallback(float altitude, float temp)
+    private void HandleAlitUpdate(float altitude, float temp)
     {
         Debug.Log("altitude: " + altitude + ", temp: " + temp);
     }
@@ -297,7 +286,7 @@ public class LocalizationHandler : MonoBehaviour
     //measure and add Object in scene
     public void TakeMeasurement()
     {
-        if (gps != null)
+        if (capsLoc != null)
         {
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
@@ -312,7 +301,7 @@ public class LocalizationHandler : MonoBehaviour
             string z;
             int fix;
 
-            ret = gps.GetUTMPosition(out x, out y, out z, out fix);
+            ret = capsLoc.GetUTMPosition(out x, out y, out z, out fix);
 
             if (!ret)
             {
@@ -341,7 +330,7 @@ public class LocalizationHandler : MonoBehaviour
 
                     //debugging
                     Quaternion q;
-                    ret = gps.GetGyroQuaternion(out q);
+                    ret = capsLoc.GetGyroQuaternion(out q);
 
                     if (!ret)
                         return;
@@ -356,7 +345,7 @@ public class LocalizationHandler : MonoBehaviour
                     //roate relative distance Vector, since the calculation is in ARFoundation coord sys, which is not north orientated
                     //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
                     Quaternion q;
-                    ret = gps.GetGyroQuaternion(out q);
+                    ret = capsLoc.GetGyroQuaternion(out q);
 
                     if (!ret)
                     {
@@ -412,7 +401,7 @@ public class LocalizationHandler : MonoBehaviour
         float correction = 0;
         if (useGPSNorthing && (northingHandler.correctionsCount() > 500))
         {
-            res = gps.GetUTMPosition(out x, out y, out z, out fix);
+            res = capsLoc.GetUTMPosition(out x, out y, out z, out fix);
 
             if (!res)
             {
@@ -425,7 +414,7 @@ public class LocalizationHandler : MonoBehaviour
         else
         {
             Quaternion q;
-            res = gps.GetGyroQuaternion(out q);
+            res = capsLoc.GetGyroQuaternion(out q);
 
             if (!res)
                 return;
@@ -614,7 +603,7 @@ public class LocalizationHandler : MonoBehaviour
 
     public void AddSignPost()
     {
-        if (gps != null)
+        if (capsLoc != null)
         {
             Vector3 origin; Pose PlanePose; Quaternion originRot;
             bool ret = placePlane.getRayHit(out origin, out PlanePose, out originRot);
@@ -630,7 +619,7 @@ public class LocalizationHandler : MonoBehaviour
             double lat, lon;
             int fix;
 
-            ret = gps.GetLatLonPoition(out lat, out lon, out fix);
+            ret = capsLoc.GetLatLonPoition(out lat, out lon, out fix);
 
             //debug
             //ret = true;
@@ -656,7 +645,7 @@ public class LocalizationHandler : MonoBehaviour
 
                     //debugging
                     Quaternion q;
-                    ret = gps.GetGyroQuaternion(out q);
+                    ret = capsLoc.GetGyroQuaternion(out q);
 
                     if (!ret)
                         return;
@@ -671,7 +660,7 @@ public class LocalizationHandler : MonoBehaviour
                     //roate relative distance Vector, since the calculation is in ARFoundation coord sys, which is not north orientated
                     //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
                     Quaternion q;
-                    ret = gps.GetGyroQuaternion(out q);
+                    ret = capsLoc.GetGyroQuaternion(out q);
 
                     //debug
                     //ret = true;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.99999946, b: 0.99999946, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2354,7 +2354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655a39e9e95cb6e4da203ef3c477caae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCallback: 1
   useGPSNorthing: 1
   IMUVisualization: {fileID: 1506383691}
   mqttConnectionText: {fileID: 1109392196}
@@ -2362,7 +2361,7 @@ MonoBehaviour:
   gpsFixText: {fileID: 1880840937}
   copyCalibFromResources: 0
   calibFile: 
-  textPrefap: {fileID: 2691681460834657230, guid: eee5afe4d54114bd18fc474dfbdfe1d0,
+  textPrefap: {fileID: 2691681460834657230, guid: acc92d5396515459c813cb41707a03fc,
     type: 3}
   WorldOrigin: {fileID: 1217562851}
   arCam: {fileID: 2077127151}
@@ -7628,6 +7627,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1506383692}
+  - component: {fileID: 1506383693}
   m_Layer: 0
   m_Name: rotateObject
   m_TagString: Untagged
@@ -7650,6 +7650,22 @@ Transform:
   m_Father: {fileID: 2082508955}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1506383693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506383691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79682b3d2d7249541a95ee49657925e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  update_object_position: 0
+  utm_ref_point_x: 0
+  utm_ref_point_y: 0
+  update_object_rotation: 1
 --- !u!1 &1551801469
 GameObject:
   m_ObjectHideFlags: 0
@@ -7877,7 +7893,7 @@ GameObject:
   - component: {fileID: 1653583284}
   - component: {fileID: 1653583283}
   m_Layer: 0
-  m_Name: Runtime
+  m_Name: CapsLocRuntime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7892,12 +7908,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1653583282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c44f38a371341d4b8e81f6f42be144f, type: 3}
+  m_Script: {fileID: 11500000, guid: 747f4cae800ded34d98e52d9c9493b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ClientID: ClientID
-  MqttHostIP: 192.168.43.1
-  imuToCameraCalibrationFile: 
+  MqttIP: 192.168.43.1
+  MqttPort: -1
+  MqttClientID: 
+  CalibrationFile: 
+  LoadCalibrationFileFromStreamingAssets: 0
 --- !u!4 &1653583284
 Transform:
   m_ObjectHideFlags: 0
