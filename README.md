@@ -3,13 +3,6 @@
 ## Setup
 
 Important:
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/migrate-new-DLL
-=======
->>>>>>> origin/migrate-new-DLL
 - Check MqttHostIP (CapsLocRuntime - VizarioCapsLocManager): 127.0.0.1 when App on device running broker (otherwise change IP)
 - IMU Calib, will be loaded from Application.persistentDataPath; In VizarioCapsLocManager there is the possibility to enable copiing a calib file from Resources to persitsenDataPath
 - ARFoundation V3.1.3
