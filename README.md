@@ -3,7 +3,10 @@
 ## Setup
 
 Important:
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/migrate-new-DLL
 - Check MqttHostIP (CapsLocRuntime - VizarioCapsLocManager): 127.0.0.1 when App on device running broker (otherwise change IP)
 - IMU Calib, will be loaded from Application.persistentDataPath; In VizarioCapsLocManager there is the possibility to enable copiing a calib file from Resources to persitsenDataPath
 - ARFoundation V3.1.3
@@ -37,7 +40,6 @@ Place a AR SignPost into real world making use of ARFoundation and Vizario Locat
 - Locations.cs: Handling the json file with Locations for the SignPostExample
 
 ## VizarioCapsLoc Functionallity
-
 
 ### CapsLocManager
 First the CapsLocRuntime Prefap (or an GameObject with this name containing the CapsLocManager Scripts) musst be in the Scene to start communication with the Sensor Cube.
