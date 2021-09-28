@@ -3,7 +3,7 @@
 ## Setup
 
 Important:
-- import unitypackage [VizarioCapsLocDLL](https://www.dropbox.com/s/7psan5kdd3nmcfn/capsloc-CapsLocDLL-v1.0-21.09.28.11.unitypackage?dl=0)
+- import unitypackage [VizarioCapsLocDLL](https://www.dropbox.com/s/xk737qp74ktkua2/capsloc-CapsLocDLL-v1.0-21.09.28.12.unitypackage?dl=0)
 - Check MqttHostIP (CapsLocRuntime - VizarioCapsLocManager): 127.0.0.1 when App on device running broker (otherwise change IP)
 - IMU Calib, will be loaded from Application.persistentDataPath; In VizarioCapsLocManager there is the possibility to enable copiing a calib file from Resources to persitsenDataPath
 - ARFoundation V3.1.3
