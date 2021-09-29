@@ -1,4 +1,15 @@
-﻿# vizario_locator_demo
+﻿# Vizario CapsLoc Application Examples for Unity3D
+ 
+ This repository contains a collection of application examples for [Unity3D](https://unity.com) to get started with development using the Vizario.CapsLoc sensor cube.
+ 
+![Vizario CapsLoc Sensor Cube](img/capsloc_sensor.jpg?raw=true "Vizario.CapsLoc Sensor Cube")
+
+To set up Vizario.CapsLoc with your mobile device, please follow the instructions in the [Tutorial Video](https://youtu.be/or8ghl2m5fM).
+
+- Companion App for iOS: https://apps.apple.com/pw/app/vizario-capsloc/id1562990158
+- Companion App for Android: https://play.google.com/store/apps/details?id=io.ar4.calibrationapp
+
+Note that both the tutorial video and this sample repository will be improved over time.
 
 ## Setup
 
@@ -72,3 +83,5 @@ The Following Commands can be used via CapsLocManager.Advanced :
 This script is for drag&drop use, the GameObjects transform will be updated according to the Sensor Chip.
 Set update Position/Rotation to false if they should not be applied. Also use UTM_ref_point to achieve relative movements to this Point (in meter)
 
+# Version Log
+ - v1.0 2021.09.28 - Initial public exposure
