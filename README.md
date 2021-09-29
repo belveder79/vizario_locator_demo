@@ -17,18 +17,18 @@ Important:
 - import unitypackage [VizarioCapsLocDLL](https://www.dropbox.com/s/xk737qp74ktkua2/capsloc-CapsLocDLL-v1.0-21.09.28.12.unitypackage?dl=0)
 - Check MqttHostIP (CapsLocRuntime - VizarioCapsLocManager): 127.0.0.1 when App on device running broker (otherwise change IP)
 - IMU Calib, will be loaded from Application.persistentDataPath; In VizarioCapsLocManager there is the possibility to enable copiing a calib file from Resources to persitsenDataPath
-- ARFoundation V3.1.3
+- ARFoundation V3.1.3, XR Plugin Manager 3.2.16, TextMesh Pro 2.01
 - make sure Settings-Graphics: Unlit/Texture in always include Shader
 
 ## Demo Scenes
 
-### VizarioLocatorDemo
+### ARMeasuring (01_Measuring)
 
 Take real world measurements (utm) in an AR environment combining ARFoundation Tracking and Vizario Location Service.
 
 ![Screenshot of VizarioLocatorDemo Scene](img/take_measurement.PNG?raw=true "VizarioLocatorDemo.scene")
 
-### SignPostExample
+### SignPostExample (02_Signpost)
 Place a AR SignPost into real world making use of ARFoundation and Vizario Location Service.
 
 ![Screenshot of SignPostExample Scene](img/place_sign.PNG?raw=true "SignPostExample.scene")
