@@ -61,6 +61,8 @@ public class LocalizationHandler : MonoBehaviour
     Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>();
     AvatarPose myLastPose = null;
 
+    Queue<Action> runnerQ = new Queue<Action>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -131,7 +133,7 @@ public class LocalizationHandler : MonoBehaviour
 
         MQTTClient.Subscribe("PoseUpdate");
 
-        MQTTClient.RegisterCallback(HandleAvatarPoseUpdate);
+        MQTTClient.RegisterCallback(MQTTNotify);
     }
 
     private string HandleAvatarPoseUpdate(string[] args)
@@ -144,16 +146,22 @@ public class LocalizationHandler : MonoBehaviour
 
         if(p.ID != myAvatarID)
         {
+            Debug.Log(payload);
+
             Avatar avatar = null;
             if (!avatars.ContainsKey(p.ID))
             {
-                GameObject newPref = Instantiate(avatarPrefap);
+                
+                GameObject newPref = Instantiate(avatarPrefap, new Vector3(0,0,0), Quaternion.identity);
+                Debug.Log("try create");
                 newPref.name = p.ID;
                 avatar = newPref.GetComponent<Avatar>();
                 avatars.Add(p.ID, avatar);
+                Debug.Log("new prefap created");
             }
             else
             {
+                Debug.Log("try get avatar");
                 avatars.TryGetValue(p.ID, out avatar);
             }
 
@@ -231,7 +239,7 @@ public class LocalizationHandler : MonoBehaviour
 
             if(true)
             {
-                p = new AvatarPose("1234", 1000, 70, 340, q);
+                p = new AvatarPose(myAvatarID, 1000, 60, 340, q);
             }
 
             myLastPose = p;
@@ -240,6 +248,21 @@ public class LocalizationHandler : MonoBehaviour
             //Debug.Log(json.ToString());
             MQTTClient.Publish("PoseUpdate", json);
         }
+
+
+        if (runnerQ.Count > 0)
+        {
+            var f = runnerQ.Dequeue();
+            f?.Invoke();
+        }
+    }
+
+    public string MQTTNotify(string[] args)
+    {
+        runnerQ.Enqueue(() => {
+            HandleAvatarPoseUpdate(args);
+        });
+        return "";
     }
 
     private void OnDestroy()

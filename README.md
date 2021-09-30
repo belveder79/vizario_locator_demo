@@ -17,7 +17,7 @@ Important:
 - import unitypackage [VizarioCapsLocDLL](https://www.dropbox.com/s/xk737qp74ktkua2/capsloc-CapsLocDLL-v1.0-21.09.28.12.unitypackage?dl=0)
 - Check MqttHostIP (CapsLocRuntime - VizarioCapsLocManager): 127.0.0.1 when App on device running broker (otherwise change IP)
 - IMU Calib, will be loaded from Application.persistentDataPath; In VizarioCapsLocManager there is the possibility to enable copiing a calib file from Resources to persitsenDataPath
-- ARFoundation V3.1.3, XR Plugin Manager 3.2.16, TextMesh Pro 2.01
+- Tested with Unity2019.4.3(LTS), ARFoundation V3.1.3, XR Plugin Manager 3.2.16, TextMesh Pro 2.01
 - make sure Settings-Graphics: Unlit/Texture in always include Shader
 
 ## Demo Scenes
