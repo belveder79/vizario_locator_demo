@@ -36,6 +36,8 @@ public class LocalizationHandler : MonoBehaviour
         public float q_y { get; set; }
         public float q_z { get; set; }
         public float q_w { get; set; }
+
+        public Quaternion getQuaternion() { return new Quaternion(q_x, q_y, q_z, q_w);  }
     }
 
     private VizarioCapsLocManager capsLoc = null;
@@ -239,7 +241,7 @@ public class LocalizationHandler : MonoBehaviour
 
             if(true)
             {
-                p = new AvatarPose(myAvatarID, 1000, 60, 340, q);
+                p = new AvatarPose(myAvatarID, 1000, 60, 340, Quaternion.Euler(0,45,0));
             }
 
             myLastPose = p;

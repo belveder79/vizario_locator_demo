@@ -24,6 +24,6 @@ public class Avatar : MonoBehaviour
         float alt_dis = p.alt - ploc.alt;
 
         gameObject.transform.localPosition = new Vector3((float)x_dis, alt_dis, (float)y_dis) + arCamPos;
-
+        gameObject.transform.localRotation = p.getQuaternion();
     }
 }
