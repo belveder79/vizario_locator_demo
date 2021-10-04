@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Vizario;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 public class LocalizationHandler : MonoBehaviour
 {
@@ -72,7 +74,7 @@ public class LocalizationHandler : MonoBehaviour
 
         if (capsLoc == null)
         {
-            Debug.LogError("VizarioGPSBehaviour not in CapsLocRuntime!");          
+            Debug.LogError("VizarioGPSBehaviour not in CapsLocRuntime!");
         }
 
         northingHandler = GameObject.Find("AvatarSession").GetComponent<NorthingHandler>();
@@ -129,7 +131,18 @@ public class LocalizationHandler : MonoBehaviour
 
         MQTTClient.SetHost(MqttServer, MqttPort);
         MQTTClient.SetClientID(myAvatarID);
-        MQTTClient.StartClient();
+
+        string cafns = "ca.crt";
+        string cert = "insert"
+        string q = Path.Combine(Application.persistentDataPath, cafns);
+        File.WriteAllText(q, cert);
+
+        var caCert = new X509Certificate(q);
+        Debug.Log(cert.ToString());
+
+        MQTTClient.StartClientWithCert(caCert);
+
+        //MQTTClient.StartClient();
 
         yield return new WaitForSeconds(1);
 
@@ -140,7 +153,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private string HandleAvatarPoseUpdate(string[] args)
     {
-        var topic = args[0]; 
+        var topic = args[0];
         var payload = args[1];
 
 
@@ -153,7 +166,7 @@ public class LocalizationHandler : MonoBehaviour
             Avatar avatar = null;
             if (!avatars.ContainsKey(p.ID))
             {
-                
+
                 GameObject newPref = Instantiate(avatarPrefap, new Vector3(0,0,0), Quaternion.identity);
                 Debug.Log("try create");
                 newPref.name = p.ID;
@@ -230,7 +243,7 @@ public class LocalizationHandler : MonoBehaviour
                 HandleGPSUpdate(x, y, z, fix);  //for northing
             }
 
-            //no need to call this every Update, also not needed for this example 
+            //no need to call this every Update, also not needed for this example
             float alt, temp;
             if (capsLoc.GetAltimeterValues(out alt, out temp))
             {
@@ -241,14 +254,20 @@ public class LocalizationHandler : MonoBehaviour
 
             if(true)
             {
-                p = new AvatarPose(myAvatarID, 1000, 60, 340, Quaternion.Euler(0,45,0));
+                p = new AvatarPose(myAvatarID, 1001, 60, 340, Quaternion.Euler(0,45,0));
             }
 
             myLastPose = p;
-            var json = JsonConvert.SerializeObject(p);
-            
-            //Debug.Log(json.ToString());
-            MQTTClient.Publish("PoseUpdate", json);
+            try {
+              var json = JsonConvert.SerializeObject(p);
+
+              //Debug.Log(json.ToString());
+              MQTTClient.Publish("PoseUpdate", json);
+            }
+            catch(Exception e)   {
+                Debug.Log(e.ToString());
+            }
+
         }
 
 

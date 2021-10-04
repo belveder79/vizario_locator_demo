@@ -4,7 +4,6 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -73,28 +72,31 @@ internal class MQTTClient : IDisposable
     {
         mqttClient = new MqttFactory().CreateMqttClient();
 
-        //var options = new MqttClientOptionsBuilder()
-        //    .WithClientId(clientId)
-        //    .WithTcpServer(url, port)
-        //    //.WithCredentials(username, psw)
-        //    //.WithTls(new MqttClientOptionsBuilderTlsParameters()
-        //    //{
-        //    //    AllowUntrustedCertificates = false,
-        //    //    UseTls = true,
-        //    // Certificates = new List<byte[]> { File.ReadAllBytes(p) },
-        //    //    Certificates = new List<byte[]> { new X509Certificate2(caCert).Export(X509ContentType.Cert) },
-        //    //    CertificateValidationCallback = delegate { return true; },
-        //    //    IgnoreCertificateChainErrors = false,
-        //    //    IgnoreCertificateRevocationErrors = false
-        //    //})
-        //    .WithCleanSession()
-        //    .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V310)
-        //    .Build();
-
         var options = new MqttClientOptionsBuilder()
             .WithClientId(clientId)
             .WithTcpServer(url, port)
             .Build();
+
+        if(caCert != null) {
+          options = new MqttClientOptionsBuilder()
+              .WithClientId(clientId)
+              .WithTcpServer(url, port)
+              //.WithCredentials(username, psw)
+              .WithTls(new MqttClientOptionsBuilderTlsParameters()
+              {
+                  AllowUntrustedCertificates = false,
+                  UseTls = true,
+                  // Certificates = new List<byte[]> { File.ReadAllBytes(p) },
+                  Certificates = new List<X509Certificate> { new X509Certificate2(caCert) },
+                  CertificateValidationCallback = delegate { return true; },
+                  IgnoreCertificateChainErrors = false,
+                  IgnoreCertificateRevocationErrors = false
+              })
+              .WithCleanSession()
+              .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V310)
+              .Build();
+        }
+
 
         // Connecting
 
@@ -138,7 +140,13 @@ internal class MQTTClient : IDisposable
         var url = hostData.hostUrl;
         var port = hostData.hostPort;
         InitClientWithData(url, port, null);
+    }
 
+    public void InitClientImpl(X509Certificate cert)
+    {
+        var url = hostData.hostUrl;
+        var port = hostData.hostPort;
+        InitClientWithData(url, port, cert);
     }
 
     public async
@@ -268,6 +276,11 @@ internal class MQTTClient : IDisposable
         GetInstance().InitClientImpl();
     }
 
+    public static void StartClientWithCert(X509Certificate cert)
+    {
+        GetInstance().InitClientImpl(cert);
+    }
+
     public static string GetGuid()
     {
         return GetInstance().clientId;
@@ -283,4 +296,3 @@ internal class MQTTClient : IDisposable
         return GetInstance().connected;
     }
 }
-
