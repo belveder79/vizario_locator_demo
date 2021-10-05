@@ -133,7 +133,7 @@ public class LocalizationHandler : MonoBehaviour
         MQTTClient.SetClientID(myAvatarID);
 
         string cafns = "ca.crt";
-        string cert = "insert"
+        string cert = "insert";
         string q = Path.Combine(Application.persistentDataPath, cafns);
         File.WriteAllText(q, cert);
 
