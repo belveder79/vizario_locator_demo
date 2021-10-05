@@ -47,6 +47,11 @@ public class LocalizationHandler : MonoBehaviour
 
     public string MqttServer = null;
     public int MqttPort = -1;
+
+    public string certificate = null;
+    public bool copyFromStreamingAssets = false;
+    private string cert_ = null;
+
     private string myAvatarID;
 
     private bool lastMqttStat = false;
@@ -123,6 +128,24 @@ public class LocalizationHandler : MonoBehaviour
         {
             Debug.Log("ID = " + myAvatarID);
         }
+
+
+        if(certificate != null) {
+          string filepath = copyFromStreamingAssets ? Application.streamingAssetsPath : Application.persistentDataPath;
+          filepath = Path.Combine(filepath, certificate);
+
+          if(copyFromStreamingAssets) {
+            string fileText = ReadFileAsString(filepath, copyFromStreamingAssets);
+
+            if (copyFromStreamingAssets)
+                filepath = Path.Combine(Application.persistentDataPath, certificate);
+                File.WriteAllText(filepath, fileText);
+          }
+          cert_ = filepath;
+        }
+
+
+
         StartCoroutine(StartupMqtt());
     }
 
@@ -132,17 +155,12 @@ public class LocalizationHandler : MonoBehaviour
         MQTTClient.SetHost(MqttServer, MqttPort);
         MQTTClient.SetClientID(myAvatarID);
 
-        string cafns = "ca.crt";
-        string cert = "insert";
-        string q = Path.Combine(Application.persistentDataPath, cafns);
-        File.WriteAllText(q, cert);
-
-        var caCert = new X509Certificate(q);
-        Debug.Log(cert.ToString());
-
-        MQTTClient.StartClientWithCert(caCert);
-
-        //MQTTClient.StartClient();
+        if(cert_ != null) {
+            var caCert = new X509Certificate(cert_);
+            MQTTClient.StartClientWithCert(caCert);
+        }
+        else
+          MQTTClient.StartClient();
 
         yield return new WaitForSeconds(1);
 
@@ -186,6 +204,79 @@ public class LocalizationHandler : MonoBehaviour
 
         return "";
     }
+
+/// <summary>
+/// Read from StreamingAssets
+/// </summary>
+/// <param name="url">string with filepath</param>
+static IEnumerator ReadStreamingAsset(string url)
+{
+    WWW www = new WWW(url);
+
+    while (!www.isDone)
+        yield return null;
+
+    if (string.IsNullOrEmpty(www.error))
+        yield return www.text;
+    else
+        yield return www.error;
+}
+
+/// <summary>
+/// only works for persistent folder!
+/// </summary>
+/// <param name="path">Path to file.</param>
+/// <param name="streamingassets">Is to be read from streaming assets folder</param>
+public static string ReadFileAsString(string path, bool streamingassets = false)
+{
+    string returnstring = "";
+    try
+    {
+#if NETFX_CORE // THIS IS THE WSA IMPLEMENTATION
+            Debug.Log("WSA File Read...");
+            Task<string> readtask = Task.Run(() => ReadTextContentAsync(path));
+            readtask.Wait();
+            return readtask.Result;
+            //returnstring = System.IO.File.ReadAllText(path);
+#elif UNITY_STANDALONE_OSX || NOUWP || UNITY_EDITOR_WIN  // THIS ONLY JUMPS IN FOR OSX CURRENTLY AND WINDOWS NATIVE
+        Debug.Log("OSX/Windows File Read...");
+        returnstring = System.IO.File.ReadAllText(path);
+#elif UNITY_IOS || (UNITY_ANDROID && !UNITY_EDITOR)
+        if (streamingassets) {
+#if UNITY_IOS
+            string tpath = "file://" + path;
+#else
+                string tpath = path; // check jar extension...
+#endif
+            IEnumerator e = ReadStreamingAsset(tpath);
+            while (e.MoveNext())
+                if (e.Current != null)
+                {
+                    returnstring = e.Current as string;
+                    break;
+                }
+        }
+        else
+        {
+            Debug.Log("IOS/Android File Read...");
+            returnstring = System.IO.File.ReadAllText(path);
+        }
+#else // ALL OTHER OPERATING SYSTEMS
+            Debug.Log("Generic File Read...");
+            FileStream fileStream = new FileStream(path, FileMode.Open);
+            StreamReader reader = new StreamReader(fileStream);
+            returnstring = reader.ReadToEnd();
+#endif
+
+    }
+    catch (Exception e)
+    {
+        Debug.Log("Platform::ReadFileAsString: ERROR => " + e.ToString());
+        // throw;
+    }
+    return returnstring;
+}
+
 
     // Update is called once per frame
     void Update()

@@ -232,6 +232,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MqttServer: vizario-dev.duckdns.org
   MqttPort: 21883
+  certificate: ca.crt
+  copyFromStreamingAssets: 1
   useGPSNorthing: 1
   mqttConnectionText: {fileID: 169260862}
   chipConnectionText: {fileID: 832685052}
