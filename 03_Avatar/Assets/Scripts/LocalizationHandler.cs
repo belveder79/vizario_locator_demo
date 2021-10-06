@@ -65,6 +65,7 @@ public class LocalizationHandler : MonoBehaviour
 
     public GameObject arCam = null;
     public GameObject avatarPrefap = null;
+    public GameObject WorldOrigin = null;
 
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
     Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>();
@@ -143,6 +144,10 @@ public class LocalizationHandler : MonoBehaviour
           }
           cert_ = filepath;
         }
+        else
+        {
+            Debug.Log("cert is null, so do not use tls.");
+        }
 
 
 
@@ -188,6 +193,7 @@ public class LocalizationHandler : MonoBehaviour
                 GameObject newPref = Instantiate(avatarPrefap, new Vector3(0,0,0), Quaternion.identity);
                 Debug.Log("try create");
                 newPref.name = p.ID;
+                newPref.transform.parent = WorldOrigin.transform;
                 avatar = newPref.GetComponent<Avatar>();
                 avatars.Add(p.ID, avatar);
                 Debug.Log("new prefap created");
@@ -255,28 +261,27 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
                     returnstring = e.Current as string;
                     break;
                 }
-        }
-        else
-        {
-            Debug.Log("IOS/Android File Read...");
-            returnstring = System.IO.File.ReadAllText(path);
-        }
+            }
+            else
+            {
+                Debug.Log("IOS/Android File Read...");
+                returnstring = System.IO.File.ReadAllText(path);
+            }
 #else // ALL OTHER OPERATING SYSTEMS
-            Debug.Log("Generic File Read...");
-            FileStream fileStream = new FileStream(path, FileMode.Open);
-            StreamReader reader = new StreamReader(fileStream);
-            returnstring = reader.ReadToEnd();
+                Debug.Log("Generic File Read...");
+                FileStream fileStream = new FileStream(path, FileMode.Open);
+                StreamReader reader = new StreamReader(fileStream);
+                returnstring = reader.ReadToEnd();
 #endif
 
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Platform::ReadFileAsString: ERROR => " + e.ToString());
+            // throw;
+        }
+        return returnstring;
     }
-    catch (Exception e)
-    {
-        Debug.Log("Platform::ReadFileAsString: ERROR => " + e.ToString());
-        // throw;
-    }
-    return returnstring;
-}
-
 
     // Update is called once per frame
     void Update()
@@ -362,9 +367,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             catch(Exception e)   {
                 Debug.Log(e.ToString());
             }
-
         }
-
 
         if (runnerQ.Count > 0)
         {
@@ -455,5 +458,52 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             }
         }
         return null;
+    }
+
+
+    public void SetWorldOrigin()
+    {
+
+        Quaternion camrot = arCam.transform.localRotation;
+        Vector3 camposition = arCam.transform.localPosition;
+        double x, y;
+        int fix;
+        string z;
+
+        bool res;
+        float correction = 0;
+        if (useGPSNorthing && (northingHandler.correctionsCount() > 500))
+        {
+            res = capsLoc.GetUTMPosition(out x, out y, out z, out fix);
+
+            if (!res)
+            {
+                return;
+            }
+
+            correction = northingHandler.calculateCorrection();
+            correction = correction * (-1);  //todo here -1 because in unity space left handed?
+        }
+        else
+        {
+            Quaternion q;
+            res = capsLoc.GetGyroQuaternion(out q);
+
+            if (!res)
+                return;
+
+            //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
+            WorldOrigin.transform.localPosition = camposition;
+
+            //correct so y = northing
+            Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
+            Quaternion vizCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * q;
+
+            //rotate to adjust northing (AR Camera = only local tracking = no real north)
+            correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
+        }
+
+        WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
+
     }
 }
