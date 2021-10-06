@@ -343,9 +343,9 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
             AvatarPose p = new AvatarPose(myAvatarID, x, y, alt, q);
 
-            if(true)
+            if(false)
             {
-                p = new AvatarPose(myAvatarID, 1001, 60, 340, Quaternion.Euler(0,45,0));
+                p = new AvatarPose(myAvatarID, 1000, 60, 340, Quaternion.Euler(0,45,0));
             }
 
             myLastPose = p;
@@ -353,6 +353,10 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
               var json = JsonConvert.SerializeObject(p);
 
               //Debug.Log(json.ToString());
+
+              //var json = JsonConvert.SerializeObject(jsonObj[0]);
+              Debug.Log(json.ToString());
+              //https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git#13.0.102
               MQTTClient.Publish("PoseUpdate", json);
             }
             catch(Exception e)   {
