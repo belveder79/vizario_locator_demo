@@ -44,6 +44,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private VizarioCapsLocManager capsLoc = null;
     private NorthingHandler northingHandler = null;
+    private Raycaster raycaster = null;
 
     public string MqttServer = null;
     public int MqttPort = -1;
@@ -82,7 +83,7 @@ public class LocalizationHandler : MonoBehaviour
 
         if (capsLoc == null)
         {
-            Debug.LogError("VizarioGPSBehaviour not in CapsLocRuntime!");
+            Debug.LogError("VizarioCapsLocManager not in CapsLocRuntime!");
         }
 
         northingHandler = GameObject.Find("AvatarSession").GetComponent<NorthingHandler>();
@@ -91,6 +92,13 @@ public class LocalizationHandler : MonoBehaviour
         {
             Debug.LogError("NorthingHandler not in AvatarSession!");
             //return;
+        }
+
+        raycaster = GameObject.Find("AR Session Origin").GetComponent<Raycaster>();
+
+        if(raycaster == null)
+        {
+            Debug.LogError("Raycaster not in Ar Session Origin");
         }
 
         if (gpsFixText == null || mqttConnectionText == null || chipConnectionText == null)
@@ -341,11 +349,18 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
                 HandleGPSUpdate(x, y, z, fix);  //for northing
             }
 
-            //no need to call this every Update, also not needed for this example
             float alt, temp;
-            if (capsLoc.GetAltimeterValues(out alt, out temp))
+            if (useAltimeter)
             {
-                //HandleAlitUpdate(alt, temp);
+                //no need to call this every Update, also not needed for this example    
+                if (capsLoc.GetAltimeterValues(out alt, out temp))
+                {
+                    //HandleAlitUpdate(alt, temp);
+                }
+            }
+            else
+            {
+                alt = raycaster.getGroundPlaneHeight();
             }
 
             AvatarPose p = new AvatarPose(myAvatarID, x, y, alt, q);

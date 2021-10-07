@@ -967,7 +967,7 @@ PrefabInstance:
     - target: {fileID: 6469270927134901069, guid: 57ee788d4cb59bc44a0e200b9b2a3c74,
         type: 3}
       propertyPath: m_Text
-      value: Altimeter Height
+      value: use Altimeter Height
       objectReference: {fileID: 0}
     - target: {fileID: 6469270927134901069, guid: 57ee788d4cb59bc44a0e200b9b2a3c74,
         type: 3}
@@ -1432,6 +1432,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1816918274}
   - component: {fileID: 1816918273}
+  - component: {fileID: 1816918275}
+  - component: {fileID: 1816918277}
+  - component: {fileID: 1816918276}
+  - component: {fileID: 1816918278}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -1467,6 +1471,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1816918275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816918272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1816918276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816918272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab0e80cee9cc1d44928bfe488dd1e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PointCloudPrefab: {fileID: 0}
+--- !u!114 &1816918277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816918272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa850fbd5b8aded44846f96e35f1a9f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1816918278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816918272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179c78bda6d264440a0fa6fc4e2fd4ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 1560113182}
+  test: {fileID: 0}
 --- !u!1 &1826296579
 GameObject:
   m_ObjectHideFlags: 0

@@ -316,9 +316,9 @@ public class LocalizationHandler : MonoBehaviour
             ret = capsLoc.GetLatLonPoition(out lat, out lon, out fix);
 
             //debug
-            ret = true;
-            lat = 47.05797695771782f;
-            lon = 15.45748363236058f;
+            // ret = true;
+            // lat = 47.05797695771782f;
+            // lon = 15.45748363236058f;
 
             if (!ret)
             {
@@ -357,8 +357,8 @@ public class LocalizationHandler : MonoBehaviour
                     ret = capsLoc.GetGyroQuaternion(out q);
 
                     //debug
-                    ret = true;
-                    q = Quaternion.AngleAxis(-120, Vector3.up);
+                    // ret = true;
+                    // q = Quaternion.AngleAxis(-120, Vector3.up);
 
                     if (!ret)
                     {
