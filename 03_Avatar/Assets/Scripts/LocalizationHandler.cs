@@ -67,6 +67,8 @@ public class LocalizationHandler : MonoBehaviour
     public GameObject avatarPrefap = null;
     public GameObject WorldOrigin = null;
 
+    private bool useAltimeter = true;
+
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
     Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>();
     AvatarPose myLastPose = null;
@@ -184,7 +186,7 @@ public class LocalizationHandler : MonoBehaviour
 
         if(p.ID != myAvatarID)
         {
-            Debug.Log(payload);
+            //Debug.Log(payload);
 
             Avatar avatar = null;
             if (!avatars.ContainsKey(p.ID))
@@ -360,7 +362,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
               //Debug.Log(json.ToString());
 
               //var json = JsonConvert.SerializeObject(jsonObj[0]);
-              Debug.Log(json.ToString());
+              //Debug.Log(json.ToString());
               //https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git#13.0.102
               MQTTClient.Publish("PoseUpdate", json);
             }
@@ -504,6 +506,12 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         }
 
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
+    }
 
+
+    public void OnToggleChange()
+    {
+        useAltimeter = !useAltimeter;
+        Debug.Log(" Now altimeter is " + useAltimeter);
     }
 }
