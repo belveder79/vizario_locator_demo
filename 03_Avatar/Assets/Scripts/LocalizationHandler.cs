@@ -78,7 +78,8 @@ public class LocalizationHandler : MonoBehaviour
 
     Queue<Action> runnerQ = new Queue<Action>();
 
-
+    private double x_utm_origin = 534892.65866935183;
+    private double y_utm_origin = 5211821.44362808;
     string debugFile;
 
     //debug
@@ -178,7 +179,9 @@ public class LocalizationHandler : MonoBehaviour
         }
 
         debugFile = Path.Combine(Application.persistentDataPath, "debugFile.txt");
-        File.WriteAllText(debugFile, "");
+        
+        if(!debugging)
+            File.WriteAllText(debugFile, "");
 
         StartCoroutine(StartupMqtt());
     }
@@ -212,7 +215,8 @@ public class LocalizationHandler : MonoBehaviour
 
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
-        File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation);
+        if(!debugging)
+            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation);
 
         if(p.ID != myAvatarID)
         {
@@ -236,7 +240,7 @@ public class LocalizationHandler : MonoBehaviour
                 avatars.TryGetValue(p.ID, out avatar);
             }
 
-            avatar.setNewPosition(p, myLastPose, arCam.transform.localPosition);
+            avatar.setNewPosition(p, x_utm_origin, y_utm_origin, MinRef);
 
 
             map.setAvatarPositionUTM(p.x, p.y, " ", 1, 2); //todo
@@ -251,11 +255,15 @@ public class LocalizationHandler : MonoBehaviour
         return "";
     }
 
+
+    bool MinRef = true;
+    public void setMinRef() { MinRef = !MinRef; }
+
 /// <summary>
 /// Read from StreamingAssets
 /// </summary>
 /// <param name="url">string with filepath</param>
-static IEnumerator ReadStreamingAsset(string url)
+    static IEnumerator ReadStreamingAsset(string url)
 {
     WWW www = new WWW(url);
 
@@ -541,6 +549,14 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
     public void SetWorldOrigin()
     {
 
+
+        if (debugging)
+        {
+            x_utm_origin = 534892.65866935183;
+            y_utm_origin = 5211821.44362808;
+            return;
+        }
+
         Quaternion camrot = arCam.transform.localRotation;
         Vector3 camposition = arCam.transform.localPosition;
         double x, y;
@@ -581,6 +597,11 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         }
 
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
+        WorldOrigin.transform.localPosition = arCam.transform.localPosition - new Vector3(0, -1.2f, 0); //todo 
+
+        x_utm_origin = myLastPose.x;
+        y_utm_origin = myLastPose.y;
+
     }
 
 

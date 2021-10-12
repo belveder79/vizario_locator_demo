@@ -34,6 +34,8 @@ public class TestRunner : MonoBehaviour
         {
             string line = sr.ReadLine();
 
+            Debug.Log(line);
+
             if (line == null)
                 return;
 

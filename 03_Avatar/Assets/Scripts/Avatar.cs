@@ -17,17 +17,22 @@ public class Avatar : MonoBehaviour
 
     }
 
-    public void setNewPosition(AvatarPose p, AvatarPose ploc, Vector3 arCamPos)
+    public void setNewPosition(AvatarPose p, double x_ref, double y_ref, bool MinRef)
     {
 
-        double x_dis = p.x - ploc.x;
-        double y_dis = p.y - ploc.y;
-        float alt_dis = p.alt - ploc.alt;
+        double x_dis = x_ref - p.x;
+        double y_dis = y_ref - p.y;
+
+        if(MinRef)
+            x_dis = p.x - x_ref;
+            y_dis = p.y - y_ref;
+
+        //float alt_dis = p.alt - ploc.alt;
 
         //Debug.Log(x_dis + ", " + y_dis);
-        alt_dis = 0;
+        //alt_dis = 0;
 
-        gameObject.transform.localPosition = new Vector3((float)x_dis, alt_dis, (float)y_dis) + arCamPos;
+        gameObject.transform.localPosition = new Vector3((float)x_dis, 0, (float)y_dis);
         gameObject.transform.localRotation = p.getQuaternion();
     }
 }
