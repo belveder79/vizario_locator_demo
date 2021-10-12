@@ -45,6 +45,7 @@ public class LocalizationHandler : MonoBehaviour
     private VizarioCapsLocManager capsLoc = null;
     private NorthingHandler northingHandler = null;
     private Raycaster raycaster = null;
+    private MapCreator map = null;
 
     public string MqttServer = null;
     public int MqttPort = -1;
@@ -57,6 +58,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private bool lastMqttStat = false;
     private bool lastChipStat = false;
+    private bool mapCreated = false;
 
     public bool useGPSNorthing = true;
 
@@ -75,6 +77,9 @@ public class LocalizationHandler : MonoBehaviour
     AvatarPose myLastPose = null;
 
     Queue<Action> runnerQ = new Queue<Action>();
+
+    //debug
+    public bool debugging = false;
 
     // Start is called before the first frame update
     void Start()
@@ -99,6 +104,13 @@ public class LocalizationHandler : MonoBehaviour
         if(raycaster == null)
         {
             Debug.LogError("Raycaster not in Ar Session Origin");
+        }
+
+        map = GameObject.Find("MapComponent").GetComponent<MapCreator>();
+
+        if (map == null)
+        {
+            Debug.LogError("map not in MapComponent");
         }
 
         if (gpsFixText == null || mqttConnectionText == null || chipConnectionText == null)
@@ -139,6 +151,10 @@ public class LocalizationHandler : MonoBehaviour
         {
             Debug.Log("ID = " + myAvatarID);
         }
+
+
+        if (debugging)
+            myAvatarID = "020000000000";
 
 
         if(certificate != null) {
@@ -189,6 +205,7 @@ public class LocalizationHandler : MonoBehaviour
         var topic = args[0];
         var payload = args[1];
 
+        Debug.Log(payload);
 
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
@@ -215,8 +232,16 @@ public class LocalizationHandler : MonoBehaviour
             }
 
             avatar.setNewPosition(p, myLastPose, arCam.transform.localPosition);
-        }
 
+
+            map.setAvatarPositionUTM(p.x, p.y, " ", 1, 2); //todo
+        }
+        else if(debugging)
+        {
+            myLastPose = p;
+
+            HandleGPSUpdate(p.x, p.y, "bla" , 1);
+        }
 
         return "";
     }
@@ -296,6 +321,13 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
     // Update is called once per frame
     void Update()
     {
+
+        if (runnerQ.Count > 0)
+        {
+            var f = runnerQ.Dequeue();
+            f?.Invoke();
+        }
+
         if (capsLoc == null)
             capsLoc = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
@@ -348,6 +380,10 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             {
                 HandleGPSUpdate(x, y, z, fix);  //for northing
             }
+            else
+            {
+                return;
+            }
 
             float alt, temp;
             if (useAltimeter)
@@ -385,12 +421,6 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
                 Debug.Log(e.ToString());
             }
         }
-
-        if (runnerQ.Count > 0)
-        {
-            var f = runnerQ.Dequeue();
-            f?.Invoke();
-        }
     }
 
     public string MQTTNotify(string[] args)
@@ -422,6 +452,27 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             Vector3 camposition = arCam.transform.localPosition;
             NorthingHandler.PostionElement p = new NorthingHandler.PostionElement(ts, x, y, camposition);
             northingHandler.PushPosition(p);
+        }
+
+        if (!mapCreated)
+        {
+            
+            capsLoc.GetLatLonPoition(out var lat, out var lon, out int state);
+
+
+            if(debugging)
+            {
+                lat = 47.05902547761709f; lon = 15.459495326448641f;
+            }
+
+            map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
+
+            mapCreated = true;
+            Debug.Log("set map coords.");
+        }
+        else
+        {
+            map.setAvatarPositionUTM(x, y, z, fixState, 1);
         }
     }
 
