@@ -357,7 +357,7 @@ MonoBehaviour:
   mqttConnectionText: {fileID: 169260862}
   chipConnectionText: {fileID: 832685052}
   gpsFixText: {fileID: 1314555409}
-  arCam: {fileID: 736322791}
+  arCam: {fileID: 1560113181}
   avatarPrefap: {fileID: 2217925263201322136, guid: 2ab88c777cb970047a7413e15a44a984,
     type: 3}
   WorldOrigin: {fileID: 762638679}
@@ -923,7 +923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &736322792
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2245,7 +2245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &1560113182
 Camera:
   m_ObjectHideFlags: 0
@@ -2699,7 +2699,7 @@ PrefabInstance:
     - target: {fileID: 3541638597596397349, guid: 48b9b3b668e9e784eb7e66e673a33779,
         type: 3}
       propertyPath: MqttIP
-      value: 127.0.0.1
+      value: 192.168.43.1
       objectReference: {fileID: 0}
     - target: {fileID: 3541638597596397350, guid: 48b9b3b668e9e784eb7e66e673a33779,
         type: 3}

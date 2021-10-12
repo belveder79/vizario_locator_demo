@@ -78,6 +78,9 @@ public class LocalizationHandler : MonoBehaviour
 
     Queue<Action> runnerQ = new Queue<Action>();
 
+
+    string debugFile;
+
     //debug
     public bool debugging = false;
 
@@ -174,6 +177,9 @@ public class LocalizationHandler : MonoBehaviour
             Debug.Log("cert is null, so do not use tls.");
         }
 
+        debugFile = Path.Combine(Application.persistentDataPath, "debugFile.txt");
+        File.WriteAllText(debugFile, "");
+
         StartCoroutine(StartupMqtt());
     }
 
@@ -205,6 +211,8 @@ public class LocalizationHandler : MonoBehaviour
         Debug.Log(payload);
 
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
+
+        File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation);
 
         if(p.ID != myAvatarID)
         {
