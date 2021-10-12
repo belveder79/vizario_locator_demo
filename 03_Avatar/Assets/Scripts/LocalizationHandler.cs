@@ -156,7 +156,6 @@ public class LocalizationHandler : MonoBehaviour
         if (debugging)
             myAvatarID = "020000000000";
 
-
         if(certificate != null) {
           string filepath = copyFromStreamingAssets ? Application.streamingAssetsPath : Application.persistentDataPath;
           filepath = Path.Combine(filepath, certificate);
@@ -174,8 +173,6 @@ public class LocalizationHandler : MonoBehaviour
         {
             Debug.Log("cert is null, so do not use tls.");
         }
-
-
 
         StartCoroutine(StartupMqtt());
     }
@@ -388,7 +385,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             float alt, temp;
             if (useAltimeter)
             {
-                //no need to call this every Update, also not needed for this example    
+                //no need to call this every Update, also not needed for this example
                 if (capsLoc.GetAltimeterValues(out alt, out temp))
                 {
                     //HandleAlitUpdate(alt, temp);
@@ -456,14 +453,18 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
         if (!mapCreated)
         {
-            
-            capsLoc.GetLatLonPoition(out var lat, out var lon, out int state);
+
+            bool ret = capsLoc.GetLatLonPoition(out var lat, out var lon, out int state);
 
 
             if(debugging)
             {
                 lat = 47.05902547761709f; lon = 15.459495326448641f;
+                ret = true;
             }
+
+            if(ret == false)
+              return;
 
             map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
 
