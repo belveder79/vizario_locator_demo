@@ -11,6 +11,7 @@ using Vizario;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 
+
 public class LocalizationHandler : MonoBehaviour
 {
 
@@ -84,6 +85,7 @@ public class LocalizationHandler : MonoBehaviour
 
     //debug
     public bool debugging = false;
+    public UnityEngine.UI.Slider slider = null;
 
     // Start is called before the first frame update
     void Start()
@@ -179,9 +181,12 @@ public class LocalizationHandler : MonoBehaviour
         }
 
         debugFile = Path.Combine(Application.persistentDataPath, "debugFile.txt");
-        
+
         if(!debugging)
             File.WriteAllText(debugFile, "");
+
+        if(slider != null)
+            slider.onValueChanged.AddListener(delegate {SliderChanged(); });
 
         StartCoroutine(StartupMqtt());
     }
@@ -216,7 +221,7 @@ public class LocalizationHandler : MonoBehaviour
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
         if(!debugging)
-            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation);
+            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation + ";" + slider.value.ToString() +"\n");
 
         if(p.ID != myAvatarID)
         {
@@ -554,6 +559,9 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         {
             x_utm_origin = 534892.65866935183;
             y_utm_origin = 5211821.44362808;
+
+            WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0);
+
             return;
         }
 
@@ -583,10 +591,13 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             res = capsLoc.GetGyroQuaternion(out q);
 
             if (!res)
+            {
+                Debug.LogError("no quaternion");
                 return;
+            }
 
             //first move our world Origin to current ARCamera Tracking position(current GPS position = new Origin)
-            WorldOrigin.transform.localPosition = camposition;
+            //WorldOrigin.transform.localPosition = camposition;
 
             //correct so y = northing
             Quaternion arCorrected = Quaternion.FromToRotation(transform.up, Vector3.up) * camrot;
@@ -596,14 +607,19 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
         }
 
-        WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
-        WorldOrigin.transform.localPosition = arCam.transform.localPosition - new Vector3(0, -1.2f, 0); //todo 
 
+        WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0); //todo
+        WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
+        slider.value = correction;
         x_utm_origin = myLastPose.x;
         y_utm_origin = myLastPose.y;
 
     }
 
+    public void SliderChanged()
+    {
+        WorldOrigin.transform.localRotation = Quaternion.AngleAxis(slider.value, Vector3.up);
+    }
 
     public void OnToggleChange()
     {
