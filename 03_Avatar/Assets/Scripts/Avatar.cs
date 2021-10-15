@@ -17,15 +17,12 @@ public class Avatar : MonoBehaviour
 
     }
 
-    public void setNewPosition(AvatarPose p, double x_ref, double y_ref, bool MinRef)
+    public void setNewPosition(AvatarPose p, double x_ref, double y_ref)
     {
 
-        double x_dis = x_ref - p.x;
-        double y_dis = y_ref - p.y;
 
-        if(MinRef)
-            x_dis = p.x - x_ref;
-            y_dis = p.y - y_ref;
+        double x_dis = p.x - x_ref;
+        double y_dis = p.y - y_ref;
 
         //float alt_dis = p.alt - ploc.alt;
 

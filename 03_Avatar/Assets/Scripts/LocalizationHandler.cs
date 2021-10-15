@@ -81,6 +81,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private double x_utm_origin = 534892.65866935183;
     private double y_utm_origin = 5211821.44362808;
+    private Vector3 ArCam_Origin = new Vector3(0, 0, 0);
     string debugFile;
 
     //debug
@@ -221,7 +222,7 @@ public class LocalizationHandler : MonoBehaviour
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
         if(!debugging)
-            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation + ";" + slider.value.ToString() +"\n");
+            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation +  "\n");
 
         if(p.ID != myAvatarID)
         {
@@ -245,7 +246,7 @@ public class LocalizationHandler : MonoBehaviour
                 avatars.TryGetValue(p.ID, out avatar);
             }
 
-            avatar.setNewPosition(p, x_utm_origin, y_utm_origin, MinRef);
+            avatar.setNewPosition(p, x_utm_origin, y_utm_origin);
 
 
             map.setAvatarPositionUTM(p.x, p.y, " ", 1, 2); //todo
@@ -259,10 +260,6 @@ public class LocalizationHandler : MonoBehaviour
 
         return "";
     }
-
-
-    bool MinRef = true;
-    public void setMinRef() { MinRef = !MinRef; }
 
 /// <summary>
 /// Read from StreamingAssets
@@ -470,6 +467,10 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             Vector3 camposition = arCam.transform.localPosition;
             NorthingHandler.PostionElement p = new NorthingHandler.PostionElement(ts, x, y, camposition);
             northingHandler.PushPosition(p);
+
+            if (shouldWeSetWorldOrigin(x, y, camposition))
+                SetWorldOrigin();
+
         }
 
         if (!mapCreated)
@@ -550,11 +551,25 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         return null;
     }
 
+    
+    bool shouldWeSetWorldOrigin(double x, double y, Vector3 ArCamPose)
+    {
+        double x_dis_utm_space = x - x_utm_origin;
+        double y_dis_utm_space = y - y_utm_origin;
 
+        Vector2 utm_dis = new Vector2((float)x_dis_utm_space, (float)y_dis_utm_space);
+        Vector2 ar_dis = new Vector2(ArCamPose.x - ArCam_Origin.x, ArCamPose.z - ArCamPose.z);
+
+        if (Vector2.Distance(utm_dis, ar_dis) > 1)
+            return true;
+
+        return false;
+    }
+
+
+    float current_north_fix = 0;
     public void SetWorldOrigin()
     {
-
-
         if (debugging)
         {
             x_utm_origin = 534892.65866935183;
@@ -573,6 +588,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
         bool res;
         float correction = 0;
+        bool was_gps = false;
         if (useGPSNorthing && (northingHandler.correctionsCount() > 500))
         {
             res = capsLoc.GetUTMPosition(out x, out y, out z, out fix);
@@ -584,6 +600,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
             correction = northingHandler.calculateCorrection();
             correction = correction * (-1);  //todo here -1 because in unity space left handed?
+            was_gps = true;
         }
         else
         {
@@ -607,12 +624,17 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
         }
 
-
+        current_north_fix = correction;
         WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0); //todo
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
         slider.value = correction;
         x_utm_origin = myLastPose.x;
         y_utm_origin = myLastPose.y;
+        ArCam_Origin = camposition;
+
+        if (!debugging)
+            File.AppendAllText(debugFile, x_utm_origin + ";" + y_utm_origin + ";" + camposition.ToString() + ";" + correction.ToString() + ";" + was_gps.ToString() + "\n"); ;
+
 
     }
 
