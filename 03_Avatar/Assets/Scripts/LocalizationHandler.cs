@@ -70,6 +70,7 @@ public class LocalizationHandler : MonoBehaviour
     public GameObject arCam = null;
     public GameObject avatarPrefap = null;
     public GameObject WorldOrigin = null;
+    private GameObject OriginObjectHook = null;
 
     private bool useAltimeter = true;
 
@@ -161,6 +162,9 @@ public class LocalizationHandler : MonoBehaviour
             Debug.Log("ID = " + myAvatarID);
         }
 
+        OriginObjectHook = new GameObject("Object Hook");
+        OriginObjectHook.transform.parent = WorldOrigin.transform;
+
 
         if (debugging)
             myAvatarID = "020000000000";
@@ -237,7 +241,7 @@ public class LocalizationHandler : MonoBehaviour
                 GameObject newPref = Instantiate(avatarPrefap, new Vector3(0,0,0), Quaternion.identity);
                 Debug.Log("try create");
                 newPref.name = p.ID;
-                newPref.transform.parent = WorldOrigin.transform;
+                newPref.transform.parent = OriginObjectHook.transform;
                 avatar = newPref.GetComponent<Avatar>();
                 avatars.Add(p.ID, avatar);
                 Debug.Log("new prefap created");
@@ -602,6 +606,8 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             return;
         }
 
+        OriginObjectHook.transform.parent = null;
+
         Quaternion camrot = arCam.transform.localRotation;
         Vector3 camposition = arCam.transform.localPosition;
         double x, y;
@@ -657,7 +663,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         if (!debugging)
             File.AppendAllText(debugFile, x_utm_origin + ";" + y_utm_origin + ";" + camposition.ToString() + ";" + correction.ToString() + ";" + was_gps.ToString() + "\n"); ;
 
-
+        OriginObjectHook.transform.parent = WorldOrigin.transform;
     }
 
     public void SliderChanged()
