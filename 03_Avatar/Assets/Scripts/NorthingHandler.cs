@@ -9,14 +9,17 @@ public class NorthingHandler : MonoBehaviour
 {
     public class PostionElement
     {
-        public PostionElement(double ts, double utm_x, double utm_y, Vector3 localPosition)
+        public PostionElement(double ts, double ts_gps, double utm_x, double utm_y, Vector3 localPosition)
         {
             this.ts = ts;
+            this.ts_gps = ts_gps;
             this.utmPosition = new Vector2((float)utm_x, (float)utm_y);
             this.localPosition = new Vector2(localPosition.x, localPosition.z);
         }
 
         public double ts { get; }
+
+        public double ts_gps { get; }
 
         public Vector2 utmPosition { get; }
 

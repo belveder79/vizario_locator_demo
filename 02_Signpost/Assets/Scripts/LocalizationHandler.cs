@@ -230,6 +230,11 @@ public class LocalizationHandler : MonoBehaviour
                 gpsFixText.color = Color.yellow;
                 gpsFixText.text = "3D Fix";
             }
+			else if (lastGPSStat == 2)
+            {
+                gpsFixText.color = Color.yellow;
+                gpsFixText.text = "DGPS";
+            }
             else if (lastGPSStat == 5)
             {
                 gpsFixText.color = new Color(255, 127, 51); //orange

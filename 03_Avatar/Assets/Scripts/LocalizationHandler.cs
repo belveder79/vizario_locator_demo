@@ -76,12 +76,14 @@ public class LocalizationHandler : MonoBehaviour
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
     Dictionary<string, Avatar> avatars = new Dictionary<string, Avatar>();
     AvatarPose myLastPose = null;
+    private double last_gps_ts = 0;
 
     Queue<Action> runnerQ = new Queue<Action>();
 
     private double x_utm_origin = 534892.65866935183;
     private double y_utm_origin = 5211821.44362808;
     private Vector3 ArCam_Origin = new Vector3(0, 0, 0);
+    
     string debugFile;
 
     //debug
@@ -255,7 +257,7 @@ public class LocalizationHandler : MonoBehaviour
         {
             myLastPose = p;
 
-            HandleGPSUpdate(p.x, p.y, "bla" , 1);
+            HandleGPSUpdate(p.x, p.y, "bla" , 1, 111);
         }
 
         return "";
@@ -378,6 +380,12 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
         }
 
+        //todo just to debug
+        //534753,313	5211701,173
+        string[] args = { "bla", "{\"ID\":\"123400\",\"x\":534753.313,\"y\":5211701.173,\"alt\":288.125,\"q_x\":0,\"q_y\":0,\"q_z\":0,\"q_w\":1}" };
+        HandleAvatarPoseUpdate(args);
+
+
         if (capsLoc != null)
         {
             //this would be one option, the other one is using CapsLocBehaviour directly on the GameObject as you can see in the scene
@@ -390,13 +398,14 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             double x, y;
             int fix;
             string z;
-
-            if(capsLoc.GetUTMPosition(out x, out y, out z, out fix))
+            double ts;
+            if(capsLoc.GetUTMPositionTs(out x, out y, out z, out fix, out ts))
             {
-                HandleGPSUpdate(x, y, z, fix);  //for northing
+                HandleGPSUpdate(x, y, z, fix, ts);  //for northing
             }
             else
             {
+                
                 return;
             }
 
@@ -435,7 +444,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             catch(Exception e)   {
                 Debug.Log(e.ToString());
             }
-        }
+        }       
     }
 
     public string MQTTNotify(string[] args)
@@ -456,22 +465,30 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
     }
 
-    private void HandleGPSUpdate(double x, double y, string z, int fixState)
+    private void HandleGPSUpdate(double x, double y, string z, int fixState, double ts_gps)
     {
 
+        if (ts_gps == last_gps_ts)
+            return;
+
+        last_gps_ts = ts_gps;
+        
         setGPSFixText(fixState);
+
+        double ts_internal = (DateTime.UtcNow - epochStart).TotalMilliseconds * 1000000;  //to ns
+        Vector3 camposition = arCam.transform.localPosition;
+
+        //Debug.Log(ts_gps.ToString("F9") + " - " + ts_internal.ToString("F9"));
+
         //only use with RTK fixed positions!
         if (useGPSNorthing && fixState == 4)
         {
-            float ts = (int)(System.DateTime.UtcNow - epochStart).TotalMilliseconds;
-            Vector3 camposition = arCam.transform.localPosition;
-            NorthingHandler.PostionElement p = new NorthingHandler.PostionElement(ts, x, y, camposition);
+            NorthingHandler.PostionElement p = new NorthingHandler.PostionElement(ts_internal, ts_gps, x, y, camposition);
             northingHandler.PushPosition(p);
-
-            if (shouldWeSetWorldOrigin(x, y, camposition))
-                SetWorldOrigin();
-
         }
+
+        if (shouldWeSetWorldOrigin(x, y, camposition))
+            SetWorldOrigin();
 
         if (!mapCreated)
         {
@@ -520,6 +537,11 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             {
                 gpsFixText.color = Color.yellow;
                 gpsFixText.text = "3D Fix";
+            }
+            else if (lastGPSStat == 2)
+            {
+                gpsFixText.color = Color.yellow;
+                gpsFixText.text = "DGPS";
             }
             else if (lastGPSStat == 5)
             {
@@ -573,7 +595,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         if (debugging)
         {
             x_utm_origin = 534892.65866935183;
-            y_utm_origin = 5211821.44362808;
+            y_utm_origin = 5211821.44362808; 
 
             WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0);
 
