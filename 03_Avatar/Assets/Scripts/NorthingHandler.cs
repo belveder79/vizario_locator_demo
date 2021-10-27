@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+
 
 public class NorthingHandler : MonoBehaviour
 {
+    string debugFile;
+
     public class PostionElement
     {
         public PostionElement(double ts, double ts_gps, double utm_x, double utm_y, Vector3 localPosition)
@@ -52,7 +56,8 @@ public class NorthingHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+      debugFile = Path.Combine(Application.persistentDataPath, "debugFileGPSNorthing.txt");
+      File.WriteAllText(debugFile, "");
     }
 
     // Update is called once per frame
@@ -108,14 +113,14 @@ public class NorthingHandler : MonoBehaviour
         c = c + 0.000000001f;
 
         // check how triangle lines up
-        if ((x_ >= 0) && (y_ >= 0)) 
+        if ((x_ >= 0) && (y_ >= 0))
             // x gegenkathete
             return Mathf.Asin(x / c) * 180 / Mathf.PI;
-        if ((x_ >= 0) && (y_ < 0)) 
+        if ((x_ >= 0) && (y_ < 0))
             return Mathf.Asin(y / c) * 180 / Mathf.PI + 90;
-        if ((x_ < 0) && (y_ < 0)) 
+        if ((x_ < 0) && (y_ < 0))
             return Mathf.Asin(x / c) * 180 / Mathf.PI + 180;
-        if ((x_ < 0) && (y_ >= 0)) 
+        if ((x_ < 0) && (y_ >= 0))
             return Mathf.Asin(y / c) * 180 / Mathf.PI + 270;
 
         throw new Exception("should not get here");
@@ -151,6 +156,7 @@ public class NorthingHandler : MonoBehaviour
 
     public void PushPosition(PostionElement p) {
 
+        File.AppendAllText(debugFile, p.utmPosition.ToString() + ";" + p.localPosition.ToString() + "\n");
         if (p_positions.Count == 0)
         {
             p_queue.Enqueue(p);
@@ -158,6 +164,6 @@ public class NorthingHandler : MonoBehaviour
         else if (p_positions[p_positions.Count - 1].DistanceUTM(p.utmPosition) > 0.1)
         {
             p_queue.Enqueue(p);
-        }      
+        }
     }
 }

@@ -84,7 +84,7 @@ public class LocalizationHandler : MonoBehaviour
     private double x_utm_origin = 534892.65866935183;
     private double y_utm_origin = 5211821.44362808;
     private Vector3 ArCam_Origin = new Vector3(0, 0, 0);
-    
+
     string debugFile;
 
     //debug
@@ -251,7 +251,7 @@ public class LocalizationHandler : MonoBehaviour
                 Debug.Log("try get avatar");
                 avatars.TryGetValue(p.ID, out avatar);
             }
-
+            OriginObjectHook.transform.localPosition = new Vector3(0,0,0);
             avatar.setNewPosition(p, x_utm_origin, y_utm_origin);
 
 
@@ -409,7 +409,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             }
             else
             {
-                
+
                 return;
             }
 
@@ -448,7 +448,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             catch(Exception e)   {
                 Debug.Log(e.ToString());
             }
-        }       
+        }
     }
 
     public string MQTTNotify(string[] args)
@@ -476,7 +476,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             return;
 
         last_gps_ts = ts_gps;
-        
+
         setGPSFixText(fixState);
 
         double ts_internal = (DateTime.UtcNow - epochStart).TotalMilliseconds * 1000000;  //to ns
@@ -577,14 +577,18 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         return null;
     }
 
-    
+
     bool shouldWeSetWorldOrigin(double x, double y, Vector3 ArCamPose)
     {
         double x_dis_utm_space = x - x_utm_origin;
         double y_dis_utm_space = y - y_utm_origin;
 
         Vector2 utm_dis = new Vector2((float)x_dis_utm_space, (float)y_dis_utm_space);
-        Vector2 ar_dis = new Vector2(ArCamPose.x - ArCam_Origin.x, ArCamPose.z - ArCamPose.z);
+        Vector3 ar_dis3 = new Vector3(ArCamPose.x - ArCam_Origin.x, 0, ArCamPose.z - ArCam_Origin.z);
+
+        ar_dis3 = Quaternion.AngleAxis(-current_north_fix, Vector3.up) * ar_dis3;
+
+        Vector2 ar_dis = new Vector2(ar_dis3.x, ar_dis3.z);
 
         if (Vector2.Distance(utm_dis, ar_dis) > 1)
             return true;
@@ -599,7 +603,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         if (debugging)
         {
             x_utm_origin = 534892.65866935183;
-            y_utm_origin = 5211821.44362808; 
+            y_utm_origin = 5211821.44362808;
 
             WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0);
 
