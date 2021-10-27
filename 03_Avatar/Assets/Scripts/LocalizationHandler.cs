@@ -386,8 +386,8 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
         //todo just to debug
         //534753,313	5211701,173
-        string[] args = { "bla", "{\"ID\":\"123400\",\"x\":534753.313,\"y\":5211701.173,\"alt\":288.125,\"q_x\":0,\"q_y\":0,\"q_z\":0,\"q_w\":1}" };
-        HandleAvatarPoseUpdate(args);
+        //string[] args = { "bla", "{\"ID\":\"123400\",\"x\":534753.313,\"y\":5211701.173,\"alt\":288.125,\"q_x\":0,\"q_y\":0,\"q_z\":0,\"q_w\":1}" };
+        //HandleAvatarPoseUpdate(args);
 
 
         if (capsLoc != null)
