@@ -223,7 +223,7 @@ public class LocalizationHandler : MonoBehaviour
         var topic = args[0];
         var payload = args[1];
 
-        Debug.Log(payload);
+        //Debug.Log(payload);
 
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
@@ -468,7 +468,8 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
     private void HandleGPSUpdate(double x, double y, string z, int fixState, double ts_gps)
     {
-
+        // todo GPS CALIB !!!!
+        
         if (ts_gps == last_gps_ts)
             return;
 

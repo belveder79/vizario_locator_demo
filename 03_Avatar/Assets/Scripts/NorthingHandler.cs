@@ -154,7 +154,7 @@ public class NorthingHandler : MonoBehaviour
 
     private bool TooOld(PostionElement p)
     {
-        return p.ts < (last_ts - max_time_offset);
+        return p.ts < (last_ts - max_time_offset * 1000000); //to ns
     }
 
     public void PushPosition(PostionElement p) {
