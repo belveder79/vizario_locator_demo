@@ -19,13 +19,10 @@ public class Avatar : MonoBehaviour
 
     public void setNewPosition(AvatarPose p, double x_ref, double y_ref)
     {
-
-
         double x_dis = p.x - x_ref;
         double y_dis = p.y - y_ref;
 
         //float alt_dis = p.alt - ploc.alt;
-
         //Debug.Log(x_dis + ", " + y_dis);
         //alt_dis = 0;
 

@@ -409,7 +409,6 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             }
             else
             {
-
                 return;
             }
 
@@ -437,9 +436,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             myLastPose = p;
             try {
               var json = JsonConvert.SerializeObject(p);
-
               //Debug.Log(json.ToString());
-
               //var json = JsonConvert.SerializeObject(jsonObj[0]);
               //Debug.Log(json.ToString());
               //https://github.com/jilleJr/Newtonsoft.Json-for-Unity.git#13.0.102
