@@ -228,7 +228,7 @@ public class LocalizationHandler : MonoBehaviour
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
         if(!debugging)
-            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition + ";" + arCam.transform.localRotation +  "\n");
+            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition.ToString("F4") + ";" + arCam.transform.localRotation.ToString("F4") +  "\n");
 
         if(p.ID != myAvatarID)
         {
@@ -665,7 +665,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         ArCam_Origin = camposition;
 
         if (!debugging)
-            File.AppendAllText(debugFile, x_utm_origin + ";" + y_utm_origin + ";" + camposition.ToString() + ";" + correction.ToString() + ";" + was_gps.ToString() + "\n"); ;
+            File.AppendAllText(debugFile, x_utm_origin + ";" + y_utm_origin + ";" + camposition.ToString("F4") + ";" + correction.ToString("F4") + ";" + was_gps.ToString() + "\n"); ;
 
         OriginObjectHook.transform.parent = WorldOrigin.transform;
     }

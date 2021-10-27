@@ -58,6 +58,9 @@ public class NorthingHandler : MonoBehaviour
     {
       debugFile = Path.Combine(Application.persistentDataPath, "debugFileGPSNorthing.txt");
       File.WriteAllText(debugFile, "");
+
+        //Vector3 v = new Vector3(1.123f, 2.345f, 4.5678f);
+        //Debug.Log(v.ToString("F4"));
     }
 
     // Update is called once per frame
@@ -156,7 +159,7 @@ public class NorthingHandler : MonoBehaviour
 
     public void PushPosition(PostionElement p) {
 
-        File.AppendAllText(debugFile, p.utmPosition.ToString() + ";" + p.localPosition.ToString() + "\n");
+        File.AppendAllText(debugFile, p.utmPosition.ToString("F4") + ";" + p.localPosition.ToString("F4") + "\n");
         if (p_positions.Count == 0)
         {
             p_queue.Enqueue(p);
