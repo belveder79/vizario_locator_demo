@@ -469,7 +469,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
     private void HandleGPSUpdate(double x, double y, string z, int fixState, double ts_gps)
     {
         // todo GPS CALIB !!!!
-        
+
         if (ts_gps == last_gps_ts)
             return;
 
@@ -612,22 +612,14 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
         Quaternion camrot = arCam.transform.rotation;
         Vector3 camposition = arCam.transform.position;
-        double x, y;
-        int fix;
-        string z;
 
         bool res;
         float correction = 0;
         bool was_gps = false;
+
+
         if (useGPSNorthing && (northingHandler.correctionsCount() > 500))
         {
-            res = capsLoc.GetUTMPosition(out x, out y, out z, out fix);
-
-            if (!res)
-            {
-                return;
-            }
-
             correction = northingHandler.calculateCorrection();
             correction = correction * (-1);  //todo here -1 because in unity space left handed?
             was_gps = true;
@@ -654,8 +646,11 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             correction = arCorrected.eulerAngles.y - vizCorrected.eulerAngles.y;
         }
 
+
+        float h = raycaster.getGroundPlaneY();
         current_north_fix = correction;
-        WorldOrigin.transform.localPosition = arCam.transform.position + new Vector3(0, -1.2f, 0); //todo
+        WorldOrigin.transform.position = new Vector3(arCam.transform.position.x, h, arCam.transform.position.z);
+        Debug.Log("h = " + h.ToString());
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
         slider.value = correction;
         x_utm_origin = myLastPose.x;

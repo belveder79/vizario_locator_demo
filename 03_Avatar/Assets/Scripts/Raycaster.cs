@@ -18,7 +18,7 @@ public class Raycaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -43,5 +43,22 @@ public class Raycaster : MonoBehaviour
             height = sPose.y - hitPosition.y;
         }
         return height;
+    }
+
+    public float getGroundPlaneY()
+    {
+        float height = 0;
+        Vector3 sPose = new Vector3(camera.transform.forward.x, 0, camera.transform.forward.z);
+        sPose = camera.transform.position; // + sPose.normalized * 0.5f;
+
+        bool ret = m_RaycastManager.Raycast(new Ray(sPose, new Vector3(0, -1, 0)), s_Hits, TrackableType.PlaneWithinPolygon);
+        if (ret)
+        {
+            var hitPose = s_Hits[0].pose;
+            var hitPosition = hitPose.position;
+            var hitRot = hitPose.rotation;
+            return hitPosition.y;
+        }
+        return 0;
     }
 }

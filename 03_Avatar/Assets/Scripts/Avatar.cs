@@ -26,7 +26,7 @@ public class Avatar : MonoBehaviour
         //Debug.Log(x_dis + ", " + y_dis);
         //alt_dis = 0;
 
-        gameObject.transform.localPosition = new Vector3((float)x_dis, 0, (float)y_dis);
+        gameObject.transform.localPosition = new Vector3((float)x_dis, 0.03f, (float)y_dis);
         gameObject.transform.localRotation = p.getQuaternion();
     }
 }
