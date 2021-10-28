@@ -62,6 +62,8 @@ public class LocalizationHandler : MonoBehaviour
     private bool mapCreated = false;
 
     public bool useGPSNorthing = true;
+    public bool fixHeightToGroundPlane = true;
+    public float fixedHeight = 0.03f;
 
     public Text mqttConnectionText = null;
     public Text chipConnectionText = null;
@@ -83,6 +85,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private double x_utm_origin = 534892.65866935183;
     private double y_utm_origin = 5211821.44362808;
+    private float alt_origin = 0;
     private Vector3 ArCam_Origin = new Vector3(0, 0, 0);
 
     string debugFile;
@@ -252,7 +255,7 @@ public class LocalizationHandler : MonoBehaviour
                 avatars.TryGetValue(p.ID, out avatar);
             }
             OriginObjectHook.transform.localPosition = new Vector3(0,0,0);
-            avatar.setNewPosition(p, x_utm_origin, y_utm_origin);
+            avatar.setNewPosition(p, x_utm_origin, y_utm_origin, alt_origin, fixHeightToGroundPlane);
 
 
             map.setAvatarPositionUTM(p.x, p.y, " ", 1, 2); //todo
@@ -647,14 +650,21 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         }
 
 
-        float h = raycaster.getGroundPlaneY();
-        current_north_fix = correction;
-        WorldOrigin.transform.position = new Vector3(arCam.transform.position.x, h, arCam.transform.position.z);
-        Debug.Log("h = " + h.ToString());
+        if(fixHeightToGroundPlane)
+        {
+            float h = raycaster.getGroundPlaneY() + fixedHeight;
+            WorldOrigin.transform.position = new Vector3(arCam.transform.position.x, h, arCam.transform.position.z);
+        }
+        else
+        {
+            WorldOrigin.transform.position = arCam.transform.position;
+        }
+                
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
         slider.value = correction;
         x_utm_origin = myLastPose.x;
         y_utm_origin = myLastPose.y;
+        alt_origin = myLastPose.alt;
         ArCam_Origin = camposition;
 
         if (!debugging)
