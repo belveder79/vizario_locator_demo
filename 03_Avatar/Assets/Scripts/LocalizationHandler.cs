@@ -228,7 +228,7 @@ public class LocalizationHandler : MonoBehaviour
         AvatarPose p = JsonConvert.DeserializeObject<AvatarPose>(payload);
 
         if(!debugging)
-            File.AppendAllText(debugFile, payload + ";" + arCam.transform.localPosition.ToString("F4") + ";" + arCam.transform.localRotation.ToString("F4") +  "\n");
+            File.AppendAllText(debugFile, payload + ";" + arCam.transform.position.ToString("F4") + ";" + arCam.transform.rotation.ToString("F4") +  "\n");
 
         if(p.ID != myAvatarID)
         {
@@ -478,7 +478,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         setGPSFixText(fixState);
 
         double ts_internal = (DateTime.UtcNow - epochStart).TotalMilliseconds * 1000000;  //to ns
-        Vector3 camposition = arCam.transform.localPosition;
+        Vector3 camposition = arCam.transform.position;
 
         //Debug.Log(ts_gps.ToString("F9") + " - " + ts_internal.ToString("F9"));
 
@@ -603,15 +603,15 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
             x_utm_origin = 534892.65866935183;
             y_utm_origin = 5211821.44362808;
 
-            WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0);
+            WorldOrigin.transform.localPosition = arCam.transform.position + new Vector3(0, -1.2f, 0);
 
             return;
         }
 
         OriginObjectHook.transform.parent = null;
 
-        Quaternion camrot = arCam.transform.localRotation;
-        Vector3 camposition = arCam.transform.localPosition;
+        Quaternion camrot = arCam.transform.rotation;
+        Vector3 camposition = arCam.transform.position;
         double x, y;
         int fix;
         string z;
@@ -655,7 +655,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
         }
 
         current_north_fix = correction;
-        WorldOrigin.transform.localPosition = arCam.transform.localPosition + new Vector3(0, -1.2f, 0); //todo
+        WorldOrigin.transform.localPosition = arCam.transform.position + new Vector3(0, -1.2f, 0); //todo
         WorldOrigin.transform.localRotation = Quaternion.AngleAxis(correction, Vector3.up);
         slider.value = correction;
         x_utm_origin = myLastPose.x;
