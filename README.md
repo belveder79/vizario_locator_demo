@@ -1,4 +1,4 @@
-#﻿# Vizario CapsLoc Application Examples for Unity3D
+#﻿ Vizario CapsLoc Application Examples for Unity3D
 
  This repository contains a collection of application examples for [Unity3D](https://unity.com) to get started with development using the Vizario.CapsLoc sensor cube.
 
@@ -38,6 +38,12 @@ Visualize Vizario.CapsLoc Devices in your local AR environment.
 
 ![Screenshot of SignPostExample Scene](img/avatar_demo.PNG?raw=true "SignPostExample.scene")
 
+setup:
+- To run the Avatar Demo you need two CapsLoc Devices connected with two Mobile Devices running the app
+- provide Mqtt Server in AvatarSession GameObject, if no certificate is needed, set variable to null, otherwise provide certificate as shown in the Avatar
+- Since it is hard to provide a robust and accurate absolute height value there are several options in this Example. If the second CapsLoc Device is placed on the ground fixHeightToGroundPlane can be set to place the visualization of the second device at ground plane height. If not set, there is a toggle to switch between using Altimeter or the relative height to the detected groundplane, in the second case both users should be on the same ground plane.
+
+
 ## Demo Description
 
 - VizarioCapsLocManager.cs : This script is added to CapsLocRuntime GameObject and will take care of communication with the Chip. It will spawn an MqttClient instance, connecting to the specified IP Address. If more than one Instances are used (eg. 2 devices connecting to the same chip, make sure to use ClientIDs.) An Calibration File can be specified too, the File should be placed in the ApplicationPersistent Path (or use check box for StreamingAssets).
@@ -53,6 +59,7 @@ Visualize Vizario.CapsLoc Devices in your local AR environment.
 - Locations.cs: Handling the json file with Locations for the SignPostExample
 - Avatar.cs : Handling other CapsLoc positions in the AvatarDemo Project.
 - MqttClient.cs : Handling Mqtt communication vith other AvatarDemo Apps.
+- Antenna : Child GameObject of ARCamera, which is working as Antenna to Camera Calibration. (if Maxtenna is used => use imu_to_camera calibration values + (-0.02; 0.07; 0), where z & y are switched since we are in Unity space. )
 
 ## VizarioCapsLoc Functionallity
 
