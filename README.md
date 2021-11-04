@@ -1,7 +1,8 @@
+
 ﻿# Vizario CapsLoc Application Examples for Unity3D
- 
+
  This repository contains a collection of application examples for [Unity3D](https://unity.com) to get started with development using the Vizario.CapsLoc sensor cube.
- 
+
 ![Vizario CapsLoc Sensor Cube](img/capsloc_sensor.jpg?raw=true "Vizario.CapsLoc Sensor Cube")
 
 To set up Vizario.CapsLoc with your mobile device, please follow the instructions in the [Tutorial Video](https://youtu.be/or8ghl2m5fM).
@@ -33,19 +34,26 @@ Place a AR SignPost into real world making use of ARFoundation and Vizario Locat
 
 ![Screenshot of SignPostExample Scene](img/place_sign.PNG?raw=true "SignPostExample.scene")
 
+### AvatarDemo (03_Avatar)
+Visualize Vizario.CapsLoc Devices in your local AR environment.
+
+![Screenshot of SignPostExample Scene](img/avatar_demo.PNG?raw=true "SignPostExample.scene")
+
 ## Demo Description
 
-- VizarioCapsLocManager.cs : This script is added to CapsLocRuntime GameObject and will take care of communication with the Chip. It will spawn an MqttClient instance, connecting to the specified IP Address. If more than one Instances are used (eg. 2 devices connecting to the same chip, make sure to use ClientIDs.) An Calibration File can be specified too, the File should be placed in the ApplicationPersistent Path (or use check box for StreamingAssets). 
+- VizarioCapsLocManager.cs : This script is added to CapsLocRuntime GameObject and will take care of communication with the Chip. It will spawn an MqttClient instance, connecting to the specified IP Address. If more than one Instances are used (eg. 2 devices connecting to the same chip, make sure to use ClientIDs.) An Calibration File can be specified too, the File should be placed in the ApplicationPersistent Path (or use check box for StreamingAssets).
 - LocalizationHandler.cs :   
 	Here handling of Localization data is shown. Both possibilities to access GPS, IMU and Altimeter data, either via Callbacks, or via Getter methods.
 	Furthermore there are two examples how to combine ARFoundations Local tracking with real world positioning:
-		- SetWorldOrigin() is used to align the local coordinate system to current UTM Position
+		- SetWorldOrigin() is used to align the local coordinate system to current UTM Position (in 03_Avatar there is a continous update of WorldOrigin Object)
 		- AddObject() is an example to combine RayCasting in local space to obtain a Global Position.
 
 - MapCreator.cs : Spawning an OpenStreetMap to show current position. Here an comparison from device GPS vs our GPS is shown.
 - GUI.cs : Configurations of the chip can also be done via Unity, here are some examples. However, using the VizarioCalibrationApp is recommended.
 - NorthingHandler.cs : Functionallitie to calculate northing fix of ArFoundation Pose using GPS RTK fixed mesaurements in UTM space (due to UTM y = north orientated).
 - Locations.cs: Handling the json file with Locations for the SignPostExample
+- Avatar.cs : Handling other CapsLoc positions in the AvatarDemo Project.
+- MqttClient.cs : Handling Mqtt communication vith other AvatarDemo Apps.
 
 ## VizarioCapsLoc Functionallity
 
@@ -68,7 +76,7 @@ These are getter functions to access current sensor values:
 - bool IsCalibrationSet() : returns calibration state
 - bool IsMqttConnected() : returns Mqtt connection state
 
-The Following Commands can be used via CapsLocManager.Advanced : 
+The Following Commands can be used via CapsLocManager.Advanced :
 - GyroPower(bool power) : turn on/off IMU
 - GyroUpdateRate(float rate) : set UpdateRate of IMU
 - AltiPower(bool power) : turn on/off Altimeter
