@@ -1,5 +1,4 @@
-
-﻿# Vizario CapsLoc Application Examples for Unity3D
+#﻿# Vizario CapsLoc Application Examples for Unity3D
 
  This repository contains a collection of application examples for [Unity3D](https://unity.com) to get started with development using the Vizario.CapsLoc sensor cube.
 
