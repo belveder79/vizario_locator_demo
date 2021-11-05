@@ -14,7 +14,8 @@ Note that both the tutorial video and this sample repository will be improved ov
 ## Setup
 
 Important:
-- import unitypackage [VizarioCapsLocDLL](https://www.dropbox.com/s/xk737qp74ktkua2/capsloc-CapsLocDLL-v1.0-21.09.28.12.unitypackage?dl=0)
+- import unitypackage [VizarioCapsLocDLL](https://www.dropbox.com/s/ntc4hdrnkdl6cep/capsloc-master-21.11.04.16.unitypackage?dl=0)
+- check if latest Firmware on CapsLoc Cube, if not upload new [Firmware](https://www.dropbox.com/sh/hpzjsknbeh27m02/AABas8TiwU8v1n-aVvwHaHc6a?dl=0)
 - Check MqttHostIP (CapsLocRuntime - VizarioCapsLocManager): 127.0.0.1 when App on device running broker (otherwise change IP)
 - IMU Calib, will be loaded from Application.persistentDataPath; In VizarioCapsLocManager there is the possibility to enable copiing a calib file from Resources to persitsenDataPath
 - Tested with Unity2019.4.3(LTS), ARFoundation V3.1.3, XR Plugin Manager 3.2.16, TextMesh Pro 2.01
@@ -62,6 +63,10 @@ setup:
 - Antenna : Child GameObject of ARCamera, which is working as Antenna to Camera Calibration. (if Maxtenna is used => use imu_to_camera calibration values + (-0.02; 0.07; 0), where z & y are switched since we are in Unity space. )
 
 ## VizarioCapsLoc Functionallity
+
+### How to combine CapsLoc in Unity
+
+Algorithms and experiments for fusion tracking in Unity can be seen in the [Documentation](https://www.overleaf.com/read/dzgwnxjttshf). which will be updated continuously.
 
 ### CapsLocManager
 First the CapsLocRuntime Prefap (or an GameObject with this name containing the CapsLocManager Scripts) musst be in the Scene to start communication with the Sensor Cube.

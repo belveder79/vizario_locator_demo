@@ -64,6 +64,7 @@ public class LocalizationHandler : MonoBehaviour
     public bool useGPSNorthing = true;
     public bool fixHeightToGroundPlane = true;
     public float fixedHeight = 0.03f;
+    public float reset_Origin_Distance = 1.0f;
 
     public Text mqttConnectionText = null;
     public Text chipConnectionText = null;
@@ -591,7 +592,7 @@ public static string ReadFileAsString(string path, bool streamingassets = false)
 
         Vector2 ar_dis = new Vector2(ar_dis3.x, ar_dis3.z);
 
-        if (Vector2.Distance(utm_dis, ar_dis) > 1)
+        if (Vector2.Distance(utm_dis, ar_dis) > reset_Origin_Distance)
             return true;
 
         return false;
