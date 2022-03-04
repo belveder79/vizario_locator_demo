@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Measuring.unity
     guid: e0a41cae66e2d464f837e961b6b14a1d
   - enabled: 0
