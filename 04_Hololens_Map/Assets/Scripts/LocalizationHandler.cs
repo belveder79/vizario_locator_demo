@@ -26,25 +26,9 @@ public class LocalizationHandler : MonoBehaviour
 
     private bool mapCreated = false;
 
-    private GameObject listViewPanel = null;
-    private GameObject buttonPanel = null;
-    private GameObject textPanel = null;
-    private GameObject leftSpacingPanel = null;
-    private GameObject topSpacingPanel = null;
-
-    public Text textPrefap = null;
-
-    //visualize object
-    public GameObject WorldOrigin = null;
-    //example how to add pre external obj with utm coords into scene
-    //IF 11 534753,313	5211701,173
-    //public double ObjUtmX = 0;
-    //public double ObjUtmY = 0;
-
     public GameObject arCam = null;
     //public PlaceOnPlane placePlane = null;
 
-    public GameObject prefabToPlace = null;
 
     System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
     //private List<Measurement> placedObjcts = new List<Measurement>();
@@ -52,16 +36,6 @@ public class LocalizationHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //VizarioCapsLocInternal capsloc1 = VizarioCapsLocInternal.GetInstance();
-        //if (capsloc1 != null)
-        //    Debug.Log("here");
-
-
-        //if (WorldOrigin == null || placePlane == null) // ObjToVisualize == null ||
-        //{
-        //    Debug.LogError("Objects for visualization not linked");
-        //    return;
-        //}
 
         capsLoc = GameObject.Find("CapsLocRuntime").GetComponent<VizarioCapsLocManager>();
 
@@ -77,38 +51,6 @@ public class LocalizationHandler : MonoBehaviour
             Debug.LogError("MapCreator not in MapComponent!");
             return;
         }
-
-        //northingHandler = GameObject.Find("MapComponent").GetComponent<NorthingHandler>();
-
-        //if (northingHandler == null)
-        //{
-        //    Debug.LogError("NorthingHandler not in MapComponent!");
-        //    return;
-        //}
-
-        if (textPrefap == null)
-        {
-            Debug.LogError("textPrefap not linked.");
-        }
-
-        //listViewPanel = GameObject.Find("listPanel");
-        //buttonPanel = GameObject.Find("buttonPanel");
-        //textPanel = GameObject.Find("TextPanel");
-        //leftSpacingPanel = GameObject.Find("LeftSpacing");
-        //topSpacingPanel = GameObject.Find("TopSpacing");
-
-        //if (listViewPanel == null || buttonPanel == null || textPanel == null)
-        //{
-        //    Debug.LogError("MeasuremetnsPanel not found");
-        //}
-        //else
-        //{
-        //    listViewPanel.SetActive(false);
-        //    buttonPanel.SetActive(false);
-        //    textPanel.SetActive(false);
-        //}
-
-
 
         if (gpsFixText == null || mqttConnectionText == null || chipConnectionText == null)
         {
@@ -169,12 +111,6 @@ public class LocalizationHandler : MonoBehaviour
 
         if (capsLoc != null)
         {
-            //this would be one option, the other one is using CapsLocBehaviour directly on the GameObject as you can see in the scene
-            //Quaternion q;
-            //if (capsLoc.GetGyroQuaternion(out q))
-            //{
-            //    HandleGyroUpdate(q);
-            //}
 
             double x, y;
             int fix;
@@ -185,12 +121,6 @@ public class LocalizationHandler : MonoBehaviour
                 HandleGPSUpdate(x, y, z, fix);
             }
 
-            //no need to call this every Update, also not needed for this example 
-            //float alt, temp;
-            //if(capsLoc.GetAltimeterValues(out alt, out temp))
-            //{
-            //    HandleAlitUpdate(alt, temp);
-            //}
         }
     }
 
@@ -222,15 +152,6 @@ public class LocalizationHandler : MonoBehaviour
 
         map.setAvatarPositionUTM(x, y, z, fixState, 1);
         setGPSFixText(fixState);
-
-        //only use with RTK fixed positions!
-        //if (useGPSNorthing && fixState == 4)
-        //{
-        //    float ts = (int)(System.DateTime.UtcNow - epochStart).TotalMilliseconds;
-        //    Vector3 camposition = arCam.transform.localPosition;
-        //    NorthingHandler.PostionElement p = new NorthingHandler.PostionElement(ts, x, y, camposition);
-        //    northingHandler.PushPosition(p);
-        //}
 
     }
 
