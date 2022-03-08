@@ -141,11 +141,8 @@ public class LocalizationHandler : MonoBehaviour
     {
         if (!mapCreated) {
 
-
             capsLoc.GetLatLonPoition(out var lat, out var lon, out int state);
-
             map.CreateMap(lat - 0.001, lon - 0.002, lat + 0.001, lon + 0.002);
-
             mapCreated = true;
             Debug.Log("set map coords.");
         }

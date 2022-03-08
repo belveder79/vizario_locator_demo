@@ -44,6 +44,10 @@ setup:
 - provide Mqtt Server in AvatarSession GameObject, if no certificate is needed, set variable to null, otherwise provide certificate as shown in the Avatar
 - Since it is hard to provide a robust and accurate absolute height value there are several options in this Example. If the second CapsLoc Device is placed on the ground fixHeightToGroundPlane can be set to place the visualization of the second device at ground plane height. If not set, there is a toggle to switch between using Altimeter or the relative height to the detected groundplane, in the second case both users should be on the same ground plane.
 
+### AvatarDemo (04_Hololens_Map)
+
+- in UWP Build Solutions Package.appxmanifest tick: Internet(Client&Server), Internet(Client), Location, Private Networks(Client&Server) 
+
 
 ## Demo Description
 
