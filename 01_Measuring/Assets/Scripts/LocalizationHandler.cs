@@ -176,13 +176,13 @@ public class LocalizationHandler : MonoBehaviour
             //    HandleGyroUpdate(q);
             //}
 
-            double x, y;
+            double x, y, ts;
             int fix;
             string z;
 
-            if(capsLoc.GetUTMPosition(out x, out y, out z, out fix))
+            if(capsLoc.GetUTMPositionTs(out x, out y, out z, out fix, out ts))
             {
-                HandleGPSUpdate(x, y, z, fix);
+                HandleGPSUpdate(x, y, z, fix, ts);
             }
 
             //no need to call this every Update, also not needed for this example 
@@ -191,6 +191,17 @@ public class LocalizationHandler : MonoBehaviour
             //{
             //    HandleAlitUpdate(alt, temp);
             //}
+        }
+
+        if (store_pos)
+        {
+            if (cam_posizions.Count > 60)
+                cam_posizions.Clear();
+            
+            float ts = (int)(System.DateTime.UtcNow - epochStart).TotalMilliseconds;
+            Vector3 camposition = arCam.transform.localPosition;
+            cam_posizions.Add(new Tuple<float, Vector3>(ts, camposition));
+
         }
     }
 
@@ -207,7 +218,11 @@ public class LocalizationHandler : MonoBehaviour
         }
     }
 
-    private void HandleGPSUpdate(double x, double y, string z, int fixState)
+
+    string logging = "";
+    bool store_pos = false;
+    List<Tuple<float, Vector3>> cam_posizions = new List<Tuple<float, Vector3>>();
+    private void HandleGPSUpdate(double x, double y, string z, int fixState, double ts_gps)
     {
         if (!mapCreated) {
 
@@ -228,7 +243,31 @@ public class LocalizationHandler : MonoBehaviour
         {
             float ts = (int)(System.DateTime.UtcNow - epochStart).TotalMilliseconds;
             Vector3 camposition = arCam.transform.localPosition;
-            NorthingHandler.PostionElement p = new NorthingHandler.PostionElement(ts, x, y, camposition);
+
+            store_pos = true;
+
+            float last_ts = -99;
+            Vector3 last_pos = new Vector3(0, 0, 0);
+            float distance_ts = 99999999;
+            int indx = -1;
+
+            for (var i = cam_posizions.Count - 1; i >= 0; i--)
+            {
+                if (distance_ts > Mathf.Abs((float)(cam_posizions[i].Item1 - ts_gps)))
+                {
+                    distance_ts = Mathf.Abs((float)(cam_posizions[i].Item1 - ts_gps));
+                    indx = i;
+                }
+
+            }
+
+            logging += String.Format("{};{};{};{};{};{};{};{};", x, y, ts_gps, last_ts, last_ts, camposition, ts, cam_posizions.Count);
+
+            NorthingHandler.PostionElement p;
+            if (indx != -1)
+                p = new NorthingHandler.PostionElement(ts, x, y, last_pos);
+            else
+                p = new NorthingHandler.PostionElement(ts, x, y, camposition);
             northingHandler.PushPosition(p);
         }
 
