@@ -207,7 +207,7 @@ public class LocalizationHandler : MonoBehaviour
 
     private void OnDestroy()
     {
-
+        SaveFile();
     }
 
     private void HandleGyroUpdate(Quaternion quaternion)
@@ -261,7 +261,7 @@ public class LocalizationHandler : MonoBehaviour
 
             }
 
-            logging += String.Format("{};{};{};{};{};{};{};{};", x, y, ts_gps, last_ts, last_ts, camposition, ts, cam_posizions.Count);
+            logging += String.Format("{};{};{};{};{};{};{};{};\n", x, y, ts_gps, last_ts, last_ts, camposition, ts, cam_posizions.Count);
 
             NorthingHandler.PostionElement p;
             if (indx != -1)
@@ -272,6 +272,16 @@ public class LocalizationHandler : MonoBehaviour
         }
 
     }
+
+    public void SaveFile()
+    {
+
+        string ts = String.Format("{}.txt", (int)(System.DateTime.UtcNow - epochStart).TotalMilliseconds);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, ts), logging);
+        logging = "";
+    }
+
+
 
     private void HandleAlitUpdate(float altitude, float temp)
     {
