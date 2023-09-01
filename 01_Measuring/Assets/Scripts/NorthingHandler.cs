@@ -40,7 +40,7 @@ public class NorthingHandler : MonoBehaviour
     public int max_copmareable_points = 300;
     public float min_distance = 0.5f;
     public float max_distance = 2f;
-    public double max_time_offset = 20000; //ms
+    public double max_time_offset = 20000000000; //ns
 
 
     //debugging
